@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<resource majorVersion="1" minorVersion="9" useXmlUI="false">
+    <image name="Logo.png"  />
+    <image name="Logo@0,1x.png"  />
+    <image name="Logo@0,25x.png"  />
+    <image name="LogoHeader.png"  />
+    <theme name="Theme">
+        <val key="@includeNativeBool" value="true" />
+        <val key="BottomPad.align" value="4" />
+        <val key="BottomPad.fgColor" value="a2a1b8" />
+        <val key="BottomPad.marUnit" value="0,0,2,0" />
+        <val key="BottomPad.margin" value="0.0,6.0,0.0,0.0" />
+        <val key="BottomPad.padUnit" value="0,0,2,0" />
+        <val key="BottomPad.padding" value="0.0,0.0,0.0,0.0" />
+        <val key="BottomPad.transparency" value="0" />
+        <val key="Button.align" value="4" />
+        <border key="Button.border" type="round" roundBorderColor="12021369" opacity="255" strokeColor="0" strokeOpacity="255" strokeThickness="0.0" strokeMM="false" shadowSpread="10" shadowOpacity="0" shadowX="0.5" shadowY="0.5" shadowBlur="10.0" shadowMM="false" rectangle="true" />
+        <val key="Button.fgColor" value="ffffff" />
+        <font key="Button.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
+        <val key="Button.marUnit" value="2,2,2,2" />
+        <val key="Button.margin" value="2.0,2.0,2.0,2.0" />
+        <val key="Button.padUnit" value="2,2,2,2" />
+        <val key="Button.padding" value="2.0,2.0,2.0,2.0" />
+        <val key="CenterLabel.align" value="4" />
+        <val key="CenterLabel.derive" value="Label" />
+        <val key="Container.bgColor" value="ffffff" />
+        <gradient key="Container.bgGradient" color1="15790320" color2="15790320" posX="0.5" posY="0.5" radius="1.0" />
+        <val key="Container.bgType" value="0" />
+        <val key="Container.fgColor" value="ffffff" />
+        <val key="FloatingActionButton.align" value="4" />
+        <val key="FloatingActionButton.bgColor" value="ff9999" />
+        <val key="FloatingActionButton.marUnit" value="2,2,2,2" />
+        <val key="FloatingActionButton.margin" value="50.0,0.0,0.0,0.0" />
+        <val key="FloatingHint.align" value="4" />
+        <val key="FloatingHint.fgColor" value="b76e79" />
+        <font key="FloatingHint.font" type="ttf" face="0" style="0" size="0" name="native:MainThin" family="native:MainThin" sizeSettings="3" actualSize="2.5" />
+        <val key="FloatingHint.transparency" value="0" />
+        <val key="Form.bgColor" value="ffffff" />
+        <val key="Label.fgColor" value="b76e79" />
+        <font key="Label.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
+        <val key="Label.transparency" value="0" />
+        <val key="LabelDashboard.fgColor" value="666666" />
+        <font key="LabelDashboard.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
+        <val key="LabelDashboard.transparency" value="0" />
+        <val key="Link.fgColor" value="b76e79" />
+        <val key="TextField.align" value="4" />
+        <border key="TextField.border" type="empty" />
+        <val key="TextField.fgColor" value="666666" />
+        <font key="TextField.font" type="ttf" face="0" style="0" size="0" name="native:MainRegular" family="native:MainRegular" sizeSettings="3" actualSize="2.5" />
+        <val key="TextField.marUnit" value="2,2,2,2" />
+        <val key="TextField.margin" value="1.0,1.0,1.0,1.0" />
+        <val key="TextField.padUnit" value="2,2,2,2" />
+        <val key="TextField.padding" value="2.0,2.0,2.0,2.0" />
+        <val key="WhiteSeparator.bgColor" value="ffffff" />
+        <val key="WhiteSeparator.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="WhiteSeparator.padding" value="1.0,1.0,1.0,1.0" />
+    </theme>
+</resource>
