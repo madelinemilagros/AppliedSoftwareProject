@@ -20,6 +20,7 @@
 package com.goalup.madelinemerced;
 
 import com.codename1.components.ScaleImageLabel;
+import com.codename1.ui.Button;
 import com.codename1.ui.Component;
 import com.codename1.ui.Display;
 import com.codename1.ui.FontImage;
@@ -81,9 +82,12 @@ public class BaseForm extends Form {
                 FlowLayout.encloseCenterBottom(
                         new Label(res.getImage("profile-pic.jpg"), "PictureWhiteBackgrond"))
         ));
+        Label allTotal = null;
+        Label dailyTotal = null;
+        tb.addMaterialCommandToSideMenu("Goals", FontImage.MATERIAL_UPDATE, e ->   new Goal(res, allTotal, dailyTotal).show());
         
-//        tb.addMaterialCommandToSideMenu("Newsfeed", FontImage.MATERIAL_UPDATE, e -> new NewsfeedForm(res).show());
-//        tb.addMaterialCommandToSideMenu("Profile", FontImage.MATERIAL_SETTINGS, e -> new ProfileForm(res).show());
-//        tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP, e -> new WalkthruForm(res).show());
+        
+        tb.addMaterialCommandToSideMenu("Reward", FontImage.MATERIAL_SETTINGS, e -> new Reward(res).show());
+        tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP, e -> new Dashboard(res).show());
     }
 }

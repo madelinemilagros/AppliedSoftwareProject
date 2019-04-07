@@ -83,16 +83,11 @@ public class Dashboard extends BaseForm {
         Container topBar = BorderLayout.east(new Label(icon));
         Image icon2 = res.getImage("icon.png");
         topBar.add(BorderLayout.WEST, new Label(icon2));
-        topBar.add(BorderLayout.SOUTH, new Label("Goal Up", "Cause You Got This!"));
+        topBar.add(BorderLayout.SOUTH, new Label(" ", "Cause You Got This!"));
         topBar.setUIID("SideCommand");
         tb.addComponentToSideMenu(topBar);
         Label allTotal = new Label();
         Label dailyTotal = new Label();
-        Button goals = new Button("Goals");
-        tb.addComponentToSideMenu(goals);
-        goals.addActionListener(e -> {
-            new Goal(res, allTotal, dailyTotal).show();
-        });
 
         //List of Goals Formatting
         Container center = new Container(new GridLayout(2, 1));
