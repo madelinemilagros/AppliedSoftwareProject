@@ -31,7 +31,7 @@ import java.util.Date;
  */
 //Imports
 //Begin Subclass Goal
-public class Goal extends Form {
+public class Goal extends BaseForm {
 
     int pointsTotal;
     int cPointsTotal;
@@ -41,23 +41,23 @@ public class Goal extends Form {
         super("", BoxLayout.y());
         Toolbar tb =super.getToolbar();
         setToolbar(tb);
- //Logo Image
+        
+        //Logo Image
         Image logo = hi.getImage("LogoHeader.png");
         Label l = new Label(logo);
         
          //Flow Container
         Container flowLabel = new Container(new FlowLayout(Component.CENTER));
-        //Adds Dashboard Labels to Flow Container (holds image as well)                
 
         //Adds Logo
         flowLabel.addComponent(l);
-
+super.addSideMenu(hi);
         //SideMenu
         Image icon = hi.getImage("icon.png");
         Container topBar = BorderLayout.east(new Label(icon));
         Image icon2 = hi.getImage("icon.png");
         topBar.add(BorderLayout.WEST, new Label(icon2));
-        topBar.add(BorderLayout.SOUTH, new Label("Goal Up", "Cause You Got This!"));
+        topBar.add(BorderLayout.SOUTH, new Label("Menu", "Cause You Got This!"));
         topBar.setUIID("SideCommand");
         tb.addComponentToSideMenu(topBar);
         Button goalButton = new Button("Goals");
@@ -65,7 +65,8 @@ public class Goal extends Form {
         goalButton.addActionListener(e -> {
             new Goal(hi, allTotal, dailyTotal).show();
         });
-           //Storage Management
+        
+        //Storage Management
         ArrayList<Storage> goals = Storage.getGoals();
         
         for(int i=0; i<goals.size(); i++){
@@ -85,8 +86,7 @@ public class Goal extends Form {
     Container cnt = BoxLayout.encloseY(
                 (count), (createLineSeparator())
         );
-            add(flowLabel);
-
+   add(flowLabel);
     add(cnt);}
     }
 

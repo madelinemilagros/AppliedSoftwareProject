@@ -44,7 +44,6 @@ public class GoalUp {
     private Form current;
     private Resources theme;
 
-
     public void init(Object context) {
         // use two network threads instead of one
         updateNetworkThreadCount(2);
@@ -76,7 +75,7 @@ public class GoalUp {
             return;
         }
 
-     //Displays form
+        //Displays form
         new Dashboard(theme).show();
     }
 
