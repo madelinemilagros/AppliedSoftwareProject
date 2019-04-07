@@ -116,7 +116,7 @@ public class GoalUp {
         Container center = new Container(new GridLayout(2, 1));
         Label goalsList = new Label();
         center.add(goalsList);
-    Label allTotal = new Label();
+        Label allTotal = new Label();
         Label dailyTotal = new Label();
         //CheckBox completeCB = new CheckBox();
         FloatingActionButton fab = FloatingActionButton.createFAB(FontImage.MATERIAL_ADD);
@@ -132,9 +132,9 @@ public class GoalUp {
             }
 
         });
-      //Dashboard Point Total Holders (cumulative and daily) 
-    
-        Container flow = new Container(new GridLayout(1,2));
+        //Dashboard Point Total Holders (cumulative and daily) 
+
+        Container flow = new Container(new GridLayout(1, 2));
         flow.add(allTotal);
         flow.add(dailyTotal);
         flowLabel.addComponent(landingPageButtons);
