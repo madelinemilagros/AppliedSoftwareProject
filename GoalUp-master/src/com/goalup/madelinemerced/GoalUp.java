@@ -6,6 +6,7 @@ import com.codename1.ui.Dialog;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import com.codename1.io.Log;
+import com.codename1.io.Storage;
 import com.codename1.ui.Toolbar;
 import com.codename1.io.Util;
 
@@ -30,7 +31,7 @@ public class GoalUp {
         // Pro only feature
         Log.bindCrashProtection(true);
 
-        Util.register("Storage", Storage.class);
+        Util.register("Storage", MyObject.class);
 
         addNetworkErrorListener(err -> {
             // prevent the event from propagating

@@ -7,7 +7,6 @@ import com.codename1.ui.Container;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.Toolbar;
-import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
@@ -47,16 +46,16 @@ public class Reward extends BaseForm {
         super.addSideMenu(hi);
 
         //Storage Management
-        ArrayList<Storage> goals = Storage.getGoals();
+        ArrayList<MyObject> rewards = MyObject.getRewards();
 
-        for (int i = 0; i < goals.size(); i++) {
-            Storage g = goals.get(i);
+        for (int i = 0; i < rewards.size(); i++) {
+            MyObject r = rewards.get(i);
 
-            Label goal = new Label(g.getGoal());
-            Button points = new Button(g.getPoints());
+            Label reward = new Label(r.getReward());
+            Button points = new Button(r.getRPoints());
             CheckBox completeCB = new CheckBox();
 
-            Container row = BoxLayout.encloseXNoGrow(goal, points, completeCB);
+            Container row = BoxLayout.encloseXNoGrow(reward, points, completeCB);
 
             Container count = new Container();
             count.add(
