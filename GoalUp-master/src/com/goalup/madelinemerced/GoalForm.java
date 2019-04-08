@@ -1,11 +1,9 @@
 package com.goalup.madelinemerced;
 
-import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Button;
 import com.codename1.ui.CheckBox;
-import com.codename1.ui.Component;
 import com.codename1.ui.Container;
-import com.codename1.ui.Form;
+import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.TextArea;
 import com.codename1.ui.TextField;
@@ -14,7 +12,6 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.util.Resources;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * @Course: SDEV 250 ~ Java Programming I
@@ -25,14 +22,21 @@ import java.util.Date;
  */
 //Imports
 //Begin Subclass AddGoal
-public class AddGoal extends Form {
- int pointsTotal;
-    int cPointsTotal;
-    int pointsInt;
-    
-//    public AddGoal(Resources res, Label allTotal, Label dailyTotal) {
-//        super("Dashboard", BoxLayout.y());
-//        Toolbar tb = getToolbar();
+public class GoalForm extends BaseForm {
+//
+//    int pointsTotal;
+//    int cPointsTotal;
+//    int pointsInt;
+//    Resources theme;
+//    
+//    public GoalForm(Resources res, Label allTotal, Label dailyTotal) {
+//        super("", BoxLayout.y());
+//        Toolbar tb = super.getToolbar();
+//        setToolbar(tb);
+//        theme = res;
+//        //Logo Image
+//        Image logo = res.getImage("LogoHeader.png");
+//        Label l = new Label(logo);
 //
 //        //Storage Management
 //        ArrayList<Storage> goals = Storage.getGoals();
@@ -44,6 +48,7 @@ public class AddGoal extends Form {
 //
 //        pointsTF.setHint("Points");
 //        Button enter = new Button("Enter");
+//      
 //
 //        enter.addActionListener(e -> {
 //            //Action listener for enter button
@@ -59,10 +64,9 @@ public class AddGoal extends Form {
 //
 //                Storage.setGoals(goals);
 //                goals.add(g);
-//                new Goal(g, dailyTotal, allTotal, pointsTotal, cPointsTotal, pointsInt).show();
-////                add(Goal(g, dailyTotal, allTotal));
-////                show();
-////                add(Goal(g, dailyTotal, allTotal));
+//                add(addGoal(g, dailyTotal, allTotal));
+//                show();
+//                add(addGoal(g, dailyTotal, allTotal));
 //
 //            } catch (NumberFormatException nfe) {
 //
@@ -76,31 +80,50 @@ public class AddGoal extends Form {
 //                GridLayout.encloseIn(
 //                        (goalEnter)
 //                ));
-//
 //        add(count);
 //        add(enter);
 //
-//        show();
 //
+//        super.addSideMenu(res);
+//        super.show();
+//        tb.addSearchCommand(e -> {
+//        });
 //    }
+//    
+// private Container addGoal(Storage s, Label dailyTotal, Label allTotal) {
+//        Label goal = new Label(s.getGoal());
+//        Button points = new Button(s.getPoints());
+//        CheckBox completeCB = new CheckBox();
+//        Container row = BoxLayout.encloseXNoGrow(goal, points, completeCB);
+//        Container count = new Container();
+//        
+//        count.add(
+//                GridLayout.encloseIn(
+//                        (row)
+//                ));
 //
-//    public String date() {
-//        //Date formatter
-//        Date date = new Date();
-//        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-//        String strDate = formatter.format(date);
-//        return strDate;
+//        Container cnt = BoxLayout.encloseY(
+//                (count), (createLineSeparator())
+//        );
+//
+//        completeCB.addChangeListener(e -> {
+//            if (completeCB.isSelected()) {
+//                int total = method(pointsTotal);
+//                dailyTotal.setText(Integer.toString(total));
+//                allTotal.setText(Integer.toString(total));
+//
+//            } else if (!completeCB.isSelected()) {
+////                pointsTotal = 0;
+//                String dT = allTotal.getText();
+//                int total = Integer.parseInt(dT);
+////                method(total);
+//                allTotal.setText(Integer.toString(total));
+//            }
+//        });
+//        return cnt;
 //    }
-//
-//    public void setPoints(int points) {
-//        pointsInt = points;
-//    }
-//
-//    public int getPoints() {
-//        return pointsInt;
-//    }
-//
-//    public int method(int p) {
+// 
+//   public int method(int p) {
 //        pointsTotal = p + pointsTotal;
 //        met(pointsTotal);
 //        return pointsTotal;
@@ -110,10 +133,13 @@ public class AddGoal extends Form {
 //        cPointsTotal = p + cPointsTotal;
 //        return cPointsTotal;
 //    }
-//
-//    public Component createLineSeparator() {
-//        Label separator = new Label("", "WhiteSeparator");
-//        separator.setShowEvenIfBlank(true);
-//        return separator;
+//    
+//      public void setPoints(int points) {
+//        pointsInt = points;
 //    }
+//
+//    public int getPoints() {
+//        return pointsInt;
+//    }
+
 } //End Subclass AddGoal

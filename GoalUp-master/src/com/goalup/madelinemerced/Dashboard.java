@@ -6,12 +6,9 @@ import com.codename1.components.SpanLabel;
 import com.codename1.components.ToastBar;
 import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Button;
-import com.codename1.ui.ButtonGroup;
 import com.codename1.ui.CheckBox;
 import com.codename1.ui.Command;
 import com.codename1.ui.Component;
-import static com.codename1.ui.Component.BOTTOM;
-import static com.codename1.ui.Component.CENTER;
 import static com.codename1.ui.Component.LEFT;
 import static com.codename1.ui.Component.RIGHT;
 import com.codename1.ui.Container;
@@ -19,10 +16,8 @@ import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
-import com.codename1.ui.Graphics;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
-import com.codename1.ui.RadioButton;
 import com.codename1.ui.Tabs;
 import com.codename1.ui.TextArea;
 import com.codename1.ui.TextField;
@@ -133,7 +128,10 @@ public class Dashboard extends BaseForm {
 
     public Form Goal(Image logo,Label allTotal, Label dailyTotal) {
         Form newForm = new Form();
-
+        Toolbar tb = super.getToolbar();
+        newForm.setToolbar(tb);
+        tb.addSearchCommand(e -> {
+        });
        
         Label l = new Label(logo);
         
@@ -188,7 +186,6 @@ public class Dashboard extends BaseForm {
                 ));
         logoForm.add(count);
         newForm.add(logoForm);
-//        newForm.add(count);
         newForm.add(enter);
 
         newForm.show();
