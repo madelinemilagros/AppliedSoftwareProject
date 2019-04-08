@@ -20,7 +20,6 @@
 package com.goalup.madelinemerced;
 
 import com.codename1.components.ScaleImageLabel;
-import com.codename1.ui.Button;
 import com.codename1.ui.Component;
 import com.codename1.ui.Display;
 import com.codename1.ui.FontImage;

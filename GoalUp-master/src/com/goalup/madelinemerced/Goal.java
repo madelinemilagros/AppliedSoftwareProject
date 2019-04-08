@@ -1,18 +1,12 @@
 package com.goalup.madelinemerced;
 
-import com.codename1.l10n.SimpleDateFormat;
+import com.codename1.io.Storage;
 import com.codename1.ui.Button;
-import static com.codename1.ui.CN.LEFT;
 import com.codename1.ui.CheckBox;
-import com.codename1.ui.Command;
 import com.codename1.ui.Component;
 import com.codename1.ui.Container;
-import com.codename1.ui.Dialog;
-import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
-import com.codename1.ui.TextArea;
-import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
@@ -20,7 +14,6 @@ import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.util.Resources;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * @Course: SDEV 250 ~ Java Programming I
@@ -64,13 +57,13 @@ public class Goal extends BaseForm {
         tb.addComponentToSideMenu(topBar);
 
         //Storage Management
-        ArrayList<Storage> goals = Storage.getGoals();
+        ArrayList<MyObject> goals = MyObject.getGoals();
 
         for (int i = 0; i < goals.size(); i++) {
-            Storage g = goals.get(i);
+            MyObject g = goals.get(i);
 
             Label goal = new Label(g.getGoal());
-            Button points = new Button(g.getPoints());
+            Button points = new Button(g.getGPoints());
             CheckBox completeCB = new CheckBox();
 
             Container row = BoxLayout.encloseXNoGrow(goal, points, completeCB);

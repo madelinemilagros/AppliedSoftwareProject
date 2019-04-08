@@ -6,6 +6,7 @@ import com.codename1.ui.Dialog;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import com.codename1.io.Log;
+import com.codename1.io.Storage;
 import com.codename1.ui.Toolbar;
 import com.codename1.io.Util;
 
@@ -16,13 +17,13 @@ import com.codename1.io.Util;
 public class GoalUp {
 
     private Form current;
-    private Resources theme;
+    private Resources theme1;
 
     public void init(Object context) {
         // use two network threads instead of one
         updateNetworkThreadCount(2);
 
-        theme = UIManager.initFirstTheme("/theme");
+        theme1 = UIManager.initFirstTheme("/theme");
 
         // Enable Toolbar on all Forms by default
         Toolbar.setGlobalToolbar(true);
@@ -30,7 +31,7 @@ public class GoalUp {
         // Pro only feature
         Log.bindCrashProtection(true);
 
-        Util.register("Storage", Storage.class);
+        Util.register("Storage", MyObject.class);
 
         addNetworkErrorListener(err -> {
             // prevent the event from propagating
@@ -50,7 +51,7 @@ public class GoalUp {
         }
 
         //Displays form
-        new Dashboard(theme).show();
+        new Dashboard(theme1).show();
     }
 
     public void stop() {
