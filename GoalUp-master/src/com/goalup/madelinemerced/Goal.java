@@ -40,11 +40,7 @@ public class Goal extends BaseForm {
         Image logo = hi.getImage("LogoHeader.png");
         Label l = new Label(logo);
 
-        //Flow Container
-        Container flowLabel = new Container(new FlowLayout(Component.CENTER));
-
-        //Adds Logo
-        flowLabel.addComponent(l);
+        super.add(logo);
         super.addSideMenu(hi);
 
         //SideMenu
@@ -58,7 +54,6 @@ public class Goal extends BaseForm {
 
         //Storage Management
         ArrayList<MyObject> goals = MyObject.getGoals();
-
         for (int i = 0; i < goals.size(); i++) {
             MyObject g = goals.get(i);
 
@@ -76,9 +71,11 @@ public class Goal extends BaseForm {
             Container cnt = BoxLayout.encloseY(
                     (count), (createLineSeparator())
             );
-            add(flowLabel);
+//                   add(flowLabel);
             add(cnt);
+
         }
+
     }
 
     public Component createLineSeparator() {

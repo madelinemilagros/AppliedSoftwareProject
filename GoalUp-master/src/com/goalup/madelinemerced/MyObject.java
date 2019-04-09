@@ -20,8 +20,10 @@ import java.util.ArrayList;
 public class MyObject implements Externalizable {
 
     private static ArrayList<MyObject> goals;
+        private static ArrayList<MyObject> points;
+
     private static ArrayList<MyObject> rewards;
-Storage s = new Storage();
+    Storage s = new Storage();
     private String goal;
     private String gPoints;
     private String reward;
@@ -81,6 +83,15 @@ Storage s = new Storage();
         }
         return goals;
     }
+      public static ArrayList<MyObject> getPoints() {
+        if (points == null) {
+            points = (ArrayList<MyObject>) com.codename1.io.Storage.getInstance().readObject("storage");
+            if (points == null) {
+                points = new ArrayList<>();
+            }
+        }
+        return goals;
+    }
 
     public static ArrayList<MyObject> getRewards() {
         if (rewards == null) {
@@ -96,14 +107,14 @@ Storage s = new Storage();
         if (!goals.contains(this)) {
             goals.add(this);
         }
-        com.codename1.io.Storage.getInstance().writeObject("storage", goals);
+//        com.codename1.io.Storage.getInstance().writeObject("", goals);
     }
 
     public void saveRewards() {
         if (!rewards.contains(this)) {
             rewards.add(this);
         }
-        com.codename1.io.Storage.getInstance().writeObject("rewards", rewards);
+//        com.codename1.io.Storage.getInstance().writeObject("", rewards);
     }
 
     public void clearStorage() {
@@ -128,8 +139,7 @@ Storage s = new Storage();
 
     @Override
     public String getObjectId() {
-        return "Storage";
+        return "" + "";
     }
-    
 
 } //End Subclass MyObject
