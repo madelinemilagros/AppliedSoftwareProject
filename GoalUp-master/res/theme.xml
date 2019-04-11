@@ -53,6 +53,7 @@
         <val key="BottomPad.padding" value="0.0,0.0,0.0,0.0" />
         <val key="BottomPad.transparency" value="0" />
         <val key="Button.align" value="4" />
+        <val key="Button.bgColor" value="ff9999" />
         <border key="Button.border" type="round" roundBorderColor="12021369" opacity="255" strokeColor="0" strokeOpacity="255" strokeThickness="0.0" strokeMM="false" shadowSpread="10" shadowOpacity="0" shadowX="0.5" shadowY="0.5" shadowBlur="10.0" shadowMM="false" rectangle="true" />
         <val key="Button.fgColor" value="ffffff" />
         <font key="Button.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
@@ -118,6 +119,7 @@
         <val key="BottomPad.padding" value="0.0,0.0,0.0,0.0" />
         <val key="BottomPad.transparency" value="0" />
         <val key="Button.align" value="4" />
+        <val key="Button.bgColor" value="ff9999" />
         <border key="Button.border" type="round" roundBorderColor="12021369" opacity="255" strokeColor="0" strokeOpacity="255" strokeThickness="0.0" strokeMM="false" shadowSpread="10" shadowOpacity="0" shadowX="0.5" shadowY="0.5" shadowBlur="10.0" shadowMM="false" rectangle="true" />
         <val key="Button.fgColor" value="ffffff" />
         <font key="Button.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
@@ -174,6 +176,12 @@
         <font key="DatePickerMonth.sel#font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
         <val key="DatePickerMonth.sel#transparency" value="0" />
         <val key="DatePickerMonth.transparency" value="0" />
+        <val key="FloatingActionButton.align" value="4" />
+        <val key="FloatingActionButton.bgColor" value="ff9999" />
+        <val key="FloatingActionButton.fgColor" value="b76e79" />
+        <val key="FloatingActionButton.marUnit" value="2,2,2,2" />
+        <val key="FloatingActionButton.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="FloatingActionButton.padding" value="0.0,0.0,0.0,0.0" />
         <val key="FloatingHint.align" value="4" />
         <val key="FloatingHint.fgColor" value="b76e79" />
         <font key="FloatingHint.font" type="ttf" face="0" style="0" size="0" name="native:MainThin" family="native:MainThin" sizeSettings="3" actualSize="2.5" />

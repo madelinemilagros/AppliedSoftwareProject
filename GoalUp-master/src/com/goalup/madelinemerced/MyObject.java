@@ -107,7 +107,6 @@ public class MyObject implements Externalizable {
         if (!goals.contains(this)) {
             goals.add(this);
         }
-//        com.codename1.io.Storage.getInstance().writeObject("", goals);
     }
 
     public void saveRewards() {
@@ -139,7 +138,7 @@ public class MyObject implements Externalizable {
 
     @Override
     public String getObjectId() {
-        return "" + "";
+        return "Storage";
     }
 
 } //End Subclass MyObject

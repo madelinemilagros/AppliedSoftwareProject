@@ -26,6 +26,7 @@ import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.util.Resources;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -42,10 +43,10 @@ public class Dashboard extends BaseForm {
 
     private Form current;
     private Resources theme;
-//    String pointsInt;
     int pointsTotal;
     int cPointsTotal;
     int pointsInt;
+    CheckBox cb = new CheckBox();
 
     public Dashboard(Resources res) {
         super("", BoxLayout.y());
@@ -87,7 +88,7 @@ public class Dashboard extends BaseForm {
             Command cancel = new Command("Cancel");
             Command result = Dialog.show(" ", tf, goal, reward, cancel);
             if (goal == result) {
-                Goal(logo, allTotal, dailyTotal);
+                Goal(super.getComponentForm(), logo, allTotal, dailyTotal);
             } else if (reward == result) {
                 Reward(logo, allTotal, dailyTotal);
             } else {
@@ -95,86 +96,87 @@ public class Dashboard extends BaseForm {
             }
 
         });
-MyObject g = new MyObject();
+        MyObject g = new MyObject();
+
         //Dashboard Point Total Holders (cumulative and daily) 
         Container flow = new Container(new GridLayout(1, 2));
         flow.add(allTotal);
         flow.add(dailyTotal);
         flowLabel.addComponent(landingPageButtons);
-        for (String file : Storage.getInstance().listEntries()) {
-            if (file != "CN1Log_$") {
-                createFileEntry(g, super.getComponentForm(), file);
-            }
 
-        }
         //add to main form
         add(flowLabel);
         add(flow);
         add(center);
+        for (String file : Storage.getInstance().listEntries()) {
+            createFileEntry(super.getComponentForm(), file, dailyTotal, allTotal);
+        }
+
+        CheckBox checkBox = getCheckbox();
+        checkBox.addChangeListener(e -> {
+            if (checkBox.isSelected()) {
+                setCheckbox(checkBox);
+                int total = method(pointsTotal);
+                dailyTotal.setText(Integer.toString(total));
+                allTotal.setText(Integer.toString(total));
+                System.out.print(date());
+            } else if (!checkBox.isSelected()) {
+                pointsTotal = 0;
+                String dT = allTotal.getText();
+                int total = Integer.parseInt(dT);
+                method(total);
+                allTotal.setText(Integer.toString(total));
+            }
+        });
+
         add(fab);
         super.addSideMenu(res);
         tb.addSearchCommand(e -> {
         });
     }
 
-    private void createFileEntry(MyObject s, Form hi, String file) {
-        Label fileField = new Label(file);
-        Label points = new Label(s.getGPoints());
-        CheckBox completeCB = new CheckBox();
+    public void setCheckbox(CheckBox completeCB) {
+        cb = completeCB;
+    }
 
-        Button delete = new Button();
-        FontImage.setMaterialIcon(delete, FontImage.MATERIAL_DELETE);
-        Container content = BorderLayout.center(fileField);
-        content.add(BorderLayout.EAST, BoxLayout.encloseX(points,completeCB,delete));
-        delete.addActionListener(e -> {
-            com.codename1.io.Storage.getInstance().deleteStorageFile(file);
-            content.setY(hi.getWidth());
-            hi.getContentPane().animateUnlayoutAndWait(150, 255);
-            hi.removeComponent(content);
-            hi.getContentPane().animateLayout(150);
-        });
+    public CheckBox getCheckbox() {
+        return cb;
+    }
+
+    private void createFileEntry(Form hi, String file, Label dailyTotal, Label allTotal) {
+        Label goal = new Label(file);
+        CheckBox completeCB = new CheckBox();
+        Button points = new Button("");
+//        Button delete = new Button();
+//        FontImage.setMaterialIcon(delete, FontImage.MATERIAL_DELETE);
+        Container content = BorderLayout.center(goal);
+//        delete.addActionListener(e -> {
+//            Storage.getInstance().deleteStorageFile(file);
+//            content.setY(hi.getWidth());
+//            hi.getContentPane().animateUnlayoutAndWait(150, 255);
+//            hi.removeComponent(content);
+//            hi.getContentPane().animateLayout(150);
+//        });
+
+        try (InputStream is = Storage.getInstance().createInputStream(file);) {
+            String s = Util.readToString(is, "UTF-8");
+            points.setText(s);
+        } catch (IOException err) {
+            Log.e(err);
+        }
+        
+        setCheckbox(completeCB);
+
+        content.add(BorderLayout.EAST, BoxLayout.encloseX(points, completeCB));
         hi.add(content);
     }
-    private Container addGoal(MyObject s, Label dailyTotal, Label allTotal) {
-        Label goal = new Label(s.getGoal());
-        Button points = new Button(s.getGPoints());
-        CheckBox completeCB = new CheckBox();
-        Container row = BoxLayout.encloseXNoGrow(goal, points, completeCB);
-        Container count = new Container();
-        count.add(
-                GridLayout.encloseIn(
-                        (row)
-                ));
 
-        Container cnt = BoxLayout.encloseY(
-                (count), (createLineSeparator())
-        );
-
-        completeCB.addChangeListener(e -> {
-            if (completeCB.isSelected()) {
-                int total = method(pointsTotal);
-                dailyTotal.setText(Integer.toString(total));
-                allTotal.setText(Integer.toString(total));
-                System.out.print(date());
-
-            } else if (!completeCB.isSelected()) {
-//                pointsTotal = 0;
-                String dT = allTotal.getText();
-                int total = Integer.parseInt(dT);
-//                method(total);
-                allTotal.setText(Integer.toString(total));
-            }
-        });
-//        Storage.getInstance().writeObject("Goals", s);
-
-        return cnt;
-    }
     private void updateArrowPosition(Button b, Label arrow) {
         arrow.getUnselectedStyle().setMargin(LEFT, b.getX() + b.getWidth() / 2 - arrow.getWidth() / 2);
         arrow.getParent().repaint();
     }
 
-    public Form Goal(Image logo, Label allTotal, Label dailyTotal) {
+    public Form Goal(Form hi, Image logo, Label allTotal, Label dailyTotal) {
         Form newForm = new Form();
         Toolbar tb = super.getToolbar();
         newForm.setToolbar(tb);
@@ -185,15 +187,12 @@ MyObject g = new MyObject();
 
         //Flow Container
         Container logoForm = new Container(new FlowLayout(Component.CENTER));
-        //Adds Dashboard Labels to Flow Container (holds image as well)                
 
         //Adds Logo
         logoForm.addComponent(l);
-
         //Storage Management
         ArrayList<MyObject> goals = MyObject.getGoals();
         MyObject g = new MyObject();
-
         //TextFields
         TextField goalTF = new TextField("", "Goal", 16, TextField.ANY);
         TextArea pointsTF = new TextArea(2, 2);
@@ -203,25 +202,16 @@ MyObject g = new MyObject();
 
         enter.addActionListener(e -> {
             //Action listener for enter button
-            try {
+            try (OutputStream os = Storage.getInstance().createOutputStream(goalTF.getText());) {
                 int pointsInt = Integer.parseInt(pointsTF.getText());
                 setPoints(pointsInt);
                 int dm = method(pointsInt);
-
-                String dailyTString = Integer.toString(dm);
-//                allTotal.setText(dailyTString);
-                g.setGoal(goalTF.getText());
-                g.setGPoints(pointsTF.getText());
-                g.saveGoals();
-
-//                MyObject.setGoals(goals);
-                add(addGoal(g, dailyTotal, allTotal));
-                show();
-                newForm.add(addGoal(g, dailyTotal, allTotal));
-                com.codename1.io.Storage.getInstance().writeObject(g.getGoal(), goals);
-
-            } catch (NumberFormatException nfe) {
-
+                os.write(pointsTF.getText().getBytes("UTF-8"));
+                createFileEntry(newForm, goalTF.getText(), allTotal, dailyTotal);
+                newForm.getContentPane().animateLayout(250);
+                hi.show();
+            } catch (IOException err) {
+                Log.e(err);
             }
 
         });
@@ -303,8 +293,6 @@ MyObject g = new MyObject();
         newForm.show();
         return newForm;
     }
-
-
 
     private Container addReward(MyObject s, Label dailyTotal, Label allTotal) {
         Label reward = new Label(s.getReward());

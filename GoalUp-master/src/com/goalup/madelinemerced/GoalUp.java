@@ -17,13 +17,13 @@ import com.codename1.io.Util;
 public class GoalUp {
 
     private Form current;
-    private Resources theme1;
+    private Resources theme;
 
     public void init(Object context) {
         // use two network threads instead of one
         updateNetworkThreadCount(2);
 
-        theme1 = UIManager.initFirstTheme("/theme");
+        theme = UIManager.initFirstTheme("/theme");
 
         // Enable Toolbar on all Forms by default
         Toolbar.setGlobalToolbar(true);
@@ -51,7 +51,7 @@ public class GoalUp {
         }
 
         //Displays form
-        new Dashboard(theme1).show();
+        new Dashboard(theme).show();
     }
 
     public void stop() {
