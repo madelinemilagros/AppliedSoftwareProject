@@ -1,10 +1,14 @@
 package com.goalup.madelinemerced;
 
+import com.codename1.io.Log;
 import com.codename1.io.Storage;
+import com.codename1.io.Util;
 import com.codename1.ui.Button;
 import com.codename1.ui.CheckBox;
 import com.codename1.ui.Component;
 import com.codename1.ui.Container;
+import com.codename1.ui.FontImage;
+import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.Toolbar;
@@ -13,6 +17,8 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.util.Resources;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -39,8 +45,10 @@ public class Goal extends BaseForm {
         //Logo Image
         Image logo = hi.getImage("LogoHeader.png");
         Label l = new Label(logo);
+        Container flowLabel = new Container(new FlowLayout(Component.CENTER));
 
-        super.add(logo);
+        flowLabel.addComponent(l);
+        super.add(flowLabel);
         super.addSideMenu(hi);
 
         //SideMenu
@@ -51,32 +59,42 @@ public class Goal extends BaseForm {
         topBar.add(BorderLayout.SOUTH, new Label(" ", "Cause You Got This!"));
         topBar.setUIID("SideCommand");
         tb.addComponentToSideMenu(topBar);
-
-        //Storage Management
-        ArrayList<MyObject> goals = MyObject.getGoals();
-        for (int i = 0; i < goals.size(); i++) {
-            MyObject g = goals.get(i);
-
-            Label goal = new Label(g.getGoal());
-            Button points = new Button(g.getGPoints());
-            CheckBox completeCB = new CheckBox();
-
-            Container row = BoxLayout.encloseXNoGrow(goal, points, completeCB);
-
-            Container count = new Container();
-            count.add(
-                    GridLayout.encloseIn(
-                            (row)
-                    ));
-            Container cnt = BoxLayout.encloseY(
-                    (count), (createLineSeparator())
-            );
-//                   add(flowLabel);
-            add(cnt);
-
+  
+        for (String file : Storage.getInstance().listEntries()) {
+            createFileEntry(super.getComponentForm(), file, dailyTotal, allTotal);
         }
+        super.revalidate();
 
     }
+    
+     private void createFileEntry(Form hi, String file, Label dailyTotal, Label allTotal) {
+        Label goal = new Label(file);
+        CheckBox completeCB = new CheckBox();
+        Button points = new Button("");
+        Button delete = new Button();
+        FontImage.setMaterialIcon(delete, FontImage.MATERIAL_DELETE);
+        Container content = BorderLayout.center(goal);
+        delete.addActionListener(e -> {
+            Storage.getInstance().deleteStorageFile(file);
+            content.setY(hi.getWidth());
+            hi.getContentPane().animateUnlayoutAndWait(150, 255);
+            hi.removeComponent(content);
+            hi.getContentPane().animateLayout(150);
+        });
+
+        
+        try (InputStream is = Storage.getInstance().createInputStream(file);) {
+            String s = Util.readToString(is, "UTF-8");
+            points.setText(s);
+            
+        } catch (IOException err) {
+            Log.e(err);
+        }
+        
+        content.add(BorderLayout.EAST, BoxLayout.encloseX(points,delete, completeCB));
+        hi.add(content);
+    }
+    
 
     public Component createLineSeparator() {
         Label separator = new Label("", "WhiteSeparator");

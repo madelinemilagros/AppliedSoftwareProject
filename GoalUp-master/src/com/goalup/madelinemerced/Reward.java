@@ -47,10 +47,9 @@ public class Reward extends BaseForm {
 
         //Storage Management
         ArrayList<MyObject> rewards = MyObject.getRewards();
-
+        
         for (int i = 0; i < rewards.size(); i++) {
             MyObject r = rewards.get(i);
-
             Label reward = new Label(r.getReward());
             Button points = new Button(r.getRPoints());
             CheckBox completeCB = new CheckBox();

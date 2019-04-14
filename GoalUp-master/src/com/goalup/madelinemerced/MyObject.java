@@ -20,12 +20,14 @@ import java.util.ArrayList;
 public class MyObject implements Externalizable {
 
     private static ArrayList<MyObject> goals;
-        private static ArrayList<MyObject> points;
-
+    private static ArrayList<MyObject> points;
     private static ArrayList<MyObject> rewards;
     Storage s = new Storage();
+    Storage newS = new Storage();
+    
     private String goal;
     private String gPoints;
+    private String type;
     private String reward;
     private String rPoints;
 
@@ -36,6 +38,15 @@ public class MyObject implements Externalizable {
     public static void setRewards(ArrayList<MyObject> rewards) {
         MyObject.rewards = rewards;
     }
+    
+       public String getType() {
+        return type;
+    }
+
+    public void setType(String t) {
+        this.type = t;
+    }
+    
 
     public String getGoal() {
         return goal;
@@ -113,7 +124,6 @@ public class MyObject implements Externalizable {
         if (!rewards.contains(this)) {
             rewards.add(this);
         }
-//        com.codename1.io.Storage.getInstance().writeObject("", rewards);
     }
 
     public void clearStorage() {
@@ -124,14 +134,17 @@ public class MyObject implements Externalizable {
     public void externalize(DataOutputStream out) throws IOException {
         Util.writeUTF(goal, out);
         Util.writeUTF(gPoints, out);
+        Util.writeUTF(type, out);
         Util.writeUTF(reward, out);
         Util.writeUTF(rPoints, out);
     }
+    
 
     @Override
     public void internalize(int version, DataInputStream in) throws IOException {
         goal = Util.readUTF(in);
         gPoints = Util.readUTF(in);
+        type = Util.readUTF(in);
         reward = Util.readUTF(in);
         rPoints = Util.readUTF(in);
     }
@@ -140,5 +153,7 @@ public class MyObject implements Externalizable {
     public String getObjectId() {
         return "Storage";
     }
+
+ 
 
 } //End Subclass MyObject

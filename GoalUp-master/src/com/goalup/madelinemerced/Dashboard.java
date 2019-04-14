@@ -46,6 +46,7 @@ public class Dashboard extends BaseForm {
     int pointsTotal;
     int cPointsTotal;
     int pointsInt;
+    boolean tr;
     CheckBox cb = new CheckBox();
 
     public Dashboard(Resources res) {
@@ -82,15 +83,18 @@ public class Dashboard extends BaseForm {
         //CheckBox completeCB = new CheckBox();
         FloatingActionButton fab = FloatingActionButton.createFAB(FontImage.MATERIAL_ADD);
         fab.addActionListener(e -> {
-            Label tf = new Label("Add New Reward or Goal?");
+//          Container flabel = new Container(new FlowLayout(Component.CENTER));
+//          Label tf = new Label("Add New Reward or Goal?");
+//          flabel.add(tf);
             Command goal = new Command("Goal");
             Command reward = new Command("Reward");
             Command cancel = new Command("Cancel");
-            Command result = Dialog.show(" ", tf, goal, reward, cancel);
+            Command result = Dialog.show("Add New Reward or Goal? ", " ", goal, reward, cancel);
             if (goal == result) {
                 Goal(super.getComponentForm(), logo, allTotal, dailyTotal);
+
             } else if (reward == result) {
-                Reward(logo, allTotal, dailyTotal);
+                Reward(super.getComponentForm(), logo, allTotal, dailyTotal);
             } else {
 
             }
@@ -133,6 +137,7 @@ public class Dashboard extends BaseForm {
         super.addSideMenu(res);
         tb.addSearchCommand(e -> {
         });
+        super.revalidate();
     }
 
     public void setCheckbox(CheckBox completeCB) {
@@ -144,6 +149,8 @@ public class Dashboard extends BaseForm {
     }
 
     private void createFileEntry(Form hi, String file, Label dailyTotal, Label allTotal) {
+        hi.revalidate();
+
         Label goal = new Label(file);
         CheckBox completeCB = new CheckBox();
         Button points = new Button("");
@@ -164,11 +171,38 @@ public class Dashboard extends BaseForm {
         } catch (IOException err) {
             Log.e(err);
         }
-        
-        setCheckbox(completeCB);
 
+        setCheckbox(completeCB);
         content.add(BorderLayout.EAST, BoxLayout.encloseX(points, completeCB));
         hi.add(content);
+
+    }
+
+    private void createFileEntryReward(Form hi, String file, String type, Label dailyTotal, Label allTotal) {
+        hi.revalidate();
+
+        Label reward = new Label("");
+        CheckBox completeCB = new CheckBox();
+        Button points = new Button("");
+  
+//        Button delete = new Button();
+//        FontImage.setMaterialIcon(delete, FontImage.MATERIAL_DELETE);
+        Container content = BorderLayout.center(reward);
+        try (InputStream is = Storage.getInstance().createInputStream(file);) {
+            if (type == "reward") {
+                System.out.print("The logic is working");
+
+//            String s = Util.readToString(is, "UTF-8");
+//            points.setText(s);
+            }
+        } catch (IOException err) {
+            Log.e(err);
+        }
+
+        setCheckbox(completeCB);
+        content.add(BorderLayout.EAST, BoxLayout.encloseX(points, completeCB));
+        hi.add(content);
+
     }
 
     private void updateArrowPosition(Button b, Label arrow) {
@@ -190,14 +224,16 @@ public class Dashboard extends BaseForm {
 
         //Adds Logo
         logoForm.addComponent(l);
+
         //Storage Management
         ArrayList<MyObject> goals = MyObject.getGoals();
         MyObject g = new MyObject();
+
         //TextFields
         TextField goalTF = new TextField("", "Goal", 16, TextField.ANY);
-        TextArea pointsTF = new TextArea(2, 2);
+        TextField pointsTF = new TextField("", "Points", 2, TextField.ANY);
 
-        pointsTF.setHint("Points");
+//        pointsTF.setHint("Points");
         Button enter = new Button("Enter");
 
         enter.addActionListener(e -> {
@@ -209,6 +245,8 @@ public class Dashboard extends BaseForm {
                 os.write(pointsTF.getText().getBytes("UTF-8"));
                 createFileEntry(newForm, goalTF.getText(), allTotal, dailyTotal);
                 newForm.getContentPane().animateLayout(250);
+                hi.revalidate();
+
                 hi.show();
             } catch (IOException err) {
                 Log.e(err);
@@ -225,12 +263,11 @@ public class Dashboard extends BaseForm {
         logoForm.add(count);
         newForm.add(logoForm);
         newForm.add(enter);
-
         newForm.show();
         return newForm;
     }
 
-    public Form Reward(Image logo, Label allTotal, Label dailyTotal) {
+    public Form Reward(Form hi, Image logo, Label allTotal, Label dailyTotal) {
         Form newForm = new Form();
         Toolbar tb = super.getToolbar();
         newForm.setToolbar(tb);
@@ -248,7 +285,7 @@ public class Dashboard extends BaseForm {
         //Storage Management
         ArrayList<MyObject> rewards = MyObject.getRewards();
         MyObject r = new MyObject();
-
+        String reward = "reward";
         //TextFields
         TextField rewardTF = new TextField("", "Reward", 16, TextField.ANY);
         TextArea pointsTF = new TextArea(2, 2);
@@ -259,22 +296,31 @@ public class Dashboard extends BaseForm {
 
         enter.addActionListener(e -> {
             //Action listener for enter button
-            try {
+            try (OutputStream os = Storage.getInstance().createOutputStream(rewardTF.getText());) {
                 int pointsInt = Integer.parseInt(pointsTF.getText());
+                setPoints(pointsInt);
+                r.setType(reward);
+                int dm = method(pointsInt);
+                os.write(pointsTF.getText().getBytes("UTF-8"));
+                createFileEntryReward(newForm, rewardTF.getText(), r.getType(), allTotal, dailyTotal);
+                newForm.getContentPane().animateLayout(250);
+                hi.revalidate();
+
 //                setPoints(pointsInt);
 //                int dm = method(pointsInt);
 //
 //                String dailyTString = Integer.toString(dm);
-                r.setReward(rewardTF.getText());
-                r.setRPoints(pointsTF.getText());
-
-                MyObject.setRewards(rewards);
-                rewards.add(r);
-                add(addReward(r, dailyTotal, allTotal));
-                show();
-                newForm.add(addReward(r, dailyTotal, allTotal));
+//                r.setReward(rewardTF.getText());
+//                r.setRPoints(pointsTF.getText());
+//                createFileEntry(hi, rewardTF.getText(), dailyTotal, allTotal);
+//                MyObject.setRewards(rewards);
+//                rewards.add(r);
+//                newForm.add(addReward(r, dailyTotal, allTotal));
+                hi.show();
 
             } catch (NumberFormatException nfe) {
+
+            } catch (IOException ex) {
 
             }
 

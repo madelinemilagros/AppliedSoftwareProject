@@ -77,6 +77,7 @@
         <font key="FloatingHint.font" type="ttf" face="0" style="0" size="0" name="native:MainThin" family="native:MainThin" sizeSettings="3" actualSize="2.5" />
         <val key="FloatingHint.transparency" value="0" />
         <val key="Form.bgColor" value="ffffff" />
+        <val key="Form.fgColor" value="b76e79" />
         <val key="Label.fgColor" value="b76e79" />
         <font key="Label.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
         <val key="Label.transparency" value="0" />
@@ -91,7 +92,7 @@
         <val key="MenuButton.transparency" value="0" />
         <val key="TextField.align" value="4" />
         <border key="TextField.border" type="empty" />
-        <val key="TextField.fgColor" value="666666" />
+        <val key="TextField.fgColor" value="b76e79" />
         <font key="TextField.font" type="ttf" face="0" style="0" size="0" name="native:MainRegular" family="native:MainRegular" sizeSettings="3" actualSize="2.5" />
         <val key="TextField.marUnit" value="2,2,2,2" />
         <val key="TextField.margin" value="1.0,1.0,1.0,1.0" />
@@ -111,7 +112,7 @@
         <val key="Activate.padding" value="0.0,3.0,0.0,0.0" />
         <val key="Activate.transparency" value="255" />
         <val key="BottomPad.align" value="4" />
-        <val key="BottomPad.fgColor" value="a2a1b8" />
+        <val key="BottomPad.fgColor" value="b76e79" />
         <font key="BottomPad.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.0" />
         <val key="BottomPad.marUnit" value="0,0,2,0" />
         <val key="BottomPad.margin" value="0.0,6.0,0.0,0.0" />
@@ -152,6 +153,8 @@
         <val key="CenterLink.padUnit" value="2,2,2,2" />
         <val key="CenterLink.padding" value="2.0,2.0,1.0,1.0" />
         <val key="CenterLink.transparency" value="0" />
+        <val key="Command.bgColor" value="000000" />
+        <val key="Command.fgColor" value="b76e79" />
         <val key="DatePickerDay.align" value="4" />
         <val key="DatePickerDay.fgColor" value="ffffff" />
         <font key="DatePickerDay.font" type="ttf" face="0" style="0" size="0" name="native:MainThin" family="native:MainThin" sizeSettings="3" actualSize="4.5" />
@@ -176,6 +179,15 @@
         <font key="DatePickerMonth.sel#font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
         <val key="DatePickerMonth.sel#transparency" value="0" />
         <val key="DatePickerMonth.transparency" value="0" />
+        <val key="DialogButton.bgColor" value="ffffff" />
+        <val key="DialogButton.dis#derive" value="DialogButton" />
+        <val key="DialogButton.fgColor" value="b76e79" />
+        <val key="DialogButton.press#derive" value="DialogButton" />
+        <val key="DialogButton.sel#derive" value="DialogButton" />
+        <val key="DialogCommandArea.bgColor" value="000000" />
+        <val key="DialogCommandArea.fgColor" value="b76e79" />
+        <val key="DialogTitle.bgColor" value="000000" />
+        <val key="DialogTitle.fgColor" value="b76e79" />
         <val key="FloatingActionButton.align" value="4" />
         <val key="FloatingActionButton.bgColor" value="ff9999" />
         <val key="FloatingActionButton.fgColor" value="b76e79" />
@@ -189,10 +201,11 @@
         <val key="Form.bgColor" value="ffffff" />
         <gradient key="Form.bgGradient" color1="0" color2="0" posX="0.5" posY="0.5" radius="1.0" />
         <val key="Form.bgType" value="0" />
+        <val key="Form.fgColor" value="b76e79" />
         <val key="Form.transparency" value="255" />
         <val key="ImageOverlay.bgColor" value="14134b" />
         <val key="ImageOverlay.transparency" value="60" />
-        <val key="Label.fgColor" value="a2a1b8" />
+        <val key="Label.fgColor" value="b76e79" />
         <font key="Label.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
         <val key="Label.transparency" value="0" />
         <val key="LargeWhiteText.align" value="1" />
@@ -228,7 +241,7 @@
         <val key="MenuButton.sel#padding" value="2.0,2.0,2.0,2.0" />
         <val key="MenuButton.sel#transparency" value="0" />
         <val key="MenuButton.transparency" value="0" />
-        <val key="NewsBottomLine.fgColor" value="a2a1b8" />
+        <val key="NewsBottomLine.fgColor" value="b76e79" />
         <font key="NewsBottomLine.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="1.5" />
         <val key="NewsBottomLine.press#fgColor" value="a2a1b8" />
         <font key="NewsBottomLine.press#font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="1.5" />
@@ -246,7 +259,7 @@
         <font key="NewsTopLine.sel#font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.0" />
         <val key="NewsTopLine.sel#transparency" value="0" />
         <val key="NewsTopLine.transparency" value="0" />
-        <val key="PaddedLabel.fgColor" value="a2a1b8" />
+        <val key="PaddedLabel.fgColor" value="b76e79" />
         <font key="PaddedLabel.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
         <val key="PaddedLabel.padUnit" value="2,2,2,2" />
         <val key="PaddedLabel.padding" value="2.0,2.0,2.0,2.0" />
