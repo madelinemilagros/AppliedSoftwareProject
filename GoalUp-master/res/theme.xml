@@ -153,7 +153,7 @@
         <val key="CenterLink.padUnit" value="2,2,2,2" />
         <val key="CenterLink.padding" value="2.0,2.0,1.0,1.0" />
         <val key="CenterLink.transparency" value="0" />
-        <val key="Command.bgColor" value="000000" />
+        <val key="Command.bgColor" value="0" />
         <val key="Command.fgColor" value="b76e79" />
         <val key="DatePickerDay.align" value="4" />
         <val key="DatePickerDay.fgColor" value="ffffff" />
@@ -184,9 +184,9 @@
         <val key="DialogButton.fgColor" value="b76e79" />
         <val key="DialogButton.press#derive" value="DialogButton" />
         <val key="DialogButton.sel#derive" value="DialogButton" />
-        <val key="DialogCommandArea.bgColor" value="000000" />
+        <val key="DialogCommandArea.bgColor" value="0" />
         <val key="DialogCommandArea.fgColor" value="b76e79" />
-        <val key="DialogTitle.bgColor" value="000000" />
+        <val key="DialogTitle.bgColor" value="0" />
         <val key="DialogTitle.fgColor" value="b76e79" />
         <val key="FloatingActionButton.align" value="4" />
         <val key="FloatingActionButton.bgColor" value="ff9999" />
@@ -269,6 +269,9 @@
         <val key="PictureWhiteBackgrond.padUnit" value="2,2,2,2" />
         <val key="PictureWhiteBackgrond.padding" value="1.0,1.0,1.0,1.0" />
         <val key="PictureWhiteBackgrond.transparency" value="255" />
+        <val key="RadioButton.derive" value="Star" />
+        <val key="RewardTitle.fgColor" value="999999" />
+        <font key="RewardTitle.font" type="ttf" face="0" style="1" size="16" name="native:MainBlack" family="native:MainBlack" sizeSettings="2" actualSize="12.0" />
         <val key="SelectBar.align" value="4" />
         <val key="SelectBar.bgColor" value="ff2d55" />
         <val key="SelectBar.bgImage" value="news-tab-down.png1" />
@@ -351,6 +354,9 @@
         <val key="SkipButton.sel#padding" value="1.0,1.0,1.0,1.0" />
         <val key="SkipButton.sel#transparency" value="0" />
         <val key="SkipButton.transparency" value="0" />
+        <val key="Star.bgColor" value="ffffff" />
+        <val key="Star.press#bgColor" value="ffffff" />
+        <val key="Star.sel#bgColor" value="ffffff" />
         <val key="StatusBarSideMenu.fgColor" value="b76e79" />
         <val key="StatusBarSideMenu.margin" value="0.0,0.0,0.0,0.0" />
         <val key="StatusBarSideMenu.padding" value="0.0,0.0,0.0,0.0" />

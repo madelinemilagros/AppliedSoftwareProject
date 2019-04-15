@@ -32,8 +32,9 @@ public class GoalUp {
         Log.bindCrashProtection(true);
 
         Util.register("Storage", MyObject.class);
-        Util.register("Storage", MyObj.class);
+        Util.register("Rewards", TestObject.class);
         
+new TestObject().getPropertyIndex().registerExternalizable();
 
         addNetworkErrorListener(err -> {
             // prevent the event from propagating

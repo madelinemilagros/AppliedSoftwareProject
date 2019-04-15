@@ -1,11 +1,13 @@
 package com.goalup.madelinemerced;
 
 import com.codename1.components.FloatingActionButton;
+import com.codename1.components.OnOffSwitch;
 import com.codename1.io.Log;
 import com.codename1.io.Storage;
 import com.codename1.io.Util;
 import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Button;
+import com.codename1.ui.ButtonGroup;
 import com.codename1.ui.CheckBox;
 import com.codename1.ui.Command;
 import com.codename1.ui.Component;
@@ -16,6 +18,8 @@ import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
+import com.codename1.ui.List;
+import com.codename1.ui.RadioButton;
 import com.codename1.ui.TextArea;
 import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
@@ -24,6 +28,7 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.util.Resources;
+import com.codename1.util.StringUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -102,7 +107,7 @@ public class Dashboard extends BaseForm {
         });
         MyObject g = new MyObject();
 
-        //Dashboard Point Total Holders (cumulative and daily) 
+        //Dashboard Point Total Holders (cumulative and daily)
         Container flow = new Container(new GridLayout(1, 2));
         flow.add(allTotal);
         flow.add(dailyTotal);
@@ -113,7 +118,7 @@ public class Dashboard extends BaseForm {
         add(flow);
         add(center);
         for (String file : Storage.getInstance().listEntries()) {
-            createFileEntry(super.getComponentForm(), file, dailyTotal, allTotal);
+            createFileEntry(super.getComponentForm(), file, g.getType(), dailyTotal, allTotal);
         }
 
         CheckBox checkBox = getCheckbox();
@@ -135,9 +140,15 @@ public class Dashboard extends BaseForm {
 
         add(fab);
         super.addSideMenu(res);
+//        for (String reward : Storage.getInstance().listEntries()) {
+//            createFileEntryReward(super.getComponentForm(), reward, g.getType(), dailyTotal, allTotal);
+//        }
         tb.addSearchCommand(e -> {
         });
         super.revalidate();
+    }
+
+    Dashboard() {
     }
 
     public void setCheckbox(CheckBox completeCB) {
@@ -146,63 +157,6 @@ public class Dashboard extends BaseForm {
 
     public CheckBox getCheckbox() {
         return cb;
-    }
-
-    private void createFileEntry(Form hi, String file, Label dailyTotal, Label allTotal) {
-        hi.revalidate();
-
-        Label goal = new Label(file);
-        CheckBox completeCB = new CheckBox();
-        Button points = new Button("");
-//        Button delete = new Button();
-//        FontImage.setMaterialIcon(delete, FontImage.MATERIAL_DELETE);
-        Container content = BorderLayout.center(goal);
-//        delete.addActionListener(e -> {
-//            Storage.getInstance().deleteStorageFile(file);
-//            content.setY(hi.getWidth());
-//            hi.getContentPane().animateUnlayoutAndWait(150, 255);
-//            hi.removeComponent(content);
-//            hi.getContentPane().animateLayout(150);
-//        });
-
-        try (InputStream is = Storage.getInstance().createInputStream(file);) {
-            String s = Util.readToString(is, "UTF-8");
-            points.setText(s);
-        } catch (IOException err) {
-            Log.e(err);
-        }
-
-        setCheckbox(completeCB);
-        content.add(BorderLayout.EAST, BoxLayout.encloseX(points, completeCB));
-        hi.add(content);
-
-    }
-
-    private void createFileEntryReward(Form hi, String file, String type, Label dailyTotal, Label allTotal) {
-        hi.revalidate();
-
-        Label reward = new Label("");
-        CheckBox completeCB = new CheckBox();
-        Button points = new Button("");
-  
-//        Button delete = new Button();
-//        FontImage.setMaterialIcon(delete, FontImage.MATERIAL_DELETE);
-        Container content = BorderLayout.center(reward);
-        try (InputStream is = Storage.getInstance().createInputStream(file);) {
-            if (type == "reward") {
-                System.out.print("The logic is working");
-
-//            String s = Util.readToString(is, "UTF-8");
-//            points.setText(s);
-            }
-        } catch (IOException err) {
-            Log.e(err);
-        }
-
-        setCheckbox(completeCB);
-        content.add(BorderLayout.EAST, BoxLayout.encloseX(points, completeCB));
-        hi.add(content);
-
     }
 
     private void updateArrowPosition(Button b, Label arrow) {
@@ -228,6 +182,7 @@ public class Dashboard extends BaseForm {
         //Storage Management
         ArrayList<MyObject> goals = MyObject.getGoals();
         MyObject g = new MyObject();
+        String goal = "goal";
 
         //TextFields
         TextField goalTF = new TextField("", "Goal", 16, TextField.ANY);
@@ -240,10 +195,27 @@ public class Dashboard extends BaseForm {
             //Action listener for enter button
             try (OutputStream os = Storage.getInstance().createOutputStream(goalTF.getText());) {
                 int pointsInt = Integer.parseInt(pointsTF.getText());
-                setPoints(pointsInt);
+
+                //Saves points with leading zeros for formating and structure
+                if (pointsInt < 10) {
+                    String pointsZero = "00" + pointsTF.getText();
+                    setPoints(pointsInt);
+                    os.write(pointsZero.getBytes("UTF-8"));
+
+                } else if (9 < pointsInt && pointsInt < 100) {
+                    String pointsZero = "0" + pointsTF.getText();
+                    setPoints(pointsInt);
+                    os.write(pointsZero.getBytes("UTF-8"));
+                } else {
+                    setPoints(pointsInt);
+                    os.write(pointsTF.getText().getBytes("UTF-8"));
+                }
+
+                g.setType(goal);
                 int dm = method(pointsInt);
-                os.write(pointsTF.getText().getBytes("UTF-8"));
-                createFileEntry(newForm, goalTF.getText(), allTotal, dailyTotal);
+                os.write("  ".getBytes("UTF-8"));
+                os.write(g.getType().getBytes("UTF-8"));
+                createFileEntry(newForm, goalTF.getText(), g.getType(), allTotal, dailyTotal);
                 newForm.getContentPane().animateLayout(250);
                 hi.revalidate();
 
@@ -265,6 +237,49 @@ public class Dashboard extends BaseForm {
         newForm.add(enter);
         newForm.show();
         return newForm;
+    }
+
+    public void createFileEntry(Form hi, String file, String t, Label dailyTotal, Label allTotal) {
+
+        //Components for container
+        Label goal = new Label(file);
+        CheckBox completeCB = new CheckBox();
+        Label points = new Label("");
+        Label holder = new Label("");
+//Label pointsDescription = new Label("points ");
+        //Container for holding components
+        Container content = BorderLayout.center(holder);
+
+        //Reads in the storage
+        try (InputStream is = Storage.getInstance().createInputStream(file);) {
+            String s = Util.readToString(is, "UTF-8");
+
+            //Checks if goal exists and sorts accordingly for display
+            if (s.contains("goal")) {
+
+                //Checks for leading zeros for formatting of points label
+                if (s.substring(0, 1).contains("0")) {
+                    points.setText(s.substring(1, 3) + " points");
+                    if (s.substring(1, 2).contains("0")) {
+                        points.setText(s.substring(2, 3) + " points");
+                    }
+                } else {
+                    points.setText(s.substring(0, 3) + " points");
+                }
+
+                System.out.print(s.substring(4, s.length()));
+                content.add(BorderLayout.CENTER, BoxLayout.encloseX(goal));
+                content.add(BorderLayout.EAST, BoxLayout.encloseX(points, completeCB));
+            }
+
+        } catch (IOException err) {
+            Log.e(err);
+        }
+
+        setCheckbox(completeCB);
+
+        //Adds storage contents with goals to main form
+        hi.add(content);
     }
 
     public Form Reward(Form hi, Image logo, Label allTotal, Label dailyTotal) {
@@ -298,34 +313,37 @@ public class Dashboard extends BaseForm {
             //Action listener for enter button
             try (OutputStream os = Storage.getInstance().createOutputStream(rewardTF.getText());) {
                 int pointsInt = Integer.parseInt(pointsTF.getText());
-                setPoints(pointsInt);
+
+                //Saves points with leading zeros for formating and structure
+                if (pointsInt < 10) {
+                    String pointsZero = "00" + pointsTF.getText();
+                    setPoints(pointsInt);
+                    os.write(pointsZero.getBytes("UTF-8"));
+
+                } else if (9 < pointsInt && pointsInt < 100) {
+                    String pointsZero = "0" + pointsTF.getText();
+                    setPoints(pointsInt);
+                    os.write(pointsZero.getBytes("UTF-8"));
+                } else {
+                    setPoints(pointsInt);
+                    os.write(pointsTF.getText().getBytes("UTF-8"));
+                }
+
                 r.setType(reward);
                 int dm = method(pointsInt);
-                os.write(pointsTF.getText().getBytes("UTF-8"));
-                createFileEntryReward(newForm, rewardTF.getText(), r.getType(), allTotal, dailyTotal);
+                os.write("  ".getBytes("UTF-8"));
+                os.write(r.getType().getBytes("UTF-8"));
+                createFileEntry(newForm, rewardTF.getText(), r.getType(), allTotal, dailyTotal);
                 newForm.getContentPane().animateLayout(250);
                 hi.revalidate();
 
-//                setPoints(pointsInt);
-//                int dm = method(pointsInt);
-//
-//                String dailyTString = Integer.toString(dm);
-//                r.setReward(rewardTF.getText());
-//                r.setRPoints(pointsTF.getText());
-//                createFileEntry(hi, rewardTF.getText(), dailyTotal, allTotal);
-//                MyObject.setRewards(rewards);
-//                rewards.add(r);
-//                newForm.add(addReward(r, dailyTotal, allTotal));
                 hi.show();
 
-            } catch (NumberFormatException nfe) {
-
-            } catch (IOException ex) {
-
+            } catch (IOException err) {
+                Log.e(err);
             }
 
         });
-
         Container rewardEnter = BoxLayout.encloseXNoGrow(rewardTF, pointsTF);
         Container count = new Container();
         count.add(
@@ -340,37 +358,44 @@ public class Dashboard extends BaseForm {
         return newForm;
     }
 
-    private Container addReward(MyObject s, Label dailyTotal, Label allTotal) {
-        Label reward = new Label(s.getReward());
-        Button points = new Button(s.getRPoints());
+    public void createFileEntryReward(Form hi, String file, String type, Label dailyTotal, Label allTotal) {
+
+        Label reward = new Label(file);
         CheckBox completeCB = new CheckBox();
-        Container row = BoxLayout.encloseXNoGrow(reward, points, completeCB);
-        Container count = new Container();
-        count.add(
-                GridLayout.encloseIn(
-                        (row)
-                ));
+        completeCB.setUIID("Star");
 
-        Container cnt = BoxLayout.encloseY(
-                (count), (createLineSeparator())
-        );
+        Label points = new Label("");
+        Label holder = new Label("");
 
-        completeCB.addChangeListener(e -> {
-            if (completeCB.isSelected()) {
-                int total = method(pointsTotal);
-//                dailyTotal.setText(Integer.toString(total));
-//                allTotal.setText(Integer.toString(total));
-                System.out.print(date());
+        Container content = BorderLayout.center(holder);
+        try (InputStream is = Storage.getInstance().createInputStream(file);) {
+            String s = Util.readToString(is, "UTF-8");
 
-            } else if (!completeCB.isSelected()) {
-//                pointsTotal = 0;
-//                String dT = allTotal.getText();
-//                int total = Integer.parseInt(dT);
-//                method(total);
-//                allTotal.setText(Integer.toString(total));
+            if (s.contains("reward")) {
+
+                //Checks for leading zeros for formatting of points label
+                if (s.substring(0, 1).contains("0")) {
+                    points.setText(s.substring(1, 3));
+                    if (s.substring(1, 2).contains("0")) {
+                        points.setText(s.substring(2, 3));
+                    }
+                } else {
+                    points.setText(s.substring(0, 3));
+                }
+
+                System.out.print(s.substring(4, s.length()));
+                content.add(BorderLayout.CENTER, BoxLayout.encloseX(reward));
+                content.add(BorderLayout.EAST, BoxLayout.encloseX(points, completeCB));
+            } else {
+
             }
-        });
-        return cnt;
+
+        } catch (IOException err) {
+            Log.e(err);
+        }
+        setCheckbox(completeCB);
+
+        hi.add(content);
     }
 
     public Component createLineSeparator() {

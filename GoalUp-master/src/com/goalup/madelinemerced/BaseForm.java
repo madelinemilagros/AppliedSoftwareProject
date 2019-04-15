@@ -84,9 +84,7 @@ public class BaseForm extends Form {
         Label allTotal = null;
         Label dailyTotal = null;
         tb.addMaterialCommandToSideMenu("Goals", FontImage.MATERIAL_UPDATE, e ->   new Goal(res, allTotal, dailyTotal).show());
-        
-        
-        tb.addMaterialCommandToSideMenu("Reward", FontImage.MATERIAL_SETTINGS, e -> new Reward(res).show());
+        tb.addMaterialCommandToSideMenu("Reward", FontImage.MATERIAL_SETTINGS, e -> new Reward(res, allTotal, dailyTotal).show());
         tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP, e -> new Dashboard(res).show());
     }
 }

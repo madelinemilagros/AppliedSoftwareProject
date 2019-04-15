@@ -154,6 +154,5 @@ public class MyObject implements Externalizable {
         return "Storage";
     }
 
- 
 
 } //End Subclass MyObject

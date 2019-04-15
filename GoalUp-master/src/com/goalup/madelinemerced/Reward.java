@@ -1,5 +1,6 @@
 package com.goalup.madelinemerced;
 
+import com.codename1.io.Storage;
 import com.codename1.ui.Button;
 import com.codename1.ui.CheckBox;
 import com.codename1.ui.Component;
@@ -7,6 +8,7 @@ import com.codename1.ui.Container;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.Toolbar;
+import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
@@ -28,46 +30,36 @@ public class Reward extends BaseForm {
     int cPointsTotal;
     int pointsInt;
 
-    public Reward(Resources hi) {
+    public Reward(Resources hi, Label allTotal, Label dailyTotal) {
         super("", BoxLayout.y());
         Toolbar tb = super.getToolbar();
         setToolbar(tb);
         tb.addSearchCommand(e -> {
         });
+        
         //Logo Image
         Image logo = hi.getImage("LogoHeader.png");
         Label l = new Label(logo);
-
-        //Flow Container
-        Container flowLabel = new Container(new FlowLayout(Component.CENTER));
-
+        Container flowLabelLogo = new Container(new FlowLayout(Component.CENTER));
+   
         //Adds Logo
-        flowLabel.addComponent(l);
+        flowLabelLogo.addComponent(l);
+        super.add(flowLabelLogo);
         super.addSideMenu(hi);
 
-        //Storage Management
-        ArrayList<MyObject> rewards = MyObject.getRewards();
         
-        for (int i = 0; i < rewards.size(); i++) {
-            MyObject r = rewards.get(i);
-            Label reward = new Label(r.getReward());
-            Button points = new Button(r.getRPoints());
-            CheckBox completeCB = new CheckBox();
+        Container pageTitleRewards = new Container(new FlowLayout(Component.CENTER));
+        Label rewardsLabel = new Label("Rewards");
+        pageTitleRewards.add(rewardsLabel);
+        super.add(pageTitleRewards);
 
-            Container row = BoxLayout.encloseXNoGrow(reward, points, completeCB);
-
-            Container count = new Container();
-            count.add(
-                    GridLayout.encloseIn(
-                            (row)
-                    ));
-            Container cnt = BoxLayout.encloseY(
-                    (count), (createLineSeparator())
-            );
-            add(flowLabel);
-            add(cnt);
+        Dashboard db = new Dashboard();
+        MyObject g = new MyObject();
+        
+        for (String file : Storage.getInstance().listEntries()) {
+        db.createFileEntryReward(super.getComponentForm(), file, g.getType(), dailyTotal, allTotal);
         }
-    }
+    } 
 
     public Component createLineSeparator() {
         Label separator = new Label("", "WhiteSeparator");

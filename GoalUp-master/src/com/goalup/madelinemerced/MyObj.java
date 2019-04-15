@@ -53,10 +53,9 @@ public class MyObj implements Externalizable  {
         return 1;
     }
 
-
       public static ArrayList<MyObj> getPoints() {
         if (points == null) {
-            points = (ArrayList<MyObj>) com.codename1.io.Storage.getInstance().readObject("storage");
+            points = (ArrayList<MyObj>) com.codename1.io.Storage.getInstance().readObject("rewards");
             if (points == null) {
                 points = new ArrayList<>();
             }
@@ -100,6 +99,6 @@ public class MyObj implements Externalizable  {
 
     @Override
     public String getObjectId() {
-        return "Storage";
+        return "Rewards";
     }
 }//End Subclass MyObj

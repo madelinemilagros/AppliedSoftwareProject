@@ -50,51 +50,22 @@ public class Goal extends BaseForm {
         flowLabel.addComponent(l);
         super.add(flowLabel);
         super.addSideMenu(hi);
-
-        //SideMenu
-        Image icon = hi.getImage("icon.png");
-        Container topBar = BorderLayout.east(new Label(icon));
-        Image icon2 = hi.getImage("icon.png");
-        topBar.add(BorderLayout.WEST, new Label(icon2));
-        topBar.add(BorderLayout.SOUTH, new Label(" ", "Cause You Got This!"));
-        topBar.setUIID("SideCommand");
-        tb.addComponentToSideMenu(topBar);
+        
+        Container pageTitleRewards = new Container(new FlowLayout(Component.CENTER));
+        Label goalsLabel = new Label("Goals");
+        pageTitleRewards.add(goalsLabel);
+        super.add(pageTitleRewards);
+                
+        Dashboard db = new Dashboard();
+        MyObject g = new MyObject();
   
         for (String file : Storage.getInstance().listEntries()) {
-            createFileEntry(super.getComponentForm(), file, dailyTotal, allTotal);
+        db.createFileEntry(super.getComponentForm(), file, g.getType(), dailyTotal, allTotal);
         }
+               
         super.revalidate();
 
     }
-    
-     private void createFileEntry(Form hi, String file, Label dailyTotal, Label allTotal) {
-        Label goal = new Label(file);
-        CheckBox completeCB = new CheckBox();
-        Button points = new Button("");
-        Button delete = new Button();
-        FontImage.setMaterialIcon(delete, FontImage.MATERIAL_DELETE);
-        Container content = BorderLayout.center(goal);
-        delete.addActionListener(e -> {
-            Storage.getInstance().deleteStorageFile(file);
-            content.setY(hi.getWidth());
-            hi.getContentPane().animateUnlayoutAndWait(150, 255);
-            hi.removeComponent(content);
-            hi.getContentPane().animateLayout(150);
-        });
-
-        
-        try (InputStream is = Storage.getInstance().createInputStream(file);) {
-            String s = Util.readToString(is, "UTF-8");
-            points.setText(s);
-            
-        } catch (IOException err) {
-            Log.e(err);
-        }
-        
-        content.add(BorderLayout.EAST, BoxLayout.encloseX(points,delete, completeCB));
-        hi.add(content);
-    }
-    
 
     public Component createLineSeparator() {
         Label separator = new Label("", "WhiteSeparator");
