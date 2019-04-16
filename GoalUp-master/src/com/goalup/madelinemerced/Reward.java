@@ -5,6 +5,8 @@ import com.codename1.ui.Button;
 import com.codename1.ui.CheckBox;
 import com.codename1.ui.Component;
 import com.codename1.ui.Container;
+import com.codename1.ui.Display;
+import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.Toolbar;
@@ -37,6 +39,13 @@ public class Reward extends BaseForm {
         tb.addSearchCommand(e -> {
         });
         
+         Form previous = Display.getInstance().getCurrent();
+
+   tb.setBackCommand("", e -> previous.showBack());
+       
+        
+        
+        CheckBox completeCB = new CheckBox();
         //Logo Image
         Image logo = hi.getImage("LogoHeader.png");
         Label l = new Label(logo);
@@ -59,6 +68,7 @@ public class Reward extends BaseForm {
         for (String file : Storage.getInstance().listEntries()) {
         db.createFileEntryReward(super.getComponentForm(), file, g.getType(), dailyTotal, allTotal);
         }
+     
     } 
 
     public Component createLineSeparator() {

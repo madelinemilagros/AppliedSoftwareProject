@@ -14,6 +14,7 @@ import com.codename1.ui.Component;
 import static com.codename1.ui.Component.LEFT;
 import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
+import com.codename1.ui.Display;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
@@ -34,6 +35,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * @Course: SDEV 250 ~ Java Programming I
@@ -51,6 +53,9 @@ public class Dashboard extends BaseForm {
     int pointsTotal;
     int cPointsTotal;
     int pointsInt;
+    int dailyPointsTotal;
+    String mainRewardPoints;
+    private String inputStreamString;
     boolean tr;
     CheckBox cb = new CheckBox();
 
@@ -63,14 +68,13 @@ public class Dashboard extends BaseForm {
         Image logo = res.getImage("LogoHeader.png");
         Label l = new Label(logo);
 
-        //Labels and formatting for dashboard trackers
-        Container landingPageButtons = new Container(new GridLayout(2, 2));
-        Label dailyPointsTotal = new Label("Daily Points Total");
-        Label pointsTracker = new Label("40/100 points");
-
-        landingPageButtons.add(dailyPointsTotal);
-        landingPageButtons.add(pointsTracker);
-
+//        //Labels and formatting for dashboard trackers
+//        Container landingPageButtons = new Container(new GridLayout(2, 2));
+//        Label dailyPointsTotal = new Label("Daily Points Total");
+//        Label pointsTracker = new Label("40/100 points");
+//
+//        landingPageButtons.add(dailyPointsTotal);
+//        landingPageButtons.add(pointsTracker);
         //Flow Container
         Container flowLabel = new Container(new FlowLayout(Component.CENTER));
 
@@ -78,7 +82,7 @@ public class Dashboard extends BaseForm {
         flowLabel.addComponent(l);
 
         Label allTotal = new Label();
-        Label dailyTotal = new Label();
+        Label dTotal = new Label();
 
         //List of Goals Formatting
         Container center = new Container(new GridLayout(2, 1));
@@ -96,10 +100,10 @@ public class Dashboard extends BaseForm {
             Command cancel = new Command("Cancel");
             Command result = Dialog.show("Add New Reward or Goal? ", " ", goal, reward, cancel);
             if (goal == result) {
-                Goal(super.getComponentForm(), logo, allTotal, dailyTotal);
+                Goal(super.getComponentForm(), logo, allTotal, dTotal);
 
             } else if (reward == result) {
-                Reward(super.getComponentForm(), logo, allTotal, dailyTotal);
+                Reward(super.getComponentForm(), logo, allTotal, dTotal);
             } else {
 
             }
@@ -110,39 +114,39 @@ public class Dashboard extends BaseForm {
         //Dashboard Point Total Holders (cumulative and daily)
         Container flow = new Container(new GridLayout(1, 2));
         flow.add(allTotal);
-        flow.add(dailyTotal);
-        flowLabel.addComponent(landingPageButtons);
+        flow.add(dTotal);
+        flowLabel.addComponent(Trackers());
 
         //add to main form
         add(flowLabel);
         add(flow);
         add(center);
         for (String file : Storage.getInstance().listEntries()) {
-            createFileEntry(super.getComponentForm(), file, g.getType(), dailyTotal, allTotal);
+            createFileEntry(super.getComponentForm(), file, g.getType(), dTotal, allTotal);
+
+            try (InputStream is = Storage.getInstance().createInputStream(file);) {
+                String s = Util.readToString(is, "UTF-8");
+
+                if (s.contains("reward")) {
+                    setMainRewardPoints(s);
+                }
+
+            } catch (IOException err) {
+                Log.e(err);
+            }
         }
 
-        CheckBox checkBox = getCheckbox();
-        checkBox.addChangeListener(e -> {
-            if (checkBox.isSelected()) {
-                setCheckbox(checkBox);
-                int total = method(pointsTotal);
-                dailyTotal.setText(Integer.toString(total));
-                allTotal.setText(Integer.toString(total));
-                System.out.print(date());
-            } else if (!checkBox.isSelected()) {
-                pointsTotal = 0;
-                String dT = allTotal.getText();
-                int total = Integer.parseInt(dT);
-                method(total);
-                allTotal.setText(Integer.toString(total));
-            }
-        });
+        setDailyTotal(25);
+        setPoints(10);
+        dTotal.setText(dailyTotal());
 
         add(fab);
+
         super.addSideMenu(res);
 //        for (String reward : Storage.getInstance().listEntries()) {
 //            createFileEntryReward(super.getComponentForm(), reward, g.getType(), dailyTotal, allTotal);
 //        }
+
         tb.addSearchCommand(e -> {
         });
         super.revalidate();
@@ -190,12 +194,19 @@ public class Dashboard extends BaseForm {
 
 //        pointsTF.setHint("Points");
         Button enter = new Button("Enter");
+        HashMap<String, String> pairHere = new HashMap<String, String>();
 
         enter.addActionListener(e -> {
             //Action listener for enter button
             try (OutputStream os = Storage.getInstance().createOutputStream(goalTF.getText());) {
                 int pointsInt = Integer.parseInt(pointsTF.getText());
+                goals.add(g);
 
+                pairHere.put(goalTF.getText(), pointsTF.getText());
+                g.setGoalPair(pairHere);
+                System.out.print(g.getGoalPair());
+                g.saveGoals();
+                
                 //Saves points with leading zeros for formating and structure
                 if (pointsInt < 10) {
                     String pointsZero = "00" + pointsTF.getText();
@@ -246,7 +257,6 @@ public class Dashboard extends BaseForm {
         CheckBox completeCB = new CheckBox();
         Label points = new Label("");
         Label holder = new Label("");
-//Label pointsDescription = new Label("points ");
         //Container for holding components
         Container content = BorderLayout.center(holder);
 
@@ -259,6 +269,7 @@ public class Dashboard extends BaseForm {
 
                 //Checks for leading zeros for formatting of points label
                 if (s.substring(0, 1).contains("0")) {
+
                     points.setText(s.substring(1, 3) + " points");
                     if (s.substring(1, 2).contains("0")) {
                         points.setText(s.substring(2, 3) + " points");
@@ -276,7 +287,18 @@ public class Dashboard extends BaseForm {
             Log.e(err);
         }
 
-        setCheckbox(completeCB);
+        MyObject o = new MyObject();
+
+        completeCB.addActionListener(e -> {
+            if (completeCB.isSelected()) {
+
+                System.out.print(o.getGPoints());
+
+                System.out.print("in the action listener");
+
+            }
+
+        });
 
         //Adds storage contents with goals to main form
         hi.add(content);
@@ -298,7 +320,7 @@ public class Dashboard extends BaseForm {
         logoForm.addComponent(l);
 
         //Storage Management
-        ArrayList<MyObject> rewards = MyObject.getRewards();
+//        ArrayList<MyObject> rewards = MyObject.getRewards();
         MyObject r = new MyObject();
         String reward = "reward";
         //TextFields
@@ -364,6 +386,8 @@ public class Dashboard extends BaseForm {
         CheckBox completeCB = new CheckBox();
         completeCB.setUIID("Star");
 
+        MyObject obj = new MyObject();
+
         Label points = new Label("");
         Label holder = new Label("");
 
@@ -383,6 +407,16 @@ public class Dashboard extends BaseForm {
                     points.setText(s.substring(0, 3));
                 }
 
+//            if(completeCB.isSelected()){
+////                mainRewardPoints(hi, g);
+                completeCB.setSelected(true);
+//                    obj.setCheckbox(true);
+//                }
+
+                if (completeCB.isSelected()) {
+                    mainRewardPoints(s);
+                }
+
                 System.out.print(s.substring(4, s.length()));
                 content.add(BorderLayout.CENTER, BoxLayout.encloseX(reward));
                 content.add(BorderLayout.EAST, BoxLayout.encloseX(points, completeCB));
@@ -393,9 +427,36 @@ public class Dashboard extends BaseForm {
         } catch (IOException err) {
             Log.e(err);
         }
-        setCheckbox(completeCB);
 
         hi.add(content);
+    }
+
+    public String mainRewardPoints(String s) {
+
+        System.out.print(s);
+        setMainRewardPoints(s);
+        return s;
+    }
+
+    public void setMainRewardPoints(String s) {
+        this.mainRewardPoints = s;
+    }
+
+    public String getMainRewardPoints() {
+        return mainRewardPoints;
+    }
+
+    public Container Trackers() {
+
+        Container landingPageButtons = new Container(new GridLayout(2, 2));
+        Label dailyPointsTotal = new Label("Daily Points Total");
+        Label pointsTracker = new Label("40/100 points");
+        Label mainReward = new Label(getMainRewardPoints());
+
+        landingPageButtons.add(dailyPointsTotal);
+        landingPageButtons.add(pointsTracker);
+        landingPageButtons.add(mainReward);
+        return landingPageButtons;
     }
 
     public Component createLineSeparator() {
@@ -413,6 +474,7 @@ public class Dashboard extends BaseForm {
     }
 
     public void setPoints(int points) {
+        System.out.print("At Set Points \n");
         pointsInt = points;
     }
 
@@ -429,6 +491,35 @@ public class Dashboard extends BaseForm {
     public int met(int p) {
         cPointsTotal = p + cPointsTotal;
         return cPointsTotal;
+    }
+
+    public void setDailyTotal(int dailyPointsTotal) {
+        System.out.print("At Set Daily Total \n");
+
+        this.dailyPointsTotal = dailyPointsTotal;
+    }
+
+    public int getDailyTotal() {
+        System.out.print("At get Daily Total \n");
+
+        return dailyPointsTotal;
+    }
+
+    public String dailyTotal() {
+        System.out.print("At dailyTotal \n");
+
+        setDailyTotal(getDailyTotal() + getPoints());
+        String getDailyTotalString = Integer.toString(getDailyTotal());
+        System.out.print(getDailyTotal());
+        return getDailyTotalString;
+    }
+
+    public String getInputStreamString() {
+        return inputStreamString;
+    }
+
+    public void setInputStreamString(String inputStreamString) {
+        this.inputStreamString = inputStreamString;
     }
 
 } //End Subclass Dashboard

@@ -226,6 +226,7 @@
         <val key="LogoLabel.padUnit" value="2,0,2,0" />
         <val key="LogoLabel.padding" value="3.0,3.0,0.0,0.0" />
         <val key="LogoLabel.transparency" value="0" />
+        <val key="MenuButton.align" value="4" />
         <val key="MenuButton.fgColor" value="b76e79" />
         <font key="MenuButton.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
         <val key="MenuButton.padUnit" value="2,2,2,2" />

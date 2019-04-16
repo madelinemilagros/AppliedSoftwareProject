@@ -16,7 +16,6 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
  */
-
 package com.goalup.madelinemerced;
 
 import com.codename1.components.ScaleImageLabel;
@@ -50,14 +49,13 @@ public class BaseForm extends Form {
     public BaseForm(String title, Layout contentPaneLayout) {
         super(title, contentPaneLayout);
     }
-    
-    
+
     public Component createLineSeparator() {
         Label separator = new Label("", "WhiteSeparator");
         separator.setShowEvenIfBlank(true);
         return separator;
     }
-    
+
     public Component createLineSeparator(int color) {
         Label separator = new Label("", "WhiteSeparator");
         separator.getUnselectedStyle().setBgColor(color);
@@ -69,13 +67,13 @@ public class BaseForm extends Form {
     protected void addSideMenu(Resources res) {
         Toolbar tb = getToolbar();
         Image img = res.getImage("profile-background.jpg");
-        if(img.getHeight() > Display.getInstance().getDisplayHeight() / 3) {
+        if (img.getHeight() > Display.getInstance().getDisplayHeight() / 3) {
             img = img.scaledHeight(Display.getInstance().getDisplayHeight() / 3);
         }
         ScaleImageLabel sl = new ScaleImageLabel(img);
         sl.setUIID("BottomPad");
         sl.setBackgroundType(Style.BACKGROUND_IMAGE_SCALED_FILL);
-        
+
         tb.addComponentToSideMenu(LayeredLayout.encloseIn(
                 sl,
                 FlowLayout.encloseCenterBottom(
@@ -83,7 +81,7 @@ public class BaseForm extends Form {
         ));
         Label allTotal = null;
         Label dailyTotal = null;
-        tb.addMaterialCommandToSideMenu("Goals", FontImage.MATERIAL_UPDATE, e ->   new Goal(res, allTotal, dailyTotal).show());
+        tb.addMaterialCommandToSideMenu("Goals", FontImage.MATERIAL_UPDATE, e -> new Goal(res, allTotal, dailyTotal).show());
         tb.addMaterialCommandToSideMenu("Reward", FontImage.MATERIAL_SETTINGS, e -> new Reward(res, allTotal, dailyTotal).show());
         tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP, e -> new Dashboard(res).show());
     }

@@ -1,12 +1,14 @@
 package com.goalup.madelinemerced;
 
 import com.codename1.io.Externalizable;
+import com.codename1.io.Preferences;
 import com.codename1.io.Storage;
 import com.codename1.io.Util;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @Course: SDEV 250 ~ Java Programming I
@@ -22,6 +24,9 @@ public class MyObject implements Externalizable {
     private static ArrayList<MyObject> goals;
     private static ArrayList<MyObject> points;
     private static ArrayList<MyObject> rewards;
+    private static HashMap<String, String> goalPair;
+
+    
     Storage s = new Storage();
     Storage newS = new Storage();
     
@@ -30,7 +35,17 @@ public class MyObject implements Externalizable {
     private String type;
     private String reward;
     private String rPoints;
+    private Boolean checkbox;
+    
+    
+    public void setGoalPair(HashMap<String, String> pair){
+       this.goalPair = pair;
+    }
 
+    public static HashMap<String, String> getGoalPair() {
+        return goalPair;
+    }
+    
     public static void setGoals(ArrayList<MyObject> goals) {
         MyObject.goals = goals;
     }
@@ -137,9 +152,9 @@ public class MyObject implements Externalizable {
         Util.writeUTF(type, out);
         Util.writeUTF(reward, out);
         Util.writeUTF(rPoints, out);
+        out.writeBoolean(checkbox);
     }
     
-
     @Override
     public void internalize(int version, DataInputStream in) throws IOException {
         goal = Util.readUTF(in);
@@ -147,11 +162,20 @@ public class MyObject implements Externalizable {
         type = Util.readUTF(in);
         reward = Util.readUTF(in);
         rPoints = Util.readUTF(in);
+        checkbox = in.readBoolean();
     }
 
     @Override
     public String getObjectId() {
         return "Storage";
+    }
+
+    public Boolean getCheckbox() {
+        return checkbox;
+    }
+
+    public void setCheckbox(Boolean checkbox) {
+        this.checkbox = checkbox;
     }
 
 
