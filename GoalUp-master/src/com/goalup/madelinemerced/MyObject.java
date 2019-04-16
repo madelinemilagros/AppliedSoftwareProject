@@ -153,6 +153,7 @@ public class MyObject implements Externalizable {
         Util.writeUTF(reward, out);
         Util.writeUTF(rPoints, out);
         out.writeBoolean(checkbox);
+        Util.writeObject(goalPair, out);
     }
     
     @Override
@@ -163,6 +164,7 @@ public class MyObject implements Externalizable {
         reward = Util.readUTF(in);
         rPoints = Util.readUTF(in);
         checkbox = in.readBoolean();
+//        goalPair = Util.readInputStream(in);
     }
 
     @Override
