@@ -35,7 +35,7 @@ public class MyObject implements Externalizable {
     private String type;
     private String reward;
     private String rPoints;
-    private Boolean checkbox;
+    private String checkbox;
     
     
     public void setGoalPair(HashMap<String, String> pair){
@@ -153,7 +153,7 @@ public class MyObject implements Externalizable {
         Util.writeUTF(type, out);
         Util.writeUTF(reward, out);
         Util.writeUTF(rPoints, out);
-        out.writeBoolean(checkbox);
+        Util.writeUTF(checkbox, out);        
         Util.writeObject(goalPair, out);
     }
     
@@ -164,7 +164,7 @@ public class MyObject implements Externalizable {
         type = Util.readUTF(in);
         reward = Util.readUTF(in);
         rPoints = Util.readUTF(in);
-        checkbox = in.readBoolean();
+        checkbox = Util.readUTF(in);
         goalPair = (HashMap<String, String>)Util.readObject(in);
     }
 
@@ -173,11 +173,11 @@ public class MyObject implements Externalizable {
         return "Storage";
     }
 
-    public Boolean getCheckbox() {
+    public String getCheckbox() {
         return checkbox;
     }
 
-    public void setCheckbox(Boolean checkbox) {
+    public void setCheckbox(String checkbox) {
         this.checkbox = checkbox;
     }
 

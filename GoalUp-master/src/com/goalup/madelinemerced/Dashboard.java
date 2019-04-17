@@ -36,6 +36,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Course: SDEV 250 ~ Java Programming I
@@ -136,6 +137,10 @@ public class Dashboard extends BaseForm {
             }
         }
 
+//        HashMap hashMapList = new HashMap();
+//        for(String list : Storage.getInstance().listEntries()){
+//            
+//        }
         setDailyTotal(25);
         setPoints(10);
         dTotal.setText(dailyTotal());
@@ -202,33 +207,45 @@ public class Dashboard extends BaseForm {
                 int pointsInt = Integer.parseInt(pointsTF.getText());
                 goals.add(g);
 
+                //Holds points with comma deliminator
+                String points = pointsTF.getText();
+                String type = g.getType();
+                String checked = g.getCheckbox();
+                String gTextField = goalTF.getText();
+
                 pairHere.put(goalTF.getText(), pointsTF.getText());
                 g.setGoalPair(pairHere);
                 System.out.print(g.getGoalPair());
                 g.saveGoals();
                 //Saves points with leading zeros for formating and structure
-                if (pointsInt < 10) {
-                    String pointsZero = "00" + pointsTF.getText();
-                    setPoints(pointsInt);
-                    os.write(pointsZero.getBytes("UTF-8"));
-
-                } else if (9 < pointsInt && pointsInt < 100) {
-                    String pointsZero = "0" + pointsTF.getText();
-                    setPoints(pointsInt);
-                    os.write(pointsZero.getBytes("UTF-8"));
-                } else {
-                    setPoints(pointsInt);
-                    os.write(pointsTF.getText().getBytes("UTF-8"));
-                }
+//                if (pointsInt < 10) {
+//                    String pointsZero = "00" + points;
+                setPoints(pointsInt);
+                os.write(gTextField.getBytes("UTF-8"));
+                os.write(points.getBytes("UTF-8"));
+//
+//                } else if (9 < pointsInt && pointsInt < 100) {
+//                    String pointsZero = "0" + points;
+//                    setPoints(pointsInt);
+//                    os.write(pointsZero.getBytes("UTF-8"));
+//                    os.write(gTextField.getBytes("UTF-8"));
+//
+//                } else {
+//                    setPoints(pointsInt);
+//                    os.write(pointsTF.getText().getBytes("UTF-8"));
+//                    os.write(gTextField.getBytes("UTF-8"));
+//
+//                }
 
                 g.setType(goal);
                 int dm = method(pointsInt);
-                os.write("  ".getBytes("UTF-8"));
-                os.write(g.getType().getBytes("UTF-8"));
+//                                os.write(goalTF.getText().getBytes("UTF-8"));
+//                os.write(g.getType().getBytes("UTF-8"));
+//                os.write(checked.getBytes("UTF-8"));
                 createFileEntry(newForm, goalTF.getText(), g.getType(), allTotal, dailyTotal);
                 newForm.getContentPane().animateLayout(250);
                 hi.revalidate();
-                os.write(g.getGoalPair().toString().getBytes("UTF-8"));
+//                os.write(g.getGoalPair().toString().getBytes("UTF-8"));
 
                 hi.show();
             } catch (IOException err) {
@@ -260,38 +277,45 @@ public class Dashboard extends BaseForm {
         //Container for holding components
         Container content = BorderLayout.center(holder);
 
+        HashMap<String, String> entryList = new HashMap<String, String>();
+
+        String entryKey;
+        String entryValue;
+
         //Reads in the storage
         try (InputStream is = Storage.getInstance().createInputStream(file);) {
             String s = Util.readToString(is, "UTF-8");
+//entryList.put(file, s);
 
-            //Checks if goal exists and sorts accordingly for display
-            if (s.contains("goal")) {
+            for (Map.Entry<String, String> entry : entryList.entrySet()) {
+                
+                entryKey = entry.getKey();
+                System.out.print(entryKey);
+                System.out.print(entry.getKey() + entry.getValue());
+//                entryList.put(entryKey, entryValue);
 
-                //Checks for leading zeros for formatting of points label
-                if (s.substring(0, 1).contains("0")) {
-
-                    points.setText(s.substring(1, 3) + " points");
-                    if (s.substring(1, 2).contains("0")) {
-                        points.setText(s.substring(2, 3) + " points");
-                    }
-                } else {
+//            }
+                //Checks if goal exists and sorts accordingly for display
+                if (s.contains("goal")) {
                     points.setText(s.substring(0, 3) + " points");
                 }
-
-                System.out.print(s.substring(4, s.length()));
-                content.add(BorderLayout.CENTER, BoxLayout.encloseX(goal));
-                content.add(BorderLayout.EAST, BoxLayout.encloseX(points, completeCB));
             }
-
+            System.out.print(s.substring(4, s.length()));
+            content.add(BorderLayout.CENTER, BoxLayout.encloseX(goal));
+            content.add(BorderLayout.EAST, BoxLayout.encloseX(points, completeCB));
         } catch (IOException err) {
             Log.e(err);
+        }
+
+        for (Map.Entry<String, String> entry : entryList.entrySet()) {
+            System.out.print(entry.getKey() + entry.getValue());
         }
 
         MyObject o = new MyObject();
 
         completeCB.addActionListener(e -> {
             if (completeCB.isSelected()) {
-                o.setCheckbox(true);
+//                o.setCheckbox("true");
                 System.out.print("in the action listener");
 
                 System.out.print(o.getCheckbox());
