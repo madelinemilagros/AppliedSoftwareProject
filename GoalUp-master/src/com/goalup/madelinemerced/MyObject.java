@@ -24,7 +24,7 @@ public class MyObject implements Externalizable {
     private static ArrayList<MyObject> goals;
     private static ArrayList<MyObject> points;
     private static ArrayList<MyObject> rewards;
-    private static HashMap<String, String> goalPair;
+    private HashMap<String, String> goalPair;
 
     
     Storage s = new Storage();
@@ -42,9 +42,11 @@ public class MyObject implements Externalizable {
        this.goalPair = pair;
     }
 
-    public static HashMap<String, String> getGoalPair() {
+    public HashMap<String, String> getGoalPair() {
         return goalPair;
     }
+    
+    
     
     public static void setGoals(ArrayList<MyObject> goals) {
         MyObject.goals = goals;
@@ -54,14 +56,13 @@ public class MyObject implements Externalizable {
         MyObject.rewards = rewards;
     }
     
-       public String getType() {
+    public String getType() {
         return type;
     }
 
     public void setType(String t) {
         this.type = t;
     }
-    
 
     public String getGoal() {
         return goal;
@@ -164,7 +165,7 @@ public class MyObject implements Externalizable {
         reward = Util.readUTF(in);
         rPoints = Util.readUTF(in);
         checkbox = in.readBoolean();
-//        goalPair = Util.readInputStream(in);
+        goalPair = (HashMap<String, String>)Util.readObject(in);
     }
 
     @Override

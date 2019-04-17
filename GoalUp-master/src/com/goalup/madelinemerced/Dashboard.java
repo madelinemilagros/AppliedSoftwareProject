@@ -206,7 +206,6 @@ public class Dashboard extends BaseForm {
                 g.setGoalPair(pairHere);
                 System.out.print(g.getGoalPair());
                 g.saveGoals();
-                
                 //Saves points with leading zeros for formating and structure
                 if (pointsInt < 10) {
                     String pointsZero = "00" + pointsTF.getText();
@@ -229,6 +228,7 @@ public class Dashboard extends BaseForm {
                 createFileEntry(newForm, goalTF.getText(), g.getType(), allTotal, dailyTotal);
                 newForm.getContentPane().animateLayout(250);
                 hi.revalidate();
+                os.write(g.getGoalPair().toString().getBytes("UTF-8"));
 
                 hi.show();
             } catch (IOException err) {
@@ -291,15 +291,16 @@ public class Dashboard extends BaseForm {
 
         completeCB.addActionListener(e -> {
             if (completeCB.isSelected()) {
-
-                System.out.print(o.getGPoints());
-
+                o.setCheckbox(true);
                 System.out.print("in the action listener");
+
+                System.out.print(o.getCheckbox());
 
             }
 
         });
 
+//System.out.print(o.getGoalPair().get(file));
         //Adds storage contents with goals to main form
         hi.add(content);
     }

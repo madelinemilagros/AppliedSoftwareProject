@@ -54,7 +54,7 @@ new TestObject().getPropertyIndex().registerExternalizable();
         }
 
         //Displays form
-        new Dashboard(theme).show();
+        new SignIn(theme).show();
     }
 
     public void stop() {
