@@ -3,18 +3,21 @@
 <resource majorVersion="1" minorVersion="10" useXmlUI="false">
     <image name="activation-background.jpg"  />
     <image name="activation-background.jpg1"  />
+    <image name="backgroundProfile.jpg"  />
     <image name="confirmation-background.jpg"  />
     <image name="confirmation-background.jpg1"  />
     <image name="dog.jpg"  />
     <image name="dog.jpg1"  />
     <image name="facebook-logo.png" type="multi"  />
     <image name="facebook-logo.png1" type="multi"  />
+    <image name="headshot.jpg"  />
     <image name="Logo.png"  />
     <image name="Logo.png1" type="multi"  />
     <image name="Logo.png2" type="multi"  />
     <image name="Logo@0,1x.png"  />
     <image name="Logo@0,25x.png"  />
     <image name="LogoHeader.png"  />
+    <image name="MadelineProfile6.jpg"  />
     <image name="news-item-1.jpg"  />
     <image name="news-item-1.jpg1"  />
     <image name="news-item-2.jpg"  />
@@ -37,6 +40,8 @@
     <image name="profile-background.jpg1"  />
     <image name="profile-pic.jpg" type="multi"  />
     <image name="profile-pic.jpg1" type="multi"  />
+    <image name="progressBar.png"  />
+    <image name="shoesSmall.png"  />
     <image name="signin-background.jpg"  />
     <image name="signin-background.jpg1"  />
     <image name="signup-background.jpg"  />

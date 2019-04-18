@@ -29,8 +29,7 @@ public class SignUp extends BaseForm {
         super("", new BorderLayout());
         Toolbar tb = super.getToolbar();
         setToolbar(tb);
-        tb.addSearchCommand(e -> {
-        });
+        
         //Logo Image
         Image logo = hi.getImage("LogoHeader.png");
         Label l = new Label(logo);

@@ -66,7 +66,7 @@ public class BaseForm extends Form {
 
     protected void addSideMenu(Resources res) {
         Toolbar tb = getToolbar();
-        Image img = res.getImage("profile-background.jpg");
+        Image img = res.getImage("backgroundProfile.jpg");
         if (img.getHeight() > Display.getInstance().getDisplayHeight() / 3) {
             img = img.scaledHeight(Display.getInstance().getDisplayHeight() / 3);
         }
@@ -77,12 +77,17 @@ public class BaseForm extends Form {
         tb.addComponentToSideMenu(LayeredLayout.encloseIn(
                 sl,
                 FlowLayout.encloseCenterBottom(
-                        new Label(res.getImage("profile-pic.jpg"), "PictureWhiteBackgrond"))
+                        new Label(res.getImage("headshot.jpg"), "PictureWhiteBackgrond"))
         ));
         Label allTotal = null;
         Label dailyTotal = null;
-        tb.addMaterialCommandToSideMenu("Goals", FontImage.MATERIAL_UPDATE, e -> new Goal(res, allTotal, dailyTotal).show());
-        tb.addMaterialCommandToSideMenu("Reward", FontImage.MATERIAL_SETTINGS, e -> new Reward(res, allTotal, dailyTotal).show());
-        tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP, e -> new Dashboard(res).show());
+        tb.addMaterialCommandToSideMenu("Dashboard", FontImage.MATERIAL_DASHBOARD, 
+                e ->new Dashboard(res).show());
+        tb.addMaterialCommandToSideMenu("Goals", FontImage.MATERIAL_UPDATE, e -> 
+                new Goal(res, allTotal, dailyTotal).show());
+        tb.addMaterialCommandToSideMenu("Rewards", FontImage.MATERIAL_CAKE, e 
+                -> new Reward(res, allTotal, dailyTotal).show());
+        tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP, 
+                e -> new SignIn(res).show());
     }
 }

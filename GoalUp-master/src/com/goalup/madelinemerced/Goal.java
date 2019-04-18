@@ -7,6 +7,7 @@ import com.codename1.ui.Button;
 import com.codename1.ui.CheckBox;
 import com.codename1.ui.Component;
 import com.codename1.ui.Container;
+import com.codename1.ui.Display;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
@@ -42,6 +43,10 @@ public class Goal extends BaseForm {
         setToolbar(tb);
         tb.addSearchCommand(e -> {
         });
+       Form previous = Display.getInstance().getCurrent();
+
+   tb.setBackCommand("", e -> previous.showBack());
+        
         //Logo Image
         Image logo = hi.getImage("LogoHeader.png");
         Label l = new Label(logo);
@@ -50,20 +55,19 @@ public class Goal extends BaseForm {
         flowLabel.addComponent(l);
         super.add(flowLabel);
         super.addSideMenu(hi);
-        
+
         Container pageTitleRewards = new Container(new FlowLayout(Component.CENTER));
         Label goalsLabel = new Label("Goals");
         pageTitleRewards.add(goalsLabel);
         super.add(pageTitleRewards);
-                
+
         Dashboard db = new Dashboard();
         MyObject g = new MyObject();
-  
+
         for (String file : Storage.getInstance().listEntries()) {
-        db.createFileEntry(super.getComponentForm(), file, g.getType(), dailyTotal, allTotal);
+            db.createFileEntry(super.getComponentForm(), file, g.getType(), dailyTotal, allTotal);
         }
-               
-        super.revalidate();
+ 
 
     }
 
