@@ -2,6 +2,8 @@ package com.goalup.madelinemerced;
 
 import com.codename1.components.FloatingActionButton;
 import com.codename1.components.OnOffSwitch;
+import com.codename1.components.ScaleImageLabel;
+import com.codename1.components.SpanLabel;
 import com.codename1.io.Log;
 import com.codename1.io.Storage;
 import com.codename1.io.Util;
@@ -32,6 +34,7 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.layouts.LayeredLayout;
+import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
 import com.codename1.util.StringUtil;
 import java.io.IOException;
@@ -78,11 +81,41 @@ public class Dashboard extends BaseForm {
         Image logo = res.getImage("LogoHeader.png");
         Label l = new Label(logo);
         
-        Image rewardImage = res.getImage("shoesSmall.png");
-        Label rewardImageLabel = new Label(rewardImage);
+//        
+        Image img = res.getImage("selected-backgroundFilled.png");
+        if (img.getHeight() > Display.getInstance().getDisplayHeight()/4) {
+            img = img.scaledHeight(Display.getInstance().getDisplayHeight()/4);
+        }
+        ScaleImageLabel sl = new ScaleImageLabel(img);
+        sl.setUIID("TopPad");
+        sl.setBackgroundType(Style.BACKGROUND_IMAGE_SCALED_FILL);
+
+       
+   
+   
+//   Image rewardImage = res.getImage("shoesSmall.png");
+//        Label rewardImageLabel = new Label(rewardImage);
+
+        Container quoteCont = new Container(new FlowLayout(Component.CENTER));
+        Container quoteLines = BoxLayout.encloseY();
 
         //Labels and formatting for dashboard trackers
-        Container landingPageButtons = new Container(new GridLayout(1, 2));
+        Container landingPageButtons = BoxLayout.encloseY();
+        String quote1 = ("We are what we repeatedly do.");
+        String quote2 = ("Excellence, therefore, is not an act but a habit. - Aristotle");
+        Label quoteOfDay1 = new Label();
+        Label quoteOfDay2 = new Label();
+
+        quoteOfDay1.setUIID("Quote");
+        quoteOfDay2.setUIID("Quote");
+        quoteOfDay1.setText(quote1);
+        quoteOfDay2.setText(quote2);
+
+        quoteLines.add(quoteOfDay1);
+        quoteLines.add(quoteOfDay2);
+//        quoteCont.setUIID("ImageOver");
+        quoteCont.add(quoteLines);
+    
 
 //        //dailyPointsContainer
 //        Container dailyPointsContainer = BoxLayout.encloseY();
@@ -91,29 +124,31 @@ public class Dashboard extends BaseForm {
         Label dTotal = new Label();
 //        dTotal.setText(dailyTotal());
 //        dailyPointsContainer.add(dTotal);
+                   String getDailyTotalString = Integer.toString(getDailyTotal());
 
         //CumulativePointsContainer
         Container cumulativeContainer = BoxLayout.encloseY();
         Label pointsTracker = new Label();
         setMainRewardPoints("100");
-        String divided = (cumulativeTotal());
-        
-        pointsTracker.setText(divided);
-        cumulativeContainer.add(pointsTracker);
+        String divided = (dailyTotal());
+        pointsTracker.setText(getDailyTotalString);
+        Container centerPoints = new Container(new BorderLayout(Component.CENTER));
+//        pointsTracker.setUIID("PaddedLabel");
+        cumulativeContainer.add(centerPoints);
         Label allTotal = new Label();
-        
+
         cumulativeContainer.add(allTotal);
-cumulativeContainer.add(rewardImageLabel);
-
-
- 
+//        cumulativeContainer.add(rewardImageLabel);
+//cumulativeContainer.setUIID("ImageOverlay");
+//landingPageButtons.setUIID("LineSeparator");
         //Dashboard Point Total Holders (cumulative and daily)
 //        Container flow = new Container(new GridLayout(2,1));
 //        flow.add(dTotal);
 //        landingPageButtons.add(dailyPointsContainer);
-        landingPageButtons.add(cumulativeContainer);
+        landingPageButtons.add(quoteCont);
+//        landingPageButtons.add(cumulativeContainer);
 
-//Container for Dashboard Title Labels
+        //Container for Dashboard Title Labels
 //        landingPageButtons.add(dailyPointsTotal);
 //        landingPageButtons.add(pointsTracker);
         //Flow Container
@@ -121,8 +156,24 @@ cumulativeContainer.add(rewardImageLabel);
 
         //Adds Logo
         flowLabel.addComponent(l);
+    
+
         flowLabel.add(landingPageButtons);
-        //List of Goals Formatting
+ flowLabel.add(LayeredLayout.encloseIn(
+                sl,
+         FlowLayout.encloseCenter(   
+                BoxLayout.encloseX(
+                        pointsTracker,
+                        BoxLayout.encloseY(
+                        new Label(res.getImage("shoesSmall.png"), "PictureWhiteBackgrond"))
+                                       ,new Label("100 Points"),
+ cumulativeContainer
+         ))
+ ));    
+                
+
+
+//List of Goals Formatting
         Container center = new Container(new GridLayout(2, 1));
         Label goalsList = new Label();
         center.add(goalsList);
@@ -144,8 +195,6 @@ cumulativeContainer.add(rewardImageLabel);
             }
 
         });
-        
-              
 
         //Creates Storage Object
         MyObject g = new MyObject();
@@ -176,22 +225,12 @@ cumulativeContainer.add(rewardImageLabel);
         });
         super.revalidate();
     }
+    
+    
+    
 
     Dashboard() {
     }
-    
-//    public Container progressBar(){
-//        Container progress = new Container(new LayeredLayout());
-//Label percent = new Label("0%");
-//percent.getUnselectedStyle().setAlignment(Component.CENTER);
-//progress.add(new Label(progressOverlayImage, "Container")).
-//        add(FlowLayout.encloseCenterMiddle(percent));
-//progress.getUnselectedStyle().setBgPainter((Graphics g, Rectangle rect) -> {
-//    g.setColor(0xff0000);
-//   ;
-//});
-//return progress;
-//    }
 
     public void setCheckbox(CheckBox completeCB) {
         cb = completeCB;
@@ -335,6 +374,7 @@ cumulativeContainer.add(rewardImageLabel);
 //                        + "\nSubstring: 1,2: " + s.substring(1, 2) + "\nSubstring: 2,3: "
 //                        + s.substring(2, 3) + "\n");
                     setMap(entry);
+//                    hi.add(createCheck(s,false)).add(createSeparator());
 
                 }
 //                        mapt.put(runningMap, i + 1);
@@ -365,7 +405,9 @@ cumulativeContainer.add(rewardImageLabel);
         Date currentDate = new Date();
         currentDate.getTime();
         dateCheck.put(testing, currentDate);
-
+        
+        
+        
         //Checkbox Listener
         completeCB.addActionListener(e -> {
             if (completeCB.isSelected()) {
@@ -373,9 +415,10 @@ cumulativeContainer.add(rewardImageLabel);
                 String dateTest = dateCheck.get(testing).toString();
                 pointsValueInt = Integer.parseInt(pointValueTest);
                 setPoints(pointsValueInt);
-                dailyTotal.setText(dailyTotal());
-                allTotal.setText(cumulativeTotal());
-                System.out.print("DATE: " + dateTest + "\n");
+//                dailyTotal.setText(dailyTotal());
+                allTotal.setText(dailyTotal());
+//                System.out.print("DATE: " + dateTest + "\n");
+//                createCheck(pointValueTest, true);
             } else if (!completeCB.isSelected()) {
                 int removePoints = 0 - pointsValueInt;
 //                String currentHolder = dailyTotal.getText();
@@ -387,8 +430,8 @@ cumulativeContainer.add(rewardImageLabel);
 //                    dailyTotal.setText(dailyTotal());
 //                } else {
                 setPoints(removePoints);
-                dailyTotal.setText(dailyTotal());
-                allTotal.setText(cumulativeTotal());
+//                dailyTotal.setText(dailyTotal());
+                allTotal.setText(dailyTotal());
 
             }
 
@@ -397,7 +440,25 @@ cumulativeContainer.add(rewardImageLabel);
         //Adds storage contents with goals to main form
         hi.add(content);
     }
-
+    
+//private Component createCheck(String t, boolean selected){
+//        CheckBox c = new CheckBox(t);
+//        c.setSelected(selected);
+//        c.setGap(Display.getInstance().convertToPixels(3));
+//        c.setToggle(true);
+//        c.setTextPosition(Component.LEFT);
+//        c.setIcon(FontImage.createMaterial(FontImage.MATERIAL_CHECK, "UncheckedIcon",4));
+//        c.setPressedIcon(FontImage.createMaterial(FontImage.MATERIAL_CHECK, "CheckedIcon",4));
+//        return c;
+//        
+//    }
+//    
+    private Component createSeparator(){
+        Label l = new Label("", "Separator");
+        l.setShowEvenIfBlank(true);
+        return l;
+    }
+    
     public void setMap(Map.Entry<String, String> runningMap) {
         this.runningMap = runningMap;
     }
@@ -534,7 +595,7 @@ cumulativeContainer.add(rewardImageLabel);
     }
 
     public String mainRewardPoints(String s) {
-        
+
         setMainRewardPoints(s);
         return s;
     }
@@ -596,17 +657,6 @@ cumulativeContainer.add(rewardImageLabel);
 
         return getDailyTotalString;
     }
-    
-    
-     public String cumulativeTotal() {
-       
-        String getDailyTotalString = Integer.toString(getDailyTotal());
-        String concat = (getDailyTotalString + "/" +  getMainRewardPoints());
-        System.out.print("Daily Total: " + getDailyTotal() + "\n");
-//        dT.setText(getDailyTotalString);
-
-        return concat;
-    }
 
     public String getInputStreamString() {
         return inputStreamString;
@@ -620,7 +670,5 @@ cumulativeContainer.add(rewardImageLabel);
         arrow.getUnselectedStyle().setMargin(LEFT, b.getX() + b.getWidth() / 2 - arrow.getWidth() / 2);
         arrow.getParent().repaint();
     }
-
- 
 
 } //End Subclass Dashboard
