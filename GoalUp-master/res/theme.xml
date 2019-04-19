@@ -460,20 +460,22 @@
         <val key="TitleCommand.sel#padding" value="2.0,2.0,2.0,2.0" />
         <val key="TitleCommand.sel#transparency" value="0" />
         <val key="TitleCommand.transparency" value="0" />
-        <val key="ToggleButton.align" value="1" />
+        <val key="ToggleButton.align" value="3" />
         <val key="ToggleButton.bgColor" value="ffffff" />
         <border key="ToggleButton.border" type="empty" />
         <val key="ToggleButton.fgColor" value="747478" />
         <font key="ToggleButton.font" type="ttf" face="0" style="0" size="0" name="native:MainThin" family="native:MainThin" sizeSettings="3" actualSize="3.0" />
-        <val key="ToggleButton.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="ToggleButton.marUnit" value="0,2,0,2" />
+        <val key="ToggleButton.margin" value="0.0,0.0,0.0,2.0" />
         <val key="ToggleButton.padUnit" value="2,2,2,2" />
         <val key="ToggleButton.padding" value="3.0,3.0,3.0,3.0" />
         <val key="ToggleButton.press#align" value="1" />
         <val key="ToggleButton.press#bgColor" value="ffffff" />
-        <border key="ToggleButton.press#border" type="image" i1="ToggleButton.press#borderTop_2.png" i2="ToggleButton.press#borderBottom_2.png" i3="ToggleButton.press#borderLeft_2.png" i4="ToggleButton.press#borderRight_2.png" i5="ToggleButton.press#borderTopL_2.png" i6="ToggleButton.press#borderTopR_2.png" i7="ToggleButton.press#borderBottomL_2.png" i8="ToggleButton.press#borderBottomR_2.png" i9="ToggleButton.press#borderCenter_2.png" />
+        <border key="ToggleButton.press#border" type="empty" />
         <val key="ToggleButton.press#fgColor" value="747478" />
         <font key="ToggleButton.press#font" type="ttf" face="0" style="0" size="0" name="native:MainThin" family="native:MainThin" sizeSettings="3" actualSize="3.0" />
-        <val key="ToggleButton.press#margin" value="0.0,0.0,0.0,0.0" />
+        <val key="ToggleButton.press#marUnit" value="0,2,0,0" />
+        <val key="ToggleButton.press#margin" value="0.0,0.0,1.0,0.0" />
         <val key="ToggleButton.press#padUnit" value="2,2,2,2" />
         <val key="ToggleButton.press#padding" value="3.0,3.0,3.0,3.0" />
         <val key="ToggleButton.press#transparency" value="0" />
@@ -482,7 +484,8 @@
         <border key="ToggleButton.sel#border" type="empty" />
         <val key="ToggleButton.sel#fgColor" value="747478" />
         <font key="ToggleButton.sel#font" type="ttf" face="0" style="0" size="0" name="native:MainThin" family="native:MainThin" sizeSettings="3" actualSize="3.0" />
-        <val key="ToggleButton.sel#margin" value="0.0,0.0,0.0,0.0" />
+        <val key="ToggleButton.sel#marUnit" value="0,2,0,0" />
+        <val key="ToggleButton.sel#margin" value="0.0,0.0,1.0,0.0" />
         <val key="ToggleButton.sel#padUnit" value="2,2,2,2" />
         <val key="ToggleButton.sel#padding" value="3.0,3.0,3.0,3.0" />
         <val key="ToggleButton.sel#transparency" value="0" />

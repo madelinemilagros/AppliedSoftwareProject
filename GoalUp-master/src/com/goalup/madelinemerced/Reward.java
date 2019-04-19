@@ -38,38 +38,40 @@ public class Reward extends BaseForm {
         setToolbar(tb);
         tb.addSearchCommand(e -> {
         });
-        
-         Form previous = Display.getInstance().getCurrent();
 
-   tb.setBackCommand("", e -> previous.showBack());
-       
-        
-        
-        CheckBox completeCB = new CheckBox();
+        Form previous = Display.getInstance().getCurrent();
+
+        tb.setBackCommand("", e -> previous.showBack());
+
         //Logo Image
         Image logo = hi.getImage("LogoHeader.png");
         Label l = new Label(logo);
         Container flowLabelLogo = new Container(new FlowLayout(Component.CENTER));
-   
+
         //Adds Logo
         flowLabelLogo.addComponent(l);
         super.add(flowLabelLogo);
         super.addSideMenu(hi);
 
-        
         Container pageTitleRewards = new Container(new FlowLayout(Component.CENTER));
         Label rewardsLabel = new Label("Rewards");
         pageTitleRewards.add(rewardsLabel);
         super.add(pageTitleRewards);
 
+        Image shoes = hi.getImage("shoesSmall.png");
+        Label shoeHolder = new Label(shoes);
+        Container centerRewardPicture = new Container(new FlowLayout(Component.CENTER));
+        centerRewardPicture.add(shoeHolder);
+        super.add(centerRewardPicture);
+        
         Dashboard db = new Dashboard();
         MyObject g = new MyObject();
         db.setMainRewardPoints("100");
         for (String file : Storage.getInstance().listEntries()) {
-        db.createFileEntryReward(super.getComponentForm(), file, g.getType(), dailyTotal, allTotal);
+            db.createFileEntryReward(super.getComponentForm(), file, g.getType(), dailyTotal, allTotal);
         }
-     
-    } 
+
+    }
 
     public Component createLineSeparator() {
         Label separator = new Label("", "WhiteSeparator");
