@@ -65,7 +65,7 @@ public class AddReward extends BaseForm {
         TextField rewardTF = new TextField("", "Reward", 10, TextField.ANY);
         TextField pointsTF = new TextField("", "Points", 5, TextField.NUMERIC);
         rewardTF.setHeight(100);
-rewardTF.requestFocus();
+        rewardTF.requestFocus();
         pointsTF.setHint("Points");
         Button enter = new Button("Enter");
 
@@ -128,5 +128,7 @@ rewardTF.requestFocus();
         add(count);
         add(enter);
     }
+    
+    
 
 } //End Subclass AddReward

@@ -2,8 +2,10 @@ package com.goalup.madelinemerced;
 
 import com.codename1.components.FloatingHint;
 import com.codename1.ui.Button;
+import com.codename1.ui.Command;
 import com.codename1.ui.Component;
 import com.codename1.ui.Container;
+import com.codename1.ui.Dialog;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
@@ -12,6 +14,7 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
+import javafx.scene.control.Alert;
 
 /**
  * @Course: SDEV 250 ~ Java Programming I
@@ -28,8 +31,7 @@ public class SignIn extends BaseForm {
         super("", new BorderLayout());
         Toolbar tb = super.getToolbar();
         setToolbar(tb);
-        tb.addSearchCommand(e -> {
-        });
+
         //Logo Image
         Image logo = hi.getImage("LogoHeader.png");
         Label l = new Label(logo);
@@ -38,8 +40,7 @@ public class SignIn extends BaseForm {
         flowLabel.addComponent(l);
         TextField username = new TextField("", "Username", 20, TextField.ANY);
         TextField password = new TextField("", "Password", 20, TextField.PASSWORD);
-        username.setSingleLineTextArea(false);
-        password.setSingleLineTextArea(false);
+
         Button signIn = new Button("Sign In");
         Button signUp = new Button("Sign Up");
         signUp.addActionListener(e -> new SignUp(hi).show());
@@ -55,14 +56,36 @@ public class SignIn extends BaseForm {
                 signIn,
                 FlowLayout.encloseCenter(doneHaveAnAccount, signUp)
         );
-//        add(BorderLayout.SOUTH, addSideMenu(hi));
 
         content.setScrollableY(true);
         add(BorderLayout.SOUTH, content);
         signIn.requestFocus();
-        signIn.addActionListener(e -> new Dashboard(hi).show());
+        signIn.addActionListener(e -> {
+            if (username.getText().isEmpty() && password.getText().isEmpty()) {
+                alertBox("Please enter your username and password.");
+            } else if (username.getText().isEmpty()) {
+                alertBox("Please enter your username in the required field.");
+            }else if (password.getText().isEmpty()) {
+                alertBox("Please enter your password in the required field.");
+            }else{
+                new Dashboard(hi).show();
+            };
+
+        });
     }
-    
+
+    /**
+     * Method alertBox: Returns alertBox with information for user.
+     *
+     * @param s2
+     */
+    private void alertBox(String s2) {
+        String title = "Warning";
+        String alertDescription = s2;
+
+        Command ok = new Command("OK");
+        Dialog.show(title, alertDescription, ok);
+    }
 
     public Component createLineSeparator() {
         Label separator = new Label("", "WhiteSeparator");
