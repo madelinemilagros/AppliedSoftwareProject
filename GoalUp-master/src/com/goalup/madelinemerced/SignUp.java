@@ -1,6 +1,7 @@
 package com.goalup.madelinemerced;
 
 import com.codename1.components.FloatingHint;
+import com.codename1.components.ToastBar;
 import com.codename1.ui.Button;
 import com.codename1.ui.Command;
 import com.codename1.ui.Component;
@@ -14,6 +15,10 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
+import com.codename1.ui.validation.Constraint;
+import com.codename1.ui.validation.RegexConstraint;
+import com.codename1.ui.validation.Validator;
+import com.codename1.util.regex.RE;
 
 /**
  * @Course: SDEV 250 ~ Java Programming I
@@ -44,6 +49,7 @@ public class SignUp extends BaseForm {
         username.setSingleLineTextArea(false);
         email.setSingleLineTextArea(false);
         password.setSingleLineTextArea(false);
+        VerifyValidate vv = new VerifyValidate();
 
         Label welcome = new Label("Welcome to Goal Up");
         Button signIn = new Button("Sign In");
@@ -51,11 +57,14 @@ public class SignUp extends BaseForm {
         signIn.addActionListener(e -> new SignIn(hi).show());
         signIn.setUIID("Link");
         Label alreadyHaveAnAccount = new Label("Already have an account?");
-//        
+        Label topPad = new Label();
+        topPad.setUIID("TopPad");
+
         Container content = BoxLayout.encloseY(
+                topPad,
                 FlowLayout.encloseCenterMiddle(flowLabel),
                 createLineSeparator(),
-                FlowLayout.encloseCenterMiddle(welcome),
+                FlowLayout.encloseCenter(welcome),
                 new FloatingHint(username),
                 createLineSeparator(),
                 new FloatingHint(email),
@@ -66,49 +75,61 @@ public class SignUp extends BaseForm {
                 FlowLayout.encloseCenter(alreadyHaveAnAccount, signIn)
         );
 
+        Validator val = new Validator();
+        val.addConstraint(password, new Constraint() {
+            public boolean isValid(Object value) {
+
+                String v = (String) value;
+                if (v.length() < 8) {
+                    return false;
+                }
+                for (int i = 0; i < v.length(); i++) {
+                    char c = v.charAt(i);
+                    if (c >= '0' && c <= '9' || c >= 'a' && c <= 'z') {
+                        continue;
+                    }
+                    return false;
+                }
+                return true;
+            }
+
+            public String getDefaultFailMessage() {
+                return "Must be valid phone number";
+            }
+        });
         content.setScrollableY(true);
-        add(BorderLayout.SOUTH, content);
+        add(BorderLayout.CENTER, content);
         signUp.requestFocus();
         signUp.addActionListener(e -> {
+            Validator validator = new Validator();
 
-            if (username.getText().isEmpty() && email.getText().isEmpty()
+            validator.addConstraint(email, RegexConstraint.validEmail());
+            if (!val.isValid()) {
+                vv.alertBox("Password must include one number and be at least 8 letters");
+            } else if (!validator.isValid()) {
+                vv.alertBox("Invalid Email Please try again.");
+            } else if (username.getText().isEmpty() && email.getText().isEmpty()
                     && password.getText().isEmpty()) {
-                alertBox("Please enter a username, email and password.");
+                vv.alertBox("Please enter a username, email and password.");
             } else if (username.getText().isEmpty() && email.getText().isEmpty()) {
-                alertBox("Please enter a username and email.");
+                vv.alertBox("Please enter a username and email.");
             } else if (username.getText().isEmpty() && password.getText().isEmpty()) {
-                alertBox("Please enter a username and password.");
+                vv.alertBox("Please enter a username and password.");
             } else if (email.getText().isEmpty() && password.getText().isEmpty()) {
-                alertBox("Please enter a valid email and password.");
+                vv.alertBox("Please enter a valid email and password.");
             } else if (username.getText().isEmpty()) {
-                alertBox("Please enter a username.");
+                vv.alertBox("Please enter a username.");
             } else if (email.getText().isEmpty()) {
-                alertBox("Please enter a email.");
+                vv.alertBox("Please enter a email.");
             } else if (password.getText().isEmpty()) {
-                alertBox("Please enter a password");
+                vv.alertBox("Please enter a password");
             } else {
                 new Dashboard(hi).show();
             };;
         });
     }
 
-    /**
-     * Method alertBox: Returns alertBox with information for user.
-     *
-     * @param s2
-     */
-    private void alertBox(String s2) {
-        String title = "Warning";
-        String alertDescription = s2;
+};
+   
 
-        Command ok = new Command("OK");
-        Dialog.show(title, alertDescription, ok);
-    }
-
-    public Component createLineSeparator() {
-        Label separator = new Label("", "WhiteSeparator");
-        separator.setShowEvenIfBlank(true);
-        return separator;
-    }
-
-} //End Subclass SignUp
+ //End Subclass SignUp

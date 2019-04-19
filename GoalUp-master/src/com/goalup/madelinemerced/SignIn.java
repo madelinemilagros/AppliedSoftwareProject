@@ -14,6 +14,9 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
+import com.codename1.ui.validation.RegexConstraint;
+import com.codename1.ui.validation.Validator;
+import com.codename1.util.regex.RE;
 import javafx.scene.control.Alert;
 
 /**
@@ -46,9 +49,13 @@ public class SignIn extends BaseForm {
         signUp.addActionListener(e -> new SignUp(hi).show());
         signUp.setUIID("Link");
         Label doneHaveAnAccount = new Label("Don't have an account?");
-//        
+        Label topPad = new Label();
+        topPad.setUIID("TopPad");
+        VerifyValidate vv = new VerifyValidate();
+
         Container content = BoxLayout.encloseY(
-                FlowLayout.encloseCenterMiddle(flowLabel),
+                topPad,
+                FlowLayout.encloseCenter(flowLabel),
                 new FloatingHint(username),
                 createLineSeparator(),
                 new FloatingHint(password),
@@ -58,38 +65,19 @@ public class SignIn extends BaseForm {
         );
 
         content.setScrollableY(true);
-        add(BorderLayout.SOUTH, content);
+        add(BorderLayout.CENTER, content);
         signIn.requestFocus();
         signIn.addActionListener(e -> {
             if (username.getText().isEmpty() && password.getText().isEmpty()) {
-                alertBox("Please enter your username and password.");
+                vv.alertBox("Please enter your username and password.");
             } else if (username.getText().isEmpty()) {
-                alertBox("Please enter your username in the required field.");
-            }else if (password.getText().isEmpty()) {
-                alertBox("Please enter your password in the required field.");
-            }else{
+                vv.alertBox("Please enter your username in the required field.");
+            } else if (password.getText().isEmpty()) {
+                vv.alertBox("Please enter your password in the required field.");
+            } else {
                 new Dashboard(hi).show();
             };
 
         });
-    }
-
-    /**
-     * Method alertBox: Returns alertBox with information for user.
-     *
-     * @param s2
-     */
-    private void alertBox(String s2) {
-        String title = "Warning";
-        String alertDescription = s2;
-
-        Command ok = new Command("OK");
-        Dialog.show(title, alertDescription, ok);
-    }
-
-    public Component createLineSeparator() {
-        Label separator = new Label("", "WhiteSeparator");
-        separator.setShowEvenIfBlank(true);
-        return separator;
     }
 } //End Subclass Goal

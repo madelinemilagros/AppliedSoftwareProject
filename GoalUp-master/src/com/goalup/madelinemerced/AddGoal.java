@@ -15,6 +15,7 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.util.Resources;
+import com.codename1.util.regex.RE;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -43,8 +44,6 @@ public class AddGoal extends BaseForm {
         tb.addSearchCommand(e -> {
         });
 
-        Dashboard db = new Dashboard();
-
         tb.setBackCommand("", e -> previous.showBack());
 
         //Logo Image
@@ -55,11 +54,6 @@ public class AddGoal extends BaseForm {
         //Adds Logo
         logoForm.addComponent(l);
 
-        //Storage Management
-        ArrayList<MyObject> goals = MyObject.getGoals();
-        MyObject g = new MyObject();
-        String goal = "goal";
-
         //TextFields
         TextField goalTF = new TextField("", "Goal", 10, TextField.ANY);
         TextField pointsTF = new TextField("", "Points", 5, TextField.NUMERIC);
@@ -67,13 +61,51 @@ public class AddGoal extends BaseForm {
         goalTF.requestFocus();
         pointsTF.setHint("Points");
         Button enter = new Button("Enter");
+        VerifyValidate vv = new VerifyValidate();
+        enter.addActionListener(e -> {
+
+            if (goalTF.getText().isEmpty() && pointsTF.getText().isEmpty()) {
+                vv.alertBox("Please enter your username and password.");
+            } else if (goalTF.getText().isEmpty()) {
+                vv.alertBox("Please enter a goal in the required field.");
+            } else if (pointsTF.getText().isEmpty()) {
+                vv.alertBox("Please enter a point value in the required field.");
+            } else {
+                enter(allTotal, dailyTotal, goalTF, pointsTF, newForm, hi, vv);
+            };
+
+        });
+
+        add(logoForm);
+
+        Container goalEnter = BoxLayout.encloseXNoGrow(goalTF, pointsTF);
+        Container count = new Container();
+        count.add(
+                GridLayout.encloseIn(
+                        (goalEnter)
+                ));
+
+        add(count);
+        add(enter);
+
+    }
+
+    public void enter(Label allTotal, Label dailyTotal, TextField goalTF,
+            TextField pointsTF, Form newForm, Resources hi, VerifyValidate vv) {
+
+        Dashboard db = new Dashboard();
         HashMap<String, String> pairHere = new HashMap<String, String>();
 
-        enter.addActionListener(e -> {
-            
-            //Action listener for enter button
-            try (OutputStream os = Storage.getInstance().createOutputStream(goalTF.getText());) {
+        //Storage Management
+        ArrayList<MyObject> goals = MyObject.getGoals();
+        MyObject g = new MyObject();
+        String goal = "goal";
+
+        //Action listener for enter button
+        try (OutputStream os = Storage.getInstance().createOutputStream(goalTF.getText());) {
+            try {
                 int pointsInt = Integer.parseInt(pointsTF.getText());
+
                 goals.add(g);
 
                 //Holds points with comma deliminator
@@ -85,7 +117,7 @@ public class AddGoal extends BaseForm {
                 pairHere.put(goalTF.getText(), pointsTF.getText());
                 g.setGoalPair(pairHere);
                 g.saveGoals();
-                
+
                 //Saves points with leading zeros for formating and structure
                 if (pointsInt < 10) {
                     String pointsZero = "00" + points;
@@ -109,22 +141,14 @@ public class AddGoal extends BaseForm {
                 db.createFileEntry(newForm, goalTF.getText(), g.getType(), allTotal, dailyTotal);
 
                 new Dashboard(hi).showBack();
-            } catch (IOException err) {
-                Log.e(err);
+            } catch (NumberFormatException nfe) {
+                vv.alertBox("Please enter only numbers in the points field.");
+
             }
-
-        });
-        add(logoForm);
-
-        Container goalEnter = BoxLayout.encloseXNoGrow(goalTF, pointsTF);
-        Container count = new Container();
-        count.add(
-                GridLayout.encloseIn(
-                        (goalEnter)
-                ));
-
-        add(count);
-        add(enter);
+        } catch (IOException err) {
+            Log.e(err);
+        }
 
     }
+
 } //End Subclass AddGoal

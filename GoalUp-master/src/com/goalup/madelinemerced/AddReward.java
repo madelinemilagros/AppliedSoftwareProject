@@ -9,7 +9,6 @@ import com.codename1.ui.Display;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
-import com.codename1.ui.TextArea;
 import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.layouts.BoxLayout;
@@ -44,8 +43,6 @@ public class AddReward extends BaseForm {
         tb.addSearchCommand(e -> {
         });
 
-        Dashboard db = new Dashboard();
-
         tb.setBackCommand("", e -> previous.showBack());
 
         //Logo Image
@@ -56,11 +53,6 @@ public class AddReward extends BaseForm {
         //Adds Logo
         logoForm.addComponent(l);
 
-        //Storage Management
-        ArrayList<MyObject> rewards = MyObject.getRewards();
-        MyObject r = new MyObject();
-        String reward = "reward";
-
         //TextFields
         TextField rewardTF = new TextField("", "Reward", 10, TextField.ANY);
         TextField pointsTF = new TextField("", "Points", 5, TextField.NUMERIC);
@@ -68,13 +60,48 @@ public class AddReward extends BaseForm {
         rewardTF.requestFocus();
         pointsTF.setHint("Points");
         Button enter = new Button("Enter");
-
-        HashMap<String, String> pairHere = new HashMap<String, String>();
-
+        VerifyValidate vv = new VerifyValidate();
         enter.addActionListener(e -> {
             //Action listener for enter button
-            try (OutputStream os = Storage.getInstance().createOutputStream(rewardTF.getText());) {
+            if (rewardTF.getText().isEmpty() && pointsTF.getText().isEmpty()) {
+                vv.alertBox("Please enter your username and password.");
+            } else if (rewardTF.getText().isEmpty()) {
+                vv.alertBox("Please enter a reward in the required field.");
+            } else if (pointsTF.getText().isEmpty()) {
+                vv.alertBox("Please enter a point value in the required field.");
+            } else {
+                enter(allTotal, dailyTotal, rewardTF, pointsTF, newForm, hi, vv);
+            };
+        });
+
+        add(logoForm);
+
+        Container goalEnter = BoxLayout.encloseXNoGrow(rewardTF, pointsTF);
+        Container count = new Container();
+        count.add(
+                GridLayout.encloseIn(
+                        (goalEnter)
+                ));
+
+        add(count);
+        add(enter);
+    }
+
+    public void enter(Label allTotal, Label dailyTotal, TextField rewardTF,
+            TextField pointsTF, Form newForm, Resources hi, VerifyValidate vv) {
+
+        Dashboard db = new Dashboard();
+        HashMap<String, String> pairHere = new HashMap<String, String>();
+
+        //Storage Management
+        ArrayList<MyObject> rewards = MyObject.getRewards();
+        MyObject r = new MyObject();
+        String reward = "reward";
+
+        try (OutputStream os = Storage.getInstance().createOutputStream(rewardTF.getText());) {
+            try {
                 int pointsInt = Integer.parseInt(pointsTF.getText());
+
                 rewards.add(r);
 
                 //Holds points with comma deliminator
@@ -110,25 +137,13 @@ public class AddReward extends BaseForm {
                         allTotal, dailyTotal);
 
                 new Dashboard(hi).showBack();
-            } catch (IOException err) {
-                Log.e(err);
+            } catch (NumberFormatException nfe) {
+                vv.alertBox("Please enter only numbers in the points field.");
+
             }
-
-        });
-
-        add(logoForm);
-
-        Container goalEnter = BoxLayout.encloseXNoGrow(rewardTF, pointsTF);
-        Container count = new Container();
-        count.add(
-                GridLayout.encloseIn(
-                        (goalEnter)
-                ));
-
-        add(count);
-        add(enter);
+        } catch (IOException err) {
+            Log.e(err);
+        }
     }
-    
-    
 
 } //End Subclass AddReward
