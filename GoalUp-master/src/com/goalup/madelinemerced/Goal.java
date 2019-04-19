@@ -43,10 +43,10 @@ public class Goal extends BaseForm {
         setToolbar(tb);
         tb.addSearchCommand(e -> {
         });
-       Form previous = Display.getInstance().getCurrent();
+        Form previous = Display.getInstance().getCurrent();
 
-   tb.setBackCommand("", e -> previous.showBack());
-        
+        tb.setBackCommand("", e -> previous.showBack());
+
         //Logo Image
         Image logo = hi.getImage("LogoHeader.png");
         Label l = new Label(logo);
@@ -56,10 +56,10 @@ public class Goal extends BaseForm {
         super.add(flowLabel);
         super.addSideMenu(hi);
 
-        Container pageTitleRewards = new Container(new FlowLayout(Component.CENTER));
+        Container pageTitleGoals = new Container(new FlowLayout(Component.CENTER));
         Label goalsLabel = new Label("Goals");
-        pageTitleRewards.add(goalsLabel);
-        super.add(pageTitleRewards);
+        pageTitleGoals.add(goalsLabel);
+        super.add(pageTitleGoals);
 
         Dashboard db = new Dashboard();
         MyObject g = new MyObject();
@@ -67,7 +67,6 @@ public class Goal extends BaseForm {
         for (String file : Storage.getInstance().listEntries()) {
             db.createFileEntry(super.getComponentForm(), file, g.getType(), dailyTotal, allTotal);
         }
- 
 
     }
 

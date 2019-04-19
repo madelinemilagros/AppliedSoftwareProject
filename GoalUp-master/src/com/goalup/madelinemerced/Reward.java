@@ -1,8 +1,6 @@
 package com.goalup.madelinemerced;
 
 import com.codename1.io.Storage;
-import com.codename1.ui.Button;
-import com.codename1.ui.CheckBox;
 import com.codename1.ui.Component;
 import com.codename1.ui.Container;
 import com.codename1.ui.Display;
@@ -10,15 +8,12 @@ import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.Toolbar;
-import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
-import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.util.Resources;
-import java.util.ArrayList;
 
 /**
- * @Course: SDEV 250 ~ Java Programming I
+ * @Course: SDEV 435 ~ Applied Software
  * @Author Name: Madeline Merced
  * @Assignment Name: com.goalup.madelinemerced
  * @Date: Apr 7, 2019

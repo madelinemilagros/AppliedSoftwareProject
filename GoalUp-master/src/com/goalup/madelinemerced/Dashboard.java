@@ -151,6 +151,7 @@ public class Dashboard extends BaseForm {
         Container center = new Container(new GridLayout(2, 1));
         Label goalsList = new Label();
         center.add(goalsList);
+        
 
         //Floating Action Button to add Goal or Reward
         FloatingActionButton fab = FloatingActionButton.createFAB(FontImage.MATERIAL_ADD);
@@ -160,10 +161,9 @@ public class Dashboard extends BaseForm {
             Command cancel = new Command("Cancel");
             Command result = Dialog.show("Add New Reward or Goal? ", " ", goal, reward, cancel);
             if (goal == result) {
-                Goal(super.getComponentForm(), logo, allTotal, dTotal);
-
+                new AddGoal(res, allTotal, dTotal).show();
             } else if (reward == result) {
-                Reward(super.getComponentForm(), logo, allTotal, dTotal);
+               new AddReward(res, allTotal, dTotal).show();
             } else {
 
             }
@@ -194,7 +194,6 @@ public class Dashboard extends BaseForm {
 
         tb.addSearchCommand(e -> {
         });
-//        super.revalidate();
     }
 
     Dashboard() {
@@ -207,94 +206,7 @@ public class Dashboard extends BaseForm {
     public CheckBox getCheckbox() {
         return cb;
     }
-
-    public Form Goal(Form hi, Image logo, Label allTotal, Label dailyTotal) {
-        Form newForm = new Form();
-        Toolbar tb = super.getToolbar();
-        newForm.setToolbar(tb);
-        tb.addSearchCommand(e -> {
-        });
-
-        Label l = new Label(logo);
-
-        //Flow Container
-        Container logoForm = new Container(new FlowLayout(Component.CENTER));
-
-        //Adds Logo
-        logoForm.addComponent(l);
-
-        //Storage Management
-        ArrayList<MyObject> goals = MyObject.getGoals();
-        MyObject g = new MyObject();
-        String goal = "goal";
-
-        //TextFields
-        TextField goalTF = new TextField("", "Goal", 16, TextField.ANY);
-        TextField pointsTF = new TextField("", "Points", 2, TextField.ANY);
-
-//        pointsTF.setHint("Points");
-        Button enter = new Button("Enter");
-        HashMap<String, String> pairHere = new HashMap<String, String>();
-
-        enter.addActionListener(e -> {
-            //Action listener for enter button
-            try (OutputStream os = Storage.getInstance().createOutputStream(goalTF.getText());) {
-                int pointsInt = Integer.parseInt(pointsTF.getText());
-                goals.add(g);
-
-                //Holds points with comma deliminator
-                String points = pointsTF.getText();
-                String type = " " + g.getType() + " ";
-                String checked = g.getCheckbox();
-                String gTextField = goalTF.getText() + " ";
-                String space = " ";
-                pairHere.put(goalTF.getText(), pointsTF.getText());
-                g.setGoalPair(pairHere);
-                System.out.print(g.getGoalPair());
-                g.saveGoals();
-                //Saves points with leading zeros for formating and structure
-                if (pointsInt < 10) {
-                    String pointsZero = "00" + points;
-                    setPoints(pointsInt);
-                    os.write(pointsZero.getBytes("UTF-8"));
-                } else if (9 < pointsInt && pointsInt < 100) {
-                    String pointsZero = "0" + points;
-                    setPoints(pointsInt);
-                    os.write(pointsZero.getBytes("UTF-8"));
-                } else {
-                    setPoints(pointsInt);
-                    os.write(pointsTF.getText().getBytes("UTF-8"));
-                }
-
-                g.setType(goal);
-                int dm = method(pointsInt);
-                os.write(space.getBytes("UTF-8"));
-//                os.write(goalTF.getText().getBytes("UTF-8"));
-                os.write(space.getBytes("UTF-8"));
-                os.write(g.getType().getBytes("UTF-8"));
-                createFileEntry(newForm, goalTF.getText(), g.getType(), allTotal, dailyTotal);
-                newForm.getContentPane().animateLayout(250);
-                hi.revalidate();
-                hi.show();
-            } catch (IOException err) {
-                Log.e(err);
-            }
-
-        });
-
-        Container goalEnter = BoxLayout.encloseXNoGrow(goalTF, pointsTF);
-        Container count = new Container();
-        count.add(
-                GridLayout.encloseIn(
-                        (goalEnter)
-                ));
-        logoForm.add(count);
-        newForm.add(logoForm);
-        newForm.add(enter);
-        newForm.show();
-        return newForm;
-    }
-
+    
     public void createFileEntry(Form hi, String file, String t, Label dailyTotal, Label allTotal) {
 
         //Components for container
@@ -308,8 +220,6 @@ public class Dashboard extends BaseForm {
         HashMap<String, String> entryList = new HashMap<String, String>();
         String entryKey;
         String entryValue = null;
-        Map<String, Map.Entry<String, String>> map = new HashMap<>();
-
         i = i + 1;
 
         Map<CheckBox, String> testing = new HashMap<CheckBox, String>();
@@ -339,8 +249,7 @@ public class Dashboard extends BaseForm {
                     setMap(entry);
 
                 }
-//          
-
+                
                 testing.put(completeCB, entryValue);
                 content.add(BorderLayout.CENTER, BoxLayout.encloseX(goal));
                 content.add(BorderLayout.EAST, BoxLayout.encloseX(points, completeCB));
@@ -398,81 +307,7 @@ public class Dashboard extends BaseForm {
         return runningMap;
     }
 
-    public Form Reward(Form hi, Image logo, Label allTotal, Label dailyTotal) {
-        Form newForm = new Form();
-        Toolbar tb = super.getToolbar();
-        newForm.setToolbar(tb);
-        tb.addSearchCommand(e -> {
-        });
-
-        Label l = new Label(logo);
-
-        //Flow Container
-        Container logoForm = new Container(new FlowLayout(Component.CENTER));
-
-        //Adds Logo
-        logoForm.addComponent(l);
-
-        //Storage Management
-//        ArrayList<MyObject> rewards = MyObject.getRewards();
-        MyObject r = new MyObject();
-        String reward = "reward";
-        //TextFields
-        TextField rewardTF = new TextField("", "Reward", 16, TextField.ANY);
-        TextArea pointsTF = new TextArea(2, 2);
-
-//        goalTF.setWidth(LEFT);
-        pointsTF.setHint("Points");
-        Button enter = new Button("Enter");
-
-        enter.addActionListener(e -> {
-            //Action listener for enter button
-            try (OutputStream os = Storage.getInstance().createOutputStream(rewardTF.getText());) {
-                int pointsInt = Integer.parseInt(pointsTF.getText());
-
-                //Saves points with leading zeros for formating and structure
-                if (pointsInt < 10) {
-                    String pointsZero = "00" + pointsTF.getText();
-                    setPoints(pointsInt);
-                    os.write(pointsZero.getBytes("UTF-8"));
-
-                } else if (9 < pointsInt && pointsInt < 100) {
-                    String pointsZero = "0" + pointsTF.getText();
-                    setPoints(pointsInt);
-                    os.write(pointsZero.getBytes("UTF-8"));
-                } else {
-                    setPoints(pointsInt);
-                    os.write(pointsTF.getText().getBytes("UTF-8"));
-                }
-
-                r.setType(reward);
-                int dm = method(pointsInt);
-                os.write("  ".getBytes("UTF-8"));
-                os.write(r.getType().getBytes("UTF-8"));
-                createFileEntry(newForm, rewardTF.getText(), r.getType(), allTotal, dailyTotal);
-                newForm.getContentPane().animateLayout(250);
-                hi.revalidate();
-
-                hi.show();
-
-            } catch (IOException err) {
-                Log.e(err);
-            }
-
-        });
-        Container rewardEnter = BoxLayout.encloseXNoGrow(rewardTF, pointsTF);
-        Container count = new Container();
-        count.add(
-                GridLayout.encloseIn(
-                        (rewardEnter)
-                ));
-        logoForm.add(count);
-        newForm.add(logoForm);
-        newForm.add(enter);
-
-        newForm.show();
-        return newForm;
-    }
+    
 
     public void createFileEntryReward(Form hi, String file, String type, Label dailyTotal, Label allTotal) {
 
@@ -483,28 +318,39 @@ public class Dashboard extends BaseForm {
         c.setTextPosition(Component.LEFT);
         c.setIcon(FontImage.createMaterial(FontImage.MATERIAL_STAR_BORDER, "UncheckedIcon",4));
         c.setPressedIcon(FontImage.createMaterial(FontImage.MATERIAL_STAR, "CheckedIcon",4));
+        HashMap<String, String> listRewards = new HashMap<String, String>();
 
         MyObject obj = new MyObject();
-
+        String entryKey;
+        String entryValue = null;
         Label points = new Label("");
         Label holder = new Label("");
 
         Container content = BorderLayout.center(holder);
         try (InputStream is = Storage.getInstance().createInputStream(file);) {
-            String s = Util.readToString(is, "UTF-8");
-
+             String s = Util.readToString(is, "UTF-8");
             if (s.contains("reward")) {
-
-                //Checks for leading zeros for formatting of points label
                 if (s.substring(0, 1).contains("0")) {
-                    points.setText(s.substring(1, 3));
+                    listRewards.put(file, s.substring(1, 3));
+                    points.setText(s.substring(1, 3) + " points");
                     if (s.substring(1, 2).contains("0")) {
-                        points.setText(s.substring(2, 3));
+                        listRewards.put(file, s.substring(2, 3));
+                        points.setText(s.substring(2, 3) + " points");
                     }
                 } else {
-                    points.setText(s.substring(0, 3));
+                    listRewards.put(file, s.substring(0, 3));
+                    points.setText(s.substring(0, 3) + " points");
                 }
-                System.out.print(s.substring(4, s.length()));
+                for (Map.Entry<String, String> entry : listRewards.entrySet()) {
+
+                    entryValue = entry.getValue();
+                    entryKey = entry.getKey();
+                    System.out.print("Entry Key: " + entry.getKey() + "\n"
+                            + " Entry Value: " + entry.getValue() + "\n");
+
+                    setMap(entry);
+
+                }
                 content.add(BorderLayout.CENTER, BoxLayout.encloseX(reward));
                 content.add(BorderLayout.EAST, BoxLayout.encloseX(points, c));
             }
