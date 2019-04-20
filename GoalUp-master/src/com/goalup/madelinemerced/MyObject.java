@@ -24,30 +24,27 @@ public class MyObject implements Externalizable {
     private static ArrayList<MyObject> goals;
     private static ArrayList<MyObject> points;
     private static ArrayList<MyObject> rewards;
+    private static ArrayList<MyObject> profile;
     private HashMap<String, String> goalPair;
 
-    
     Storage s = new Storage();
     Storage newS = new Storage();
-    
+
     private String goal;
     private String gPoints;
     private String type;
     private String reward;
     private String rPoints;
     private String checkbox;
-    
-    
-    public void setGoalPair(HashMap<String, String> pair){
-       this.goalPair = pair;
+
+    public void setGoalPair(HashMap<String, String> pair) {
+        this.goalPair = pair;
     }
 
     public HashMap<String, String> getGoalPair() {
         return goalPair;
     }
-    
-    
-    
+
     public static void setGoals(ArrayList<MyObject> goals) {
         MyObject.goals = goals;
     }
@@ -55,7 +52,7 @@ public class MyObject implements Externalizable {
     public static void setRewards(ArrayList<MyObject> rewards) {
         MyObject.rewards = rewards;
     }
-    
+
     public String getType() {
         return type;
     }
@@ -110,7 +107,8 @@ public class MyObject implements Externalizable {
         }
         return goals;
     }
-      public static ArrayList<MyObject> getPoints() {
+
+    public static ArrayList<MyObject> getPoints() {
         if (points == null) {
             points = (ArrayList<MyObject>) com.codename1.io.Storage.getInstance().readObject("storage");
             if (points == null) {
@@ -130,6 +128,16 @@ public class MyObject implements Externalizable {
         return rewards;
     }
 
+    public static ArrayList<MyObject> getProfile() {
+        if (profile == null) {
+            profile = (ArrayList<MyObject>) com.codename1.io.Storage.getInstance().readObject("profile");
+            if (profile == null) {
+                profile = new ArrayList<>();
+            }
+        }
+        return profile;
+    }
+
     public void saveGoals() {
         if (!goals.contains(this)) {
             goals.add(this);
@@ -139,6 +147,12 @@ public class MyObject implements Externalizable {
     public void saveRewards() {
         if (!rewards.contains(this)) {
             rewards.add(this);
+        }
+    }
+
+    public void saveProfile() {
+        if (!profile.contains(this)) {
+            profile.add(this);
         }
     }
 
@@ -153,10 +167,11 @@ public class MyObject implements Externalizable {
         Util.writeUTF(type, out);
         Util.writeUTF(reward, out);
         Util.writeUTF(rPoints, out);
-        Util.writeUTF(checkbox, out);        
+        Util.writeUTF(checkbox, out);
         Util.writeObject(goalPair, out);
+        Util.writeObject(profile, out);
     }
-    
+
     @Override
     public void internalize(int version, DataInputStream in) throws IOException {
         goal = Util.readUTF(in);
@@ -165,7 +180,8 @@ public class MyObject implements Externalizable {
         reward = Util.readUTF(in);
         rPoints = Util.readUTF(in);
         checkbox = Util.readUTF(in);
-        goalPair = (HashMap<String, String>)Util.readObject(in);
+        goalPair = (HashMap<String, String>) Util.readObject(in);
+        profile = (ArrayList<MyObject>) Util.readObject(in);
     }
 
     @Override
@@ -180,7 +196,5 @@ public class MyObject implements Externalizable {
     public void setCheckbox(String checkbox) {
         this.checkbox = checkbox;
     }
-
-
 
 } //End Subclass MyObject

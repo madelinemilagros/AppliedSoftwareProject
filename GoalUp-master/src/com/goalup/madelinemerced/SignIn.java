@@ -1,11 +1,8 @@
 package com.goalup.madelinemerced;
 
-import com.codename1.components.FloatingHint;
 import com.codename1.ui.Button;
-import com.codename1.ui.Command;
 import com.codename1.ui.Component;
 import com.codename1.ui.Container;
-import com.codename1.ui.Dialog;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
@@ -14,10 +11,6 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
-import com.codename1.ui.validation.RegexConstraint;
-import com.codename1.ui.validation.Validator;
-import com.codename1.util.regex.RE;
-import javafx.scene.control.Alert;
 
 /**
  * @Course: SDEV 250 ~ Java Programming I
@@ -56,9 +49,8 @@ public class SignIn extends BaseForm {
         Container content = BoxLayout.encloseY(
                 topPad,
                 FlowLayout.encloseCenter(flowLabel),
-                new FloatingHint(username),
-                createLineSeparator(),
-                new FloatingHint(password),
+                (username),
+                (password),
                 createLineSeparator(),
                 signIn,
                 FlowLayout.encloseCenter(doneHaveAnAccount, signUp)

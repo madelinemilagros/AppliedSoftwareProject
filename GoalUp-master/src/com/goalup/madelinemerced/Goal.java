@@ -41,8 +41,11 @@ public class Goal extends BaseForm {
         super("", BoxLayout.y());
         Toolbar tb = super.getToolbar();
         setToolbar(tb);
-        tb.addSearchCommand(e -> {
-        });
+         tb.addMaterialCommandToRightBar("", FontImage.MATERIAL_HELP_OUTLINE,
+                e -> new Profile(hi).show());
+
+    
+
         Form previous = Display.getInstance().getCurrent();
 
         tb.setBackCommand("", e -> previous.showBack());

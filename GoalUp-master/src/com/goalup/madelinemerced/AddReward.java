@@ -6,6 +6,7 @@ import com.codename1.ui.Button;
 import com.codename1.ui.Component;
 import com.codename1.ui.Container;
 import com.codename1.ui.Display;
+import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
@@ -40,8 +41,8 @@ public class AddReward extends BaseForm {
         Form previous = Display.getInstance().getCurrent();
 
         newForm.setToolbar(tb);
-        tb.addSearchCommand(e -> {
-        });
+          tb.addMaterialCommandToRightBar("", FontImage.MATERIAL_HELP_OUTLINE,
+                e -> new Profile(hi).show());
 
         tb.setBackCommand("", e -> previous.showBack());
 

@@ -78,7 +78,7 @@ public class Dashboard extends BaseForm {
         setToolbar(tb);
 
         //Logo Image
-        Image logo = res.getImage("LogoHeader.png");
+        Image logo = res.getImage("Logo@0,1x.png");
         Label l = new Label(logo);
 
         Image img = res.getImage("selected-backgroundFilled.png");
@@ -88,34 +88,59 @@ public class Dashboard extends BaseForm {
         ScaleImageLabel sl = new ScaleImageLabel(img);
         sl.setUIID("TopPad");
         sl.setBackgroundType(Style.BACKGROUND_IMAGE_SCALED_FILL);
-
+        sl.setUIID("BottomPad");
         Container quoteCont = new Container(new FlowLayout(Component.CENTER));
         Container quoteLines = BoxLayout.encloseY();
 
         //Labels and formatting for dashboard trackers
         Container landingPageButtons = BoxLayout.encloseY();
-        String quote1 = ("We are what we repeatedly do.");
-        String quote2 = ("Excellence, therefore, is not an act but a habit. - Aristotle");
-        Label quoteOfDay1 = new Label();
-        Label quoteOfDay2 = new Label();
-
-        quoteOfDay1.setUIID("Quote");
-        quoteOfDay2.setUIID("Quote");
-        quoteOfDay1.setText(quote1);
-        quoteOfDay2.setText(quote2);
-
-        quoteLines.add(quoteOfDay1);
-        quoteLines.add(quoteOfDay2);
-        quoteCont.add(quoteLines);
-
+//        String quote1 = ("We are what we repeatedly do.");
+//        String quote2 = ("Excellence, therefore, is not an act but a habit. "
+////                + "- Aristotle");
+////        Label quoteOfDay1 = new Label();
+////        Label quoteOfDay2 = new Label();
+////
+////        quoteOfDay1.setUIID("Quote");
+////        quoteOfDay2.setUIID("Quote");
+////        quoteOfDay1.setText(quote1);
+////        quoteOfDay2.setText(quote2);
+////
+////        quoteLines.add(quoteOfDay1);
+////        quoteLines.add(quoteOfDay2);
+////        quoteCont.add(quoteLines);
+        //Flow Container
+        Container flowLabel = new Container(new FlowLayout(Component.CENTER));
+        Label date = new Label();
+        date.setText(date());
         Label dTotal = new Label();
 
         String getDailyTotalString = Integer.toString(getDailyTotal());
+
+        Label rightPad = new Label("");
+        Label leftPad = new Label("");
+        Label rightPad1 = new Label("");
+        Label leftPad1 = new Label("");
+        rightPad.setUIID("RightPadding");
+        leftPad.setUIID("LeftPadding");
+        rightPad1.setUIID("RightPadding1");
+        leftPad1.setUIID("LeftPadding1");
+
+        Label topPad = new Label("");
+        Label topPad1 = new Label("");
+        topPad.setUIID("TopPad1");
+        topPad1.setUIID("TopPad1");
 
         //CumulativePointsContainer
         Container cumulativeContainer = BoxLayout.encloseY();
         Label pointsTracker = new Label();
         setMainRewardPoints("100");
+        Label descripTotal = new Label("Points Total");
+        Label descripReward = new Label("Reward Points Total");
+
+        descripTotal.setUIID("pointsHeaders");
+        descripReward.setUIID("pointsHeaders");
+
+//        Label pointsWord = new Label("points");
         pointsTracker.setText(getDailyTotalString);
         Container centerPoints = new Container(new BorderLayout(Component.CENTER));
 //        pointsTracker.setUIID("PaddedLabel");
@@ -123,47 +148,61 @@ public class Dashboard extends BaseForm {
         Label allTotal = new Label();
 
         cumulativeContainer.add(allTotal);
-
+//        landingPageButtons.add(date);
+        date.setUIID("Qte");
         landingPageButtons.add(quoteCont);
-
         //Container for Dashboard Title Labels
 //       
-        //Flow Container
-        Container flowLabel = new Container(new FlowLayout(Component.CENTER));
 
+        Label rewardPoints = new Label("100");
+
+        Container logoDate = BoxLayout.encloseY(l, date);
+//        
+//          tb.addComponentToSideMenu(LayeredLayout.encloseIn(
+//                sl,
+//                FlowLayout.encloseCenterBottom(
+//                        new Label(res.getImage("headshot.jpg"), "PictureWhiteBackgrond"))
+//        ));
         //Adds Logo
-        flowLabel.addComponent(l);
-
+//        flowLabel.addComponent(date);
+//        flowLabel.addComponent(l);
+        flowLabel.add(logoDate);
         flowLabel.add(landingPageButtons);
+
+//        Container p = new Container(new GridLayout(1,1));
+//        p.add(leftPad, pointsTracker);
+//        Container r = new Container(new GridLayout(1,1));
+//        r.add(rightPad, rewardPoints);
         flowLabel.add(LayeredLayout.encloseIn(
                 sl,
-                FlowLayout.encloseCenter(
-                        BoxLayout.encloseX(
-                                pointsTracker,
-                                BoxLayout.encloseY(
-                                        new Label(res.getImage("shoesSmall.png"), "PictureWhiteBackgrond")),
-                                new Label("100 Points"),
-                                cumulativeContainer
-                        ))
+                BoxLayout.encloseY(topPad,
+                        BoxLayout.encloseX(leftPad1, descripTotal),
+                        BoxLayout.encloseX(leftPad, pointsTracker)),
+                FlowLayout.encloseCenterBottom(
+                        new Label(res.getImage("shoesSmall.png"), "PictureWhiteBackgrond")),
+                BoxLayout.encloseY(topPad1,
+                        BoxLayout.encloseX(rightPad1, descripReward),
+                        BoxLayout.encloseX(rightPad, rewardPoints))
         ));
 
         //List of Goals Formatting
         Container center = new Container(new GridLayout(2, 1));
         Label goalsList = new Label();
         center.add(goalsList);
-        
 
         //Floating Action Button to add Goal or Reward
-        FloatingActionButton fab = FloatingActionButton.createFAB(FontImage.MATERIAL_ADD);
+        FloatingActionButton fab = FloatingActionButton.createFAB(
+                FontImage.MATERIAL_ADD);
         fab.addActionListener(e -> {
             Command goal = new Command("Goal");
             Command reward = new Command("Reward");
             Command cancel = new Command("Cancel");
-            Command result = Dialog.show("Add New Reward or Goal? ", " ", goal, reward, cancel);
+            Command result = Dialog.show("Add New Reward or Goal? ", " ",
+                    goal, reward, cancel);
             if (goal == result) {
                 new AddGoal(res, allTotal, dTotal).show();
             } else if (reward == result) {
-               new AddReward(res, allTotal, dTotal).show();
+                new AddReward(res, allTotal, dTotal).show();
             } else {
 
             }
@@ -178,7 +217,8 @@ public class Dashboard extends BaseForm {
 //        add(flowTotals);
         add(center);
         for (String file : Storage.getInstance().listEntries()) {
-            createFileEntry(super.getComponentForm(), file, g.getType(), dTotal, pointsTracker);
+            createFileEntry(super.getComponentForm(), file, g.getType(),
+                    dTotal, pointsTracker);
 
             try (InputStream is = Storage.getInstance().createInputStream(file);) {
                 String s = Util.readToString(is, "UTF-8");
@@ -191,9 +231,9 @@ public class Dashboard extends BaseForm {
         add(fab);
 
         super.addSideMenu(res);
+        tb.addMaterialCommandToRightBar("", FontImage.MATERIAL_HELP_OUTLINE,
+                e -> new Profile(res).show());
 
-        tb.addSearchCommand(e -> {
-        });
     }
 
     Dashboard() {
@@ -206,8 +246,9 @@ public class Dashboard extends BaseForm {
     public CheckBox getCheckbox() {
         return cb;
     }
-    
-    public void createFileEntry(Form hi, String file, String t, Label dailyTotal, Label allTotal) {
+
+    public void createFileEntry(Form hi, String file, String t,
+            Label dailyTotal, Label allTotal) {
 
         //Components for container
         Label goal = new Label(file);
@@ -249,10 +290,11 @@ public class Dashboard extends BaseForm {
                     setMap(entry);
 
                 }
-                
+
                 testing.put(completeCB, entryValue);
                 content.add(BorderLayout.CENTER, BoxLayout.encloseX(goal));
-                content.add(BorderLayout.EAST, BoxLayout.encloseX(points, completeCB));
+                content.add(BorderLayout.EAST, BoxLayout.encloseX(points,
+                        completeCB));
 
             } else {
 
@@ -263,7 +305,8 @@ public class Dashboard extends BaseForm {
         }
 
         //Map with date, and testing hashmap
-        Map<Map<CheckBox, String>, Date> dateCheck = new HashMap<Map<CheckBox, String>, Date>();
+        Map<Map<CheckBox, String>, Date> dateCheck
+                = new HashMap<Map<CheckBox, String>, Date>();
         Date currentDate = new Date();
         currentDate.getTime();
         dateCheck.put(testing, currentDate);
@@ -292,7 +335,6 @@ public class Dashboard extends BaseForm {
         hi.add(content);
     }
 
-    
     private Component createSeparator() {
         Label l = new Label("", "Separator");
         l.setShowEvenIfBlank(true);
@@ -307,17 +349,18 @@ public class Dashboard extends BaseForm {
         return runningMap;
     }
 
-    
-
-    public void createFileEntryReward(Form hi, String file, String type, Label dailyTotal, Label allTotal) {
+    public void createFileEntryReward(Form hi, String file, String type,
+            Label dailyTotal, Label allTotal) {
 
         Label reward = new Label(file);
         CheckBox c = new CheckBox();
         c.setSelected(true);
         c.setToggle(true);
         c.setTextPosition(Component.LEFT);
-        c.setIcon(FontImage.createMaterial(FontImage.MATERIAL_STAR_BORDER, "UncheckedIcon",4));
-        c.setPressedIcon(FontImage.createMaterial(FontImage.MATERIAL_STAR, "CheckedIcon",4));
+        c.setIcon(FontImage.createMaterial(FontImage.MATERIAL_STAR_BORDER,
+                "UncheckedIcon", 4));
+        c.setPressedIcon(FontImage.createMaterial(FontImage.MATERIAL_STAR,
+                "CheckedIcon", 4));
         HashMap<String, String> listRewards = new HashMap<String, String>();
 
         MyObject obj = new MyObject();
@@ -328,7 +371,7 @@ public class Dashboard extends BaseForm {
 
         Container content = BorderLayout.center(holder);
         try (InputStream is = Storage.getInstance().createInputStream(file);) {
-             String s = Util.readToString(is, "UTF-8");
+            String s = Util.readToString(is, "UTF-8");
             if (s.contains("reward")) {
                 if (s.substring(0, 1).contains("0")) {
                     listRewards.put(file, s.substring(1, 3));
@@ -385,8 +428,12 @@ public class Dashboard extends BaseForm {
     public String date() {
         //Date formatter
         Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        String pattern = "EEEE, MMMMM dd, yyyy";
+
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+
         String strDate = formatter.format(date);
+
         return strDate;
     }
 
@@ -435,7 +482,8 @@ public class Dashboard extends BaseForm {
     }
 
     private void updateArrowPosition(Button b, Label arrow) {
-        arrow.getUnselectedStyle().setMargin(LEFT, b.getX() + b.getWidth() / 2 - arrow.getWidth() / 2);
+        arrow.getUnselectedStyle().setMargin(LEFT, b.getX() + b.getWidth()
+                / 2 - arrow.getWidth() / 2);
         arrow.getParent().repaint();
     }
 

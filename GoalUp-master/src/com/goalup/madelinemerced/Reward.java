@@ -4,6 +4,7 @@ import com.codename1.io.Storage;
 import com.codename1.ui.Component;
 import com.codename1.ui.Container;
 import com.codename1.ui.Display;
+import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
@@ -31,9 +32,8 @@ public class Reward extends BaseForm {
         super("", BoxLayout.y());
         Toolbar tb = super.getToolbar();
         setToolbar(tb);
-        tb.addSearchCommand(e -> {
-        });
-
+        tb.addMaterialCommandToRightBar("", FontImage.MATERIAL_HELP_OUTLINE,
+                e -> new Profile(hi).show());
         Form previous = Display.getInstance().getCurrent();
 
         tb.setBackCommand("", e -> previous.showBack());

@@ -6,6 +6,7 @@ import com.codename1.ui.Button;
 import com.codename1.ui.Component;
 import com.codename1.ui.Container;
 import com.codename1.ui.Display;
+import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
@@ -15,7 +16,6 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.util.Resources;
-import com.codename1.util.regex.RE;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -41,9 +41,8 @@ public class AddGoal extends BaseForm {
         Form previous = Display.getInstance().getCurrent();
 
         newForm.setToolbar(tb);
-        tb.addSearchCommand(e -> {
-        });
-
+        tb.addMaterialCommandToRightBar("", FontImage.MATERIAL_HELP_OUTLINE,
+                e -> new Profile(hi).show());
         tb.setBackCommand("", e -> previous.showBack());
 
         //Logo Image
@@ -57,9 +56,8 @@ public class AddGoal extends BaseForm {
         //TextFields
         TextField goalTF = new TextField("", "Goal", 10, TextField.ANY);
         TextField pointsTF = new TextField("", "Points", 5, TextField.NUMERIC);
-        goalTF.setHeight(100);
+        goalTF.setHeight(50);
         goalTF.requestFocus();
-        pointsTF.setHint("Points");
         Button enter = new Button("Enter");
         VerifyValidate vv = new VerifyValidate();
         enter.addActionListener(e -> {
