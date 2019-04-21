@@ -1,25 +1,44 @@
 package com.goalup.madelinemerced;
 
+/**
+ * @Course: SDEV-435-81 ~ Applied Software Practice
+ * @Author Name: Madeline Merced
+ * @Assignment Name: Final Project: Goal Up
+ * @Subclass AddGoal Description: Creates form that takes user input and stores
+ * it to persistent storage.
+ */
+
 import com.codename1.io.Log;
+import static com.codename1.io.Log.e;
 import com.codename1.io.Storage;
+import static com.codename1.io.Storage.getInstance;
 import com.codename1.ui.Button;
 import com.codename1.ui.Component;
 import com.codename1.ui.Container;
 import com.codename1.ui.Display;
+import static com.codename1.ui.Display.getInstance;
 import com.codename1.ui.FontImage;
+import static com.codename1.ui.FontImage.MATERIAL_HELP_OUTLINE;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
+import static com.codename1.ui.TextArea.ANY;
+import static com.codename1.ui.TextArea.NUMERIC;
 import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.layouts.BoxLayout;
+import static com.codename1.ui.layouts.BoxLayout.encloseXNoGrow;
+import static com.codename1.ui.layouts.BoxLayout.y;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.util.Resources;
+import static com.goalup.madelinemerced.MyObject.getRewards;
 import java.io.IOException;
 import java.io.OutputStream;
+import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 /**
  * @Course: SDEV 250 ~ Java Programming I
@@ -32,31 +51,41 @@ import java.util.HashMap;
 //Begin Subclass AddReward
 public class AddReward extends BaseForm {
 
-//public Form AddGoal(Form hi, Image logo, Label allTotal, Label dailyTotal) {
-    public AddReward(Resources hi, Label allTotal, Label dailyTotal) {
-        super("", BoxLayout.y());
-        Form newForm = new Form();
+    /**
+     * Method AddReward: Inherits BaseForm properties to create form with
+     * textfields for entering reward details.
+     * 
+     * @param res
+     * @param ptsTot
+     */
+    public AddReward(Resources res, Label ptsTot) {
+        
+        //Inherits from BaseForm
+        super("", y());
+        
+        
+        Form addRewardForm = new Form();
 
         Toolbar tb = super.getToolbar();
         Form previous = Display.getInstance().getCurrent();
 
-        newForm.setToolbar(tb);
-          tb.addMaterialCommandToRightBar("", FontImage.MATERIAL_HELP_OUTLINE,
-                e -> new Profile(hi).show());
+        addRewardForm.setToolbar(tb);
+        tb.addMaterialCommandToRightBar("", MATERIAL_HELP_OUTLINE,
+                e -> new Profile(res).show());
 
         tb.setBackCommand("", e -> previous.showBack());
 
         //Logo Image
-        Image logo = hi.getImage("LogoHeader.png");
+        Image logo = res.getImage("LogoHeader.png");
         Label l = new Label(logo);
-        Container logoForm = new Container(new FlowLayout(Component.CENTER));
+        Container logoForm = new Container(new FlowLayout(CENTER));
 
         //Adds Logo
         logoForm.addComponent(l);
 
         //TextFields
-        TextField rewardTF = new TextField("", "Reward", 10, TextField.ANY);
-        TextField pointsTF = new TextField("", "Points", 5, TextField.NUMERIC);
+        TextField rewardTF = new TextField("", "Reward", 10, ANY);
+        TextField pointsTF = new TextField("", "Points", 5, NUMERIC);
         rewardTF.setHeight(100);
         rewardTF.requestFocus();
         pointsTF.setHint("Points");
@@ -71,13 +100,13 @@ public class AddReward extends BaseForm {
             } else if (pointsTF.getText().isEmpty()) {
                 vv.alertBox("Please enter a point value in the required field.");
             } else {
-                enter(allTotal, dailyTotal, rewardTF, pointsTF, newForm, hi, vv);
-            };
+                enter(allTotal, ptsTot, rewardTF, pointsTF, addRewardForm, res, vv);
+            }
         });
 
         add(logoForm);
 
-        Container goalEnter = BoxLayout.encloseXNoGrow(rewardTF, pointsTF);
+        Container goalEnter = encloseXNoGrow(rewardTF, pointsTF);
         Container count = new Container();
         count.add(
                 GridLayout.encloseIn(
@@ -88,20 +117,30 @@ public class AddReward extends BaseForm {
         add(enter);
     }
 
+    /**
+     *
+     * @param allTotal
+     * @param dailyTotal
+     * @param rewardTF
+     * @param pointsTF
+     * @param newForm
+     * @param hi
+     * @param vv
+     */
     public void enter(Label allTotal, Label dailyTotal, TextField rewardTF,
             TextField pointsTF, Form newForm, Resources hi, VerifyValidate vv) {
 
         Dashboard db = new Dashboard();
-        HashMap<String, String> pairHere = new HashMap<String, String>();
+        HashMap<String, String> pairHere = new HashMap<>();
 
         //Storage Management
-        ArrayList<MyObject> rewards = MyObject.getRewards();
+        ArrayList<MyObject> rewards = getRewards();
         MyObject r = new MyObject();
         String reward = "reward";
 
         try (OutputStream os = Storage.getInstance().createOutputStream(rewardTF.getText());) {
             try {
-                int pointsInt = Integer.parseInt(pointsTF.getText());
+                int pointsInt = parseInt(pointsTF.getText());
 
                 rewards.add(r);
 
@@ -134,8 +173,7 @@ public class AddReward extends BaseForm {
                 os.write(space.getBytes("UTF-8"));
                 os.write(r.getType().getBytes("UTF-8"));
 
-                db.createFileEntryReward(newForm, rewardTF.getText(), r.getType(),
-                        allTotal, dailyTotal);
+                db.createFileEntryReward(newForm, rewardTF.getText(), r.getType());
 
                 new Dashboard(hi).showBack();
             } catch (NumberFormatException nfe) {
@@ -143,8 +181,9 @@ public class AddReward extends BaseForm {
 
             }
         } catch (IOException err) {
-            Log.e(err);
+            e(err);
         }
     }
+    private static final Logger LOG = Logger.getLogger(AddReward.class.getName());
 
 } //End Subclass AddReward

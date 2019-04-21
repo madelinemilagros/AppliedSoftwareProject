@@ -7,6 +7,7 @@ package com.goalup.madelinemerced;
  * @Subclass AddGoal Description: Creates form that takes user input and stores
  * it to persistent storage.
  */
+
 //Imports
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -135,7 +136,6 @@ public class AddGoal extends BaseForm {
      * @param ptsTot
      * @param goalTF
      * @param pointsTF
-     * @param newForm
      * @param res
      * @param vv
      */
@@ -161,7 +161,8 @@ public class AddGoal extends BaseForm {
         String pointString = pointsTF.getText();
 
         //Try catch statement to write to storage
-        try (OutputStream os = Storage.getInstance().createOutputStream(goalString)) {
+        try (OutputStream os = Storage.getInstance().createOutputStream
+        (goalString)) {
 
             try {
 
@@ -200,7 +201,8 @@ public class AddGoal extends BaseForm {
                 os.write(g.getType().getBytes("UTF-8"));
 
                 //Calls dashboard createFileEntry method for goal display 
-                db.createFileEntry(super.getComponentForm(), goalTF.getText(), g.getType(), ptsTot);
+                db.createFileEntry(super.getComponentForm(), goalTF.getText(), 
+                        g.getType(), ptsTot);
 
                 //Displays dashboard after goal added
                 new Dashboard(res).show();
