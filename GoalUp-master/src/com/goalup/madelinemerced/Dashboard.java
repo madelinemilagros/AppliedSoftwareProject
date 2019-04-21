@@ -200,8 +200,9 @@ public class Dashboard extends BaseForm {
             Command result = Dialog.show("Add New Reward or Goal? ", " ",
                     goal, reward, cancel);
             if (goal == result) {
-                new AddGoal(res, allTotal, dTotal).show();
-            } else if (reward == result) {
+
+                new AddGoal(res, allTotal).show();
+                    } else if (reward == result) {
                 new AddReward(res, allTotal, dTotal).show();
             } else {
 
@@ -218,7 +219,7 @@ public class Dashboard extends BaseForm {
         add(center);
         for (String file : Storage.getInstance().listEntries()) {
             createFileEntry(super.getComponentForm(), file, g.getType(),
-                    dTotal, pointsTracker);
+                    pointsTracker);
 
             try (InputStream is = Storage.getInstance().createInputStream(file);) {
                 String s = Util.readToString(is, "UTF-8");
@@ -247,9 +248,8 @@ public class Dashboard extends BaseForm {
         return cb;
     }
 
-    public void createFileEntry(Form hi, String file, String t,
-            Label dailyTotal, Label allTotal) {
-
+    public void createFileEntry(Form hi, String file, String t, Label dailyTotal) 
+    {
         //Components for container
         Label goal = new Label(file);
         CheckBox completeCB = new CheckBox();
@@ -318,21 +318,21 @@ public class Dashboard extends BaseForm {
                 String dateTest = dateCheck.get(testing).toString();
                 pointsValueInt = Integer.parseInt(pointValueTest);
                 setPoints(pointsValueInt);
-                allTotal.setText(dailyTotal());
+                dailyTotal.setText(dailyTotal());
 
             } else if (!completeCB.isSelected()) {
                 int removePoints = 0 - pointsValueInt;
 
                 setPoints(removePoints);
 //                
-                allTotal.setText(dailyTotal());
+                dailyTotal.setText(dailyTotal());
 
             }
 
         });
 
         //Adds storage contents with goals to main form
-        hi.add(content);
+        super.add(content);
     }
 
     private Component createSeparator() {
@@ -349,9 +349,7 @@ public class Dashboard extends BaseForm {
         return runningMap;
     }
 
-    public void createFileEntryReward(Form hi, String file, String type,
-            Label dailyTotal, Label allTotal) {
-
+    public void createFileEntryReward(Form hi, String file, String type) {
         Label reward = new Label(file);
         CheckBox c = new CheckBox();
         c.setSelected(true);
