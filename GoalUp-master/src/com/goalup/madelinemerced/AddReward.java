@@ -4,95 +4,98 @@ package com.goalup.madelinemerced;
  * @Course: SDEV-435-81 ~ Applied Software Practice
  * @Author Name: Madeline Merced
  * @Assignment Name: Final Project: Goal Up
- * @Subclass AddGoal Description: Creates form that takes user input and stores
- * it to persistent storage.
+ * @Subclass AddReward Description: Creates form that takes user input and
+ * stores it to persistent storage.
  */
 
-import com.codename1.io.Log;
-import static com.codename1.io.Log.e;
-import com.codename1.io.Storage;
-import static com.codename1.io.Storage.getInstance;
-import com.codename1.ui.Button;
-import com.codename1.ui.Component;
-import com.codename1.ui.Container;
-import com.codename1.ui.Display;
-import static com.codename1.ui.Display.getInstance;
-import com.codename1.ui.FontImage;
-import static com.codename1.ui.FontImage.MATERIAL_HELP_OUTLINE;
+//Imports
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.io.IOException;
+import java.io.OutputStream;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
-import static com.codename1.ui.TextArea.ANY;
-import static com.codename1.ui.TextArea.NUMERIC;
-import com.codename1.ui.TextField;
+import com.codename1.ui.Button;
 import com.codename1.ui.Toolbar;
-import com.codename1.ui.layouts.BoxLayout;
-import static com.codename1.ui.layouts.BoxLayout.encloseXNoGrow;
-import static com.codename1.ui.layouts.BoxLayout.y;
+import com.codename1.ui.Display;
+import com.codename1.io.Storage;
+import com.codename1.ui.TextField;
+import com.codename1.ui.Container;
+import com.codename1.ui.util.Resources;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
-import com.codename1.ui.util.Resources;
-import static com.goalup.madelinemerced.MyObject.getRewards;
-import java.io.IOException;
-import java.io.OutputStream;
+import static com.codename1.io.Log.e;
 import static java.lang.Integer.parseInt;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.logging.Logger;
+import static com.codename1.ui.TextArea.ANY;
+import static com.codename1.ui.TextArea.NUMERIC;
+import static com.codename1.ui.layouts.BoxLayout.y;
+import static com.goalup.madelinemerced.MyObject.getRewards;
+import static com.codename1.ui.FontImage.MATERIAL_HELP_OUTLINE;
+import static com.codename1.ui.layouts.BoxLayout.encloseXNoGrow;
 
-/**
- * @Course: SDEV 250 ~ Java Programming I
- * @Author Name: Madeline Merced
- * @Assignment Name: com.goalup.madelinemerced
- * @Date: Apr 19, 2019
- * @Subclass AddReward Description:
- */
-//Imports
 //Begin Subclass AddReward
 public class AddReward extends BaseForm {
 
     /**
      * Method AddReward: Inherits BaseForm properties to create form with
      * textfields for entering reward details.
-     * 
+     *
      * @param res
      * @param ptsTot
      */
     public AddReward(Resources res, Label ptsTot) {
-        
+
         //Inherits from BaseForm
         super("", y());
-        
-        
+
+        //Initialize a new form
         Form addRewardForm = new Form();
 
+        //Inherits project toolbar properties
         Toolbar tb = super.getToolbar();
+
+        //Form to save previous page information
         Form previous = Display.getInstance().getCurrent();
 
+        //Saves toolbar to form
         addRewardForm.setToolbar(tb);
+
+        //Adds icon to toolbar that links to profile
         tb.addMaterialCommandToRightBar("", MATERIAL_HELP_OUTLINE,
                 e -> new Profile(res).show());
 
+        //Adds arrow icon t toolbar that displays previous page
         tb.setBackCommand("", e -> previous.showBack());
 
-        //Logo Image
+        //Saves logo image to label
         Image logo = res.getImage("LogoHeader.png");
         Label l = new Label(logo);
-        Container logoForm = new Container(new FlowLayout(CENTER));
 
-        //Adds Logo
-        logoForm.addComponent(l);
+        //New container with flowlayout for centered display
+        Container logoContainer = new Container(new FlowLayout(CENTER));
 
-        //TextFields
+        //Adds Logo to flowlayout
+        logoContainer.addComponent(l);
+
+        //TextFields for reward
         TextField rewardTF = new TextField("", "Reward", 10, ANY);
         TextField pointsTF = new TextField("", "Points", 5, NUMERIC);
+
+        //Textfield formatting
         rewardTF.setHeight(100);
         rewardTF.requestFocus();
-        pointsTF.setHint("Points");
+
+        //Create enter button
         Button enter = new Button("Enter");
+
+        //VerifyValidate class object initialization
         VerifyValidate vv = new VerifyValidate();
+
+        //Action listener for enter button
         enter.addActionListener(e -> {
-            //Action listener for enter button
+
+            //If-else-if statement for error handling
             if (rewardTF.getText().isEmpty() && pointsTF.getText().isEmpty()) {
                 vv.alertBox("Please enter your username and password.");
             } else if (rewardTF.getText().isEmpty()) {
@@ -100,66 +103,84 @@ public class AddReward extends BaseForm {
             } else if (pointsTF.getText().isEmpty()) {
                 vv.alertBox("Please enter a point value in the required field.");
             } else {
-                enter(allTotal, ptsTot, rewardTF, pointsTF, addRewardForm, res, vv);
+                Enter(ptsTot, rewardTF, pointsTF, res, vv);
             }
         });
 
-        add(logoForm);
+        //Adds logo to main form
+        add(logoContainer);
 
-        Container goalEnter = encloseXNoGrow(rewardTF, pointsTF);
-        Container count = new Container();
-        count.add(
+        //Creates container to hold textfields
+        Container rewardEnter = encloseXNoGrow(rewardTF, pointsTF);
+
+        //Creates container to formatGoal fields
+        Container formatReward = new Container();
+
+        //Adds rewardEnter container to formatReward container
+        formatReward.add(
                 GridLayout.encloseIn(
-                        (goalEnter)
+                        (rewardEnter)
                 ));
 
-        add(count);
+        //Adds formatReward container to main form
+        add(formatReward);
+
+        //Adds enter button to main form
         add(enter);
     }
 
     /**
+     * Method Enter: Writes reward and point values to persistent storage
      *
-     * @param allTotal
-     * @param dailyTotal
+     * @param ptsTot
      * @param rewardTF
      * @param pointsTF
-     * @param newForm
-     * @param hi
+     * @param res
      * @param vv
      */
-    public void enter(Label allTotal, Label dailyTotal, TextField rewardTF,
-            TextField pointsTF, Form newForm, Resources hi, VerifyValidate vv) {
+    public void Enter(Label ptsTot, TextField rewardTF,
+            TextField pointsTF, Resources res, VerifyValidate vv) {
 
+        //Dashboard object
         Dashboard db = new Dashboard();
+
+        //Creates hashmap for reward and points
         HashMap<String, String> pairHere = new HashMap<>();
 
-        //Storage Management
+        //Arraylist to hold storage reward results
         ArrayList<MyObject> rewards = getRewards();
+
+        //Storage object
         MyObject r = new MyObject();
+
+        //Variabels to hold space, type and textfield input
+        String space = " ";
         String reward = "reward";
+        String rewardString = rewardTF.getText();
+        String pointString = pointsTF.getText();
 
-        try (OutputStream os = Storage.getInstance().createOutputStream(rewardTF.getText());) {
+        //Try catch statement to write to storage
+        try (OutputStream os = Storage.getInstance().createOutputStream(rewardString)) {
+
             try {
-                int pointsInt = parseInt(pointsTF.getText());
 
+                //Converts pointsString into int
+                int pointsInt = parseInt(pointString);
+
+                //Adds object to arraylist
                 rewards.add(r);
 
-                //Holds points with comma deliminator
-                String points = pointsTF.getText();
-                String type = " " + r.getType() + " ";
-                String checked = r.getCheckbox();
-                String gTextField = rewardTF.getText() + " ";
-                String space = " ";
-                pairHere.put(rewardTF.getText(), pointsTF.getText());
-                r.saveRewards();
+                //adds reward and points to hashmap
+                pairHere.put(rewardString, pointString);
 
+//                r.saveRewards();
                 //Saves points with leading zeros for formating and structure
                 if (pointsInt < 10) {
-                    String pointsZero = "00" + points;
+                    String pointsZero = "00" + pointString;
                     db.setPoints(pointsInt);
                     os.write(pointsZero.getBytes("UTF-8"));
                 } else if (9 < pointsInt && pointsInt < 100) {
-                    String pointsZero = "0" + points;
+                    String pointsZero = "0" + pointString;
                     db.setPoints(pointsInt);
                     os.write(pointsZero.getBytes("UTF-8"));
                 } else {
@@ -167,15 +188,21 @@ public class AddReward extends BaseForm {
                     os.write(pointsTF.getText().getBytes("UTF-8"));
                 }
 
+                //Sets type to reward for storage sorting
                 r.setType(reward);
-                int dm = db.method(pointsInt);
+
+                //Writes space and type to storage
                 os.write(space.getBytes("UTF-8"));
                 os.write(space.getBytes("UTF-8"));
                 os.write(r.getType().getBytes("UTF-8"));
 
-                db.createFileEntryReward(newForm, rewardTF.getText(), r.getType());
+                //Calls dashboard createFileEntryReward method for reward display
+                db.createFileEntryReward(super.getComponentForm(),
+                        rewardString, r.getType());
 
-                new Dashboard(hi).showBack();
+                //Displays dashboard after reward added
+                new Dashboard(res).show();
+                
             } catch (NumberFormatException nfe) {
                 vv.alertBox("Please enter only numbers in the points field.");
 
@@ -183,7 +210,7 @@ public class AddReward extends BaseForm {
         } catch (IOException err) {
             e(err);
         }
+    
     }
-    private static final Logger LOG = Logger.getLogger(AddReward.class.getName());
-
+    
 } //End Subclass AddReward

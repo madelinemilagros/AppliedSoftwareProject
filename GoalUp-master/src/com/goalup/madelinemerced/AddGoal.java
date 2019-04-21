@@ -201,8 +201,7 @@ public class AddGoal extends BaseForm {
                 os.write(g.getType().getBytes("UTF-8"));
 
                 //Calls dashboard createFileEntry method for goal display 
-                db.createFileEntry(super.getComponentForm(), goalTF.getText(), 
-                        g.getType(), ptsTot);
+                db.createFileEntry(super.getComponentForm(),goalString, g.getType(), ptsTot);
 
                 //Displays dashboard after goal added
                 new Dashboard(res).show();

@@ -1,61 +1,78 @@
-/*
- * Copyright (c) 2016, Codename One
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
- * documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
- * and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions 
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
- * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT 
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
- */
 package com.goalup.madelinemerced;
 
-import com.codename1.components.ScaleImageLabel;
-import com.codename1.ui.Component;
-import com.codename1.ui.Display;
-import com.codename1.ui.FontImage;
+/**
+ * @Course: SDEV-435-81 ~ Applied Software Practice
+ * @Author Name: Madeline Merced
+ * @Assignment Name: Final Project: Goal Up
+ * @Subclass AddGoal Description: Creates form that takes user input and stores
+ * it to persistent storage.
+ */
+
+//Imports
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.Toolbar;
-import com.codename1.ui.layouts.FlowLayout;
-import com.codename1.ui.layouts.LayeredLayout;
+import com.codename1.ui.Component;
 import com.codename1.ui.layouts.Layout;
-import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
+import com.codename1.ui.layouts.LayeredLayout;
+import com.codename1.components.ScaleImageLabel;
+import static com.codename1.ui.Display.getInstance;
+import static com.codename1.ui.FontImage.MATERIAL_CAKE;
+import static com.codename1.ui.FontImage.MATERIAL_STARS;
+import static com.codename1.ui.FontImage.MATERIAL_DASHBOARD;
+import static com.codename1.ui.FontImage.MATERIAL_EXIT_TO_APP;
+import static com.codename1.ui.layouts.FlowLayout.encloseCenterBottom;
+import static com.codename1.ui.plaf.Style.BACKGROUND_IMAGE_SCALED_FILL;
 
-/**
- * Base class for the forms with common functionality
- *
- * @author Shai Almog
- */
+//Begin Subclass BaseForm
 public class BaseForm extends Form {
 
+    /**
+     *BaseForm constructor
+     */
     public BaseForm() {
+    
     }
 
+    /**
+     * BaseForm constructor with contentPaneLayout
+     * 
+     * @param contentPaneLayout
+     */
     public BaseForm(Layout contentPaneLayout) {
         super(contentPaneLayout);
     }
 
+    /**
+     * BaseForm constructor with title and contentPaneLayout
+     * 
+     * @param title
+     * @param contentPaneLayout
+     */
     public BaseForm(String title, Layout contentPaneLayout) {
         super(title, contentPaneLayout);
     }
 
+    /**
+     * Method createLineSeparator: Provides formatting with white space when 
+     * called
+     * 
+     * @return
+     */
     public Component createLineSeparator() {
         Label separator = new Label("", "WhiteSeparator");
         separator.setShowEvenIfBlank(true);
         return separator;
     }
 
+    /**
+     * Method createLineSeparator: Provides formatting with color/whie space
+     * 
+     * @param color
+     * @return
+     */
     public Component createLineSeparator(int color) {
         Label separator = new Label("", "WhiteSeparator");
         separator.getUnselectedStyle().setBgColor(color);
@@ -64,30 +81,44 @@ public class BaseForm extends Form {
         return separator;
     }
 
+    /**
+     * Method addSideMenu: Creates and adds menu to toolbar 
+     * 
+     * @param res
+     */
     protected void addSideMenu(Resources res) {
+        
+        //Gets the toolbar
         Toolbar tb = getToolbar();
+        
+        //Image holder for background of profile 
         Image img = res.getImage("backgroundProfile.jpg");
-        if (img.getHeight() > Display.getInstance().getDisplayHeight() / 3) {
-            img = img.scaledHeight(Display.getInstance().getDisplayHeight() / 3);
+        if (img.getHeight() > getInstance().getDisplayHeight() / 3) {
+            img = img.scaledHeight(getInstance().getDisplayHeight() / 3);
         }
+        
+        //Formats and sets background image
         ScaleImageLabel sl = new ScaleImageLabel(img);
         sl.setUIID("BottomPad");
-        sl.setBackgroundType(Style.BACKGROUND_IMAGE_SCALED_FILL);
+        sl.setBackgroundType(BACKGROUND_IMAGE_SCALED_FILL);
 
-        tb.addComponentToSideMenu(LayeredLayout.encloseIn(
-                sl,
-                FlowLayout.encloseCenterBottom(
-                        new Label(res.getImage("headshot.jpg"), "PictureWhiteBackgrond"))
+        //Adds components to menu
+        tb.addComponentToSideMenu(LayeredLayout.encloseIn(sl,
+                encloseCenterBottom(
+                        new Label(res.getImage("headshot.jpg"), 
+                              "PictureWhiteBackgrond"))
         ));
         Label allTotal = null;
         Label dailyTotal = null;
-        tb.addMaterialCommandToSideMenu("Dashboard", FontImage.MATERIAL_DASHBOARD, 
+        
+        //Adds navigation buttons to side menu
+        tb.addMaterialCommandToSideMenu("Dashboard", MATERIAL_DASHBOARD, 
                 e ->new Dashboard(res).show());
-        tb.addMaterialCommandToSideMenu("Goals", FontImage.MATERIAL_STARS, e -> 
+        tb.addMaterialCommandToSideMenu("Goals", MATERIAL_STARS, e -> 
                 new Goal(res, allTotal, dailyTotal).show());
-        tb.addMaterialCommandToSideMenu("Rewards", FontImage.MATERIAL_CAKE, e 
+        tb.addMaterialCommandToSideMenu("Rewards", MATERIAL_CAKE, e 
                 -> new Reward(res, allTotal, dailyTotal).show());
-        tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP, 
+        tb.addMaterialCommandToSideMenu("Logout", MATERIAL_EXIT_TO_APP, 
                 e -> new SignIn(res).show());
     }
 }

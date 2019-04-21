@@ -1,10 +1,15 @@
 package com.goalup.madelinemerced;
 
-import com.codename1.io.Log;
+/**
+ * @Course: SDEV-435-81 ~ Applied Software Practice
+ * @Author Name: Madeline Merced
+ * @Assignment Name: Final Project: Goal Up
+ * @Subclass Goal Description: Creates form that takes user input and stores
+ * it to persistent storage.
+ */
+
+//Imports
 import com.codename1.io.Storage;
-import com.codename1.io.Util;
-import com.codename1.ui.Button;
-import com.codename1.ui.CheckBox;
 import com.codename1.ui.Component;
 import com.codename1.ui.Container;
 import com.codename1.ui.Display;
@@ -13,23 +18,10 @@ import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.Toolbar;
-import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
-import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.util.Resources;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 
-/**
- * @Course: SDEV 250 ~ Java Programming I
- * @Author Name: Madeline Merced
- * @Assignment Name: com.madelinemerced.mlmxms
- * @Date: Apr 4, 2019
- * @Subclass Goal Description:
- */
-//Imports
 //Begin Subclass Goal
 public class Goal extends BaseForm {
 
@@ -68,7 +60,7 @@ public class Goal extends BaseForm {
         MyObject g = new MyObject();
 
         for (String file : Storage.getInstance().listEntries()) {
-            db.createFileEntry(super.getComponentForm(), file, g.getType(), dailyTotal, allTotal);
+            db.createFileEntry(super.getComponentForm(), file, g.getType(), dailyTotal);
         }
 
     }

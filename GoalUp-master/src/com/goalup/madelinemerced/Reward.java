@@ -63,7 +63,7 @@ public class Reward extends BaseForm {
         MyObject g = new MyObject();
         db.setMainRewardPoints("100");
         for (String file : Storage.getInstance().listEntries()) {
-            db.createFileEntryReward(super.getComponentForm(), file, g.getType(), dailyTotal, allTotal);
+            db.createFileEntryReward(super.getComponentForm(),file, g.getType());
         }
 
     }

@@ -12,6 +12,10 @@
             </test-roots>
         </data>
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>arraylist</word>
+            <word>deserialization</word>
+            <word>externalizable</word>
+            <word>Merced</word>
             <word>textfields</word>
         </spellchecker-wordlist>
     </configuration>
