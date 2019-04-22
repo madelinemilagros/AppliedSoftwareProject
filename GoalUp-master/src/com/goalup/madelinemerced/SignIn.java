@@ -1,63 +1,66 @@
 package com.goalup.madelinemerced;
 
-import com.codename1.ui.Button;
-import com.codename1.ui.Component;
-import com.codename1.ui.Container;
+/**
+ * @Course: SDEV-435-81 ~ Applied Software Practice
+ * @Author Name: Madeline Merced
+ * @Assignment Name: Final Project: Goal Up
+ * @Subclass SignIn Description: Creates form that takes user sign in details 
+ */
+
+//Imports
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
-import com.codename1.ui.TextField;
+import com.codename1.ui.Button;
 import com.codename1.ui.Toolbar;
-import com.codename1.ui.layouts.BorderLayout;
-import com.codename1.ui.layouts.BoxLayout;
-import com.codename1.ui.layouts.FlowLayout;
+import com.codename1.ui.Container;
+import com.codename1.ui.TextField;
 import com.codename1.ui.util.Resources;
+import com.codename1.ui.layouts.FlowLayout;
+import com.codename1.ui.layouts.BorderLayout;
+import static com.codename1.ui.TextArea.ANY;
+import static com.codename1.ui.TextArea.PASSWORD;
+import static com.codename1.ui.layouts.BoxLayout.encloseY;
+import static com.codename1.ui.layouts.FlowLayout.encloseCenter;
 
-/**
- * @Course: SDEV 250 ~ Java Programming I
- * @Author Name: Madeline Merced
- * @Assignment Name: com.madelinemerced.mlmxms
- * @Date: Apr 4, 2019
- * @Subclass Goal Description:
- */
-//Imports
-//Begin Subclass Goal
+//Begin Subclass SignIn
 public class SignIn extends BaseForm {
 
-    public SignIn(Resources hi) {
+    /**
+     * Method SignIn: Inherits BaseForm properties to create form with
+     * textfields for existing users to sign in.
+     * 
+     * @param res
+     */
+    public SignIn(Resources res) {
+        
+        //Inherits from BaseForm
         super("", new BorderLayout());
+        
+        //Initialize project toolbar properties
         Toolbar tb = super.getToolbar();
+        
+        //Saves toolbar to form
         setToolbar(tb);
 
-        //Logo Image
-        Image logo = hi.getImage("LogoHeader.png");
+        //Saves logo image to label
+        Image logo = res.getImage("LogoHeader.png");
         Label l = new Label(logo);
-        Container flowLabel = new Container(new FlowLayout(Component.CENTER));
+        
+        //New container with flowlayout for centered display
+        Container logoContainer = new Container(new FlowLayout(CENTER));
 
-        flowLabel.addComponent(l);
-        TextField username = new TextField("", "Username", 20, TextField.ANY);
-        TextField password = new TextField("", "Password", 20, TextField.PASSWORD);
+        //Adds logo to flowlayout
+        logoContainer.addComponent(l);
+        
+        //Textfields for signin form
+        TextField username = new TextField("", "Username", 20, ANY);
+        TextField password = new TextField("", "Password", 20, PASSWORD);
 
-        Button signIn = new Button("Sign In");
-        Button signUp = new Button("Sign Up");
-        signUp.addActionListener(e -> new SignUp(hi).show());
-        signUp.setUIID("Link");
-        Label doneHaveAnAccount = new Label("Don't have an account?");
-        Label topPad = new Label();
-        topPad.setUIID("TopPad");
+        //VerifyValidate object 
         VerifyValidate vv = new VerifyValidate();
 
-        Container content = BoxLayout.encloseY(
-                topPad,
-                FlowLayout.encloseCenter(flowLabel),
-                (username),
-                (password),
-                createLineSeparator(),
-                signIn,
-                FlowLayout.encloseCenter(doneHaveAnAccount, signUp)
-        );
-
-        content.setScrollableY(true);
-        add(BorderLayout.CENTER, content);
+        //SignIn Button
+        Button signIn = new Button("Sign In");
         signIn.requestFocus();
         signIn.addActionListener(e -> {
             if (username.getText().isEmpty() && password.getText().isEmpty()) {
@@ -67,9 +70,36 @@ public class SignIn extends BaseForm {
             } else if (password.getText().isEmpty()) {
                 vv.alertBox("Please enter your password in the required field.");
             } else {
-                new Dashboard(hi).show();
-            };
+                new Dashboard(res).show();
+            }
 
         });
+        
+        //SignUp button
+        Button signUp = new Button("Sign Up");
+        signUp.addActionListener(e -> new SignUp(res).show());
+        signUp.setUIID("Link");
+        
+        //Label with message for signup link
+        Label doneHaveAnAccount = new Label("Don't have an account?");
+        Label topPad = new Label();
+        topPad.setUIID("TopPad");
+
+        //Container for main components
+        Container upContainer = encloseY(topPad,
+                encloseCenter(logoContainer),
+                (username),
+                (password),
+                createLineSeparator(),
+                signIn,
+                encloseCenter(doneHaveAnAccount, signUp)
+        );
+
+        //Sets upContainer to scrollable
+        upContainer.setScrollableY(true);
+        
+        //Adds container to page
+        add(CENTER, upContainer);
+       
     }
-} //End Subclass Goal
+} 

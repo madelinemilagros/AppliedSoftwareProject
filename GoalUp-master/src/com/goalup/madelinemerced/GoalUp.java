@@ -4,7 +4,7 @@ package com.goalup.madelinemerced;
  * @Course: SDEV-435-81 ~ Applied Software Practice
  * @Author Name: Madeline Merced
  * @Assignment Name: Final Project: Goal Up
- * @MainClass Description: Application main class that displays signUp page
+ * @MainClass Description: Application main class that opens signUp page
  */
 
 //Imports

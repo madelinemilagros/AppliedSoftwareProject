@@ -144,7 +144,7 @@ public class AddGoal extends BaseForm {
 
         //Dashboard object
         Dashboard db = new Dashboard();
-
+        
         //Creates hashmap for goal and points
         HashMap<String, String> pairHere = new HashMap<>();
 
@@ -200,8 +200,9 @@ public class AddGoal extends BaseForm {
                 os.write(space.getBytes("UTF-8"));
                 os.write(g.getType().getBytes("UTF-8"));
 
-                //Calls dashboard createFileEntry method for goal display 
-                db.createFileEntry(super.getComponentForm(),goalString, g.getType(), ptsTot);
+                //Calls dashboard CreateFileGoal pointsTotalMethod for goal display 
+                db.CreateFileGoal(super.getComponentForm(),goalString, 
+                        g.getType(), ptsTot);
 
                 //Displays dashboard after goal added
                 new Dashboard(res).show();

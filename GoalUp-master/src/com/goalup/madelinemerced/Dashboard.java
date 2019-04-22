@@ -4,12 +4,12 @@ package com.goalup.madelinemerced;
  * @Course: SDEV-435-81 ~ Applied Software Practice
  * @Author Name: Madeline Merced
  * @Assignment Name: Final Project: Goal Up
- * @Subclass Dashboard Description: Creates form that takes user input and
- * stores it to persistent storage. Image credit
- * https://www.pexels.com/photo/brown-wooden-dock-over-body-of-water-1227520/
- *
- *
+ * @Subclass AddGoal Description: Creates form that takes user input and stores
+ * it to persistent storage.
+ * //Image credit https://www.pexels.com/photo/brown-wooden-dock-over-body-of-water-1227520/
+ * 
  */
+
 //Imports
 import java.util.Map;
 import java.util.Date;
@@ -17,18 +17,16 @@ import java.util.HashMap;
 import java.io.IOException;
 import java.io.InputStream;
 import com.codename1.ui.Form;
-import com.codename1.ui.Label;
 import com.codename1.ui.Image;
+import com.codename1.ui.Label;
 import com.codename1.ui.Dialog;
-import com.codename1.ui.Button;
-import com.codename1.io.Storage;
 import com.codename1.ui.Command;
 import com.codename1.ui.Toolbar;
+import com.codename1.io.Storage;
 import com.codename1.ui.CheckBox;
-import com.codename1.ui.Component;
 import com.codename1.ui.Container;
+import com.codename1.ui.Component;
 import com.codename1.ui.util.Resources;
-import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
 import com.codename1.l10n.SimpleDateFormat;
@@ -37,45 +35,46 @@ import com.codename1.components.ScaleImageLabel;
 import com.codename1.components.FloatingActionButton;
 import static com.codename1.io.Log.e;
 import static java.lang.Integer.parseInt;
-import static com.codename1.ui.Component.LEFT;
 import static com.codename1.io.Util.readToString;
-import static com.codename1.ui.layouts.BoxLayout.y;
 import static com.codename1.ui.Display.getInstance;
+import static com.codename1.ui.layouts.BoxLayout.y;
 import static com.codename1.ui.FontImage.MATERIAL_ADD;
-import static com.codename1.ui.FontImage.MATERIAL_STAR;
-import static com.codename1.ui.FontImage.createMaterial;
 import static com.codename1.ui.layouts.BorderLayout.EAST;
 import static com.codename1.ui.layouts.BoxLayout.encloseX;
+import static com.codename1.ui.layouts.BoxLayout.encloseY;
 import static com.codename1.ui.layouts.BorderLayout.center;
-import static com.codename1.ui.FontImage.MATERIAL_STAR_BORDER;
 import static com.codename1.ui.FontImage.MATERIAL_HELP_OUTLINE;
 import static com.codename1.components.FloatingActionButton.createFAB;
 import static com.codename1.ui.layouts.FlowLayout.encloseCenterBottom;
 import static com.codename1.ui.plaf.Style.BACKGROUND_IMAGE_SCALED_FILL;
 
+
 //Begin Subclass Dashboard
 public final class Dashboard extends BaseForm {
 
-    private String inputStreamString;
+    //Classwide variables
+    int i;
+    int pointsInt;
     int pointsTotal;
     int cPointsTotal;
-    int pointsInt;
-    int dailyPointsTotal;
     int pointsValueInt;
-    int i;
+    int dailyPointsTotal;
+
+    private Form current;
+    private Resources theme;
+    private String inputStreamString;
 
     String mainRewardPoints;
-    boolean tr;
     CheckBox cb = new CheckBox();
     Map.Entry<String, String> runningMap;
 
     //Dashboard Constructor
     Dashboard() {
-    
+
     }
-    
+
     /**
-     * Method Dashboard: Inherits BaseForm to display snapshot of user status
+     * Method Dashboard: Displays user information gathered from other classes
      *
      * @param res
      */
@@ -87,41 +86,42 @@ public final class Dashboard extends BaseForm {
         //Inherits project toolbar properties
         Toolbar tb = super.getToolbar();
 
-        //Adds toolbar to dashboard
+        //Saves toolbar to form
         setToolbar(tb);
 
-        //Saves logo image to label
+        //Logo Image
         Image logo = res.getImage("LogoHeader.png");
         Label l = new Label(logo);
 
-        //Component for layered reward points display
+        //Background layer for points/reward tracker section
         Image img = res.getImage("selected-backgroundFilled.png");
         if (img.getHeight() > getInstance().getDisplayHeight() / 4) {
             img = img.scaledHeight(getInstance().getDisplayHeight() / 4);
         }
 
-        //Scales image for display
+        //Scales background image for points/reward tracker
         ScaleImageLabel sl = new ScaleImageLabel(img);
         sl.setUIID("TopPad");
         sl.setBackgroundType(BACKGROUND_IMAGE_SCALED_FILL);
         sl.setUIID("BottomPad");
+        Container quoteCont = new Container(new FlowLayout(CENTER));
 
         //Labels and formatting for dashboard trackers
-        Container landingPageButtons = BoxLayout.encloseY();
+        Container landingPageButtons = encloseY();
+
+        //Flow Container
         Container flowLabel = new Container(new FlowLayout(CENTER));
 
-        //Holds points total returned from calculator methods
-        Label ptsTotal = new Label();
-
-        //Date label set with date() method results
+        //Label to display date from date pointsTotalMethod
         Label date = new Label();
         date.setText(date());
         date.setUIID("Qte");
 
-        //Parses getDailyTotal method int into string for display
+        //Parses getDailyTotal int into string for formatting
+        Label dTotal = new Label();
         String getDailyTotalString = Integer.toString(getDailyTotal());
 
-        //Labels for spacing UIIDs
+        //Labels for margin formatting
         Label topPad = new Label("");
         Label topPad1 = new Label("");
         Label leftPad = new Label("");
@@ -129,47 +129,44 @@ public final class Dashboard extends BaseForm {
         Label rightPad = new Label("");
         Label rightPad1 = new Label("");
 
-        //UIIDs for formatting assigned to above labels
+        //UIIDs for labels
         topPad.setUIID("TopPad1");
         topPad1.setUIID("TopPad1");
         leftPad.setUIID("LeftPadding");
         leftPad1.setUIID("LeftPadding1");
         rightPad.setUIID("RightPadding");
         rightPad1.setUIID("RightPadding1");
-        
-        //PointsTracker label set to dailyTotalString result
-        Label pointsTracker = new Label();
-        pointsTracker.setText(getDailyTotalString);
-//        setMainRewardPoints("100");
 
-        //Labels for reward bar headings
+        //To test setMainRewardPoints method
+        setMainRewardPoints("100");
+        
+        //Labels for reward bar headers
         Label descripTotal = new Label("Points Total");
         Label descripReward = new Label("Reward Points Total");
-        
-        //UIID settings for reward bar headers
         descripTotal.setUIID("pointsHeaders");
         descripReward.setUIID("pointsHeaders");
-   
-        //Label to display reward points total
+        
+        //PointsTracker Label
+        Label pointsTracker = new Label();
+        pointsTracker.setText(getDailyTotalString);
+        Label allTotal = new Label();
+
+        landingPageButtons.add(quoteCont);
+
         Label rewardPoints = new Label("100");
 
-        //Container for logo and date formatting centered on page
-        Container logoDate = BoxLayout.encloseY(l, date);
-
-        //Adds logoDate container to main form
+        //Container for logo and date centering
+        Container logoDate = encloseY(l, date);
         flowLabel.add(logoDate);
-
-        //Adds landingPageButtons container to main form
         flowLabel.add(landingPageButtons);
 
-        //Adds reward picture, points and reward points to main form
         flowLabel.add(LayeredLayout.encloseIn(sl,
-                BoxLayout.encloseY(topPad,
+                encloseY(topPad,
                         encloseX(leftPad1, descripTotal),
                         encloseX(leftPad, pointsTracker)),
-                        encloseCenterBottom(
+                encloseCenterBottom(
                         new Label(res.getImage("shoesSmall.png"), "PictureWhiteBackgrond")),
-                BoxLayout.encloseY(topPad1,
+                encloseY(topPad1,
                         encloseX(rightPad1, descripReward),
                         encloseX(rightPad, rewardPoints))
         ));
@@ -188,9 +185,10 @@ public final class Dashboard extends BaseForm {
             Command result = Dialog.show("Add New Reward or Goal? ", " ",
                     goal, reward, cancel);
             if (goal == result) {
-                new AddGoal(res, ptsTotal).show();
+
+                new AddGoal(res, allTotal).show();
             } else if (reward == result) {
-                new AddReward(res, ptsTotal).show();
+                new AddReward(res, dTotal).show();
             } else {
 
             }
@@ -200,80 +198,61 @@ public final class Dashboard extends BaseForm {
         //Creates Storage Object
         MyObject g = new MyObject();
 
-        //Adds flowLabel container to main form
+        //add to main form
         add(flowLabel);
-        
-        //Adds center container to main form
         add(center);
-        
-        /*For loop to iterate over storage contents and stores each result in 
-        file string which is then passed to the createFileEntry method to process
-        and display.*/ 
         for (String file : Storage.getInstance().listEntries()) {
-           
-            createFileEntry(super.getComponentForm(), file, g.getType(),
+            CreateFileGoal(super.getComponentForm(), file, g.getType(),
                     pointsTracker);
 
-//            try (InputStream is = Storage.getInstance().createInputStream(file);) {
-//                String s = readToString(is, "UTF-8");
-////
-//            } catch (IOException err) {
-//                e(err);
-//            }
+            try (InputStream is = Storage.getInstance().createInputStream(file);) {
+                String s = readToString(is, "UTF-8");
+//
+            } catch (IOException err) {
+                e(err);
+            }
         }
 
-        //Adds floating action button to main form
         add(fab);
 
-        //Adds sidemenu to main form
         super.addSideMenu(res);
-        
-        //Adds icon to toolbar for profile access
         tb.addMaterialCommandToRightBar("", MATERIAL_HELP_OUTLINE,
                 e -> new Profile(res).show());
+
     }
 
-//    /**
-//     * 
-//     * @param completeCB
-//     */
-//    public void setCheckbox(CheckBox completeCB) {
-//        cb = completeCB;
-//    }
-//
-//    /**
-//     *
-//     * @return
-//     */
-//    public CheckBox getCheckbox() {
-//        return cb;
-//    }
-
     /**
-     *
+     * Method CreateFileGoal: Reads storage to return formatted files to page
+     * 
      * @param res
      * @param file
-     * @param t
-     * @param dailyTotal
+     * @param type
+     * @param ptsTotal
      */
-    public void createFileEntry(Form res, String file, String t, Label dailyTotal) {
-        
+    public void CreateFileGoal(Form res, String file, String type, Label ptsTotal) 
+    {
         //Components for container
         Label goal = new Label(file);
+        
+        //Checkbox for point totaling
         CheckBox completeCB = new CheckBox();
+        
+        //Labels to hold points and temporary data
         Label points = new Label("");
-        Label holder = new Label("");
+        Label holder = new Label(""); 
+        
         //Container for holding components
         Container content = center(holder);
 
+        //Hashmap to hold entrys
         HashMap<String, String> entryList = new HashMap<>();
         String entryKey;
         String entryValue = null;
-        i += 1;
+        i = 1;
 
-        Map<CheckBox, String> testing = new HashMap<>();
+        Map<CheckBox, String> initialMap = new HashMap<>();
 
-        //Reads in the storage
+        //Try-catch to read storage
         try (InputStream is = Storage.getInstance().createInputStream(file);) {
             String s = readToString(is, "UTF-8");
             if (s.contains("goal")) {
@@ -297,7 +276,7 @@ public final class Dashboard extends BaseForm {
 
                 }
 
-                testing.put(completeCB, entryValue);
+                initialMap.put(completeCB, entryValue);
                 content.add(CENTER, encloseX(goal));
                 content.add(EAST, encloseX(points,
                         completeCB));
@@ -308,29 +287,24 @@ public final class Dashboard extends BaseForm {
             e(err);
         }
 
-        //Map with date, and testing hashmap
-        Map<Map<CheckBox, String>, Date> dateCheck
-                = new HashMap<>();
+        //Map with date, and initialMap hashmap
+        Map<Map<CheckBox, String>, Date> dateCheck = new HashMap<>();
         Date currentDate = new Date();
         currentDate.getTime();
-        dateCheck.put(testing, currentDate);
+        dateCheck.put(initialMap, currentDate);
 
         //Checkbox Listener
         completeCB.addActionListener(e -> {
             if (completeCB.isSelected()) {
-                String pointValueTest = testing.get(completeCB);
-                String dateTest = dateCheck.get(testing).toString();
+                String pointValueTest = initialMap.get(completeCB);
+                String dateTest = dateCheck.get(initialMap).toString();
                 pointsValueInt = parseInt(pointValueTest);
                 setPoints(pointsValueInt);
-                dailyTotal.setText(dailyTotal());
-
+                ptsTotal.setText(dailyTotal());
             } else if (!completeCB.isSelected()) {
                 int removePoints = 0 - pointsValueInt;
-
                 setPoints(removePoints);
-//                
-                dailyTotal.setText(dailyTotal());
-
+                ptsTotal.setText(dailyTotal());
             }
 
         });
@@ -339,9 +313,9 @@ public final class Dashboard extends BaseForm {
         super.add(content);
     }
 
-
     /**
-     *
+     * Method setMap: Updates runningMap variable 
+     * 
      * @param runningMap
      */
     public void setMap(Map.Entry<String, String> runningMap) {
@@ -349,6 +323,7 @@ public final class Dashboard extends BaseForm {
     }
 
     /**
+     * Method getMap: Returns runningMap variable
      *
      * @return
      */
@@ -357,65 +332,8 @@ public final class Dashboard extends BaseForm {
     }
 
     /**
-     *
-     * @param res
-     * @param file
-     * @param type
-     */
-    public void createFileEntryReward(Form res, String file, String type) {
-        Label reward = new Label(file);
-        CheckBox c = new CheckBox();
-        c.setSelected(true);
-        c.setToggle(true);
-        c.setTextPosition(LEFT);
-        c.setIcon(createMaterial(MATERIAL_STAR_BORDER,
-                "UncheckedIcon", 4));
-        c.setPressedIcon(createMaterial(MATERIAL_STAR,
-                "CheckedIcon", 4));
-        HashMap<String, String> listRewards = new HashMap<>();
-
-        MyObject obj = new MyObject();
-        String entryKey;
-        String entryValue = null;
-        Label points = new Label("");
-        Label holder = new Label("");
-
-        Container content = center(holder);
-        try (InputStream is = Storage.getInstance().createInputStream(file);) {
-            String s = readToString(is, "UTF-8");
-            if (s.contains("reward")) {
-                if (s.substring(0, 1).contains("0")) {
-                    listRewards.put(file, s.substring(1, 3));
-                    points.setText(s.substring(1, 3) + " points");
-                    if (s.substring(1, 2).contains("0")) {
-                        listRewards.put(file, s.substring(2, 3));
-                        points.setText(s.substring(2, 3) + " points");
-                    }
-                } else {
-                    listRewards.put(file, s.substring(0, 3));
-                    points.setText(s.substring(0, 3) + " points");
-                }
-                for (Map.Entry<String, String> entry : listRewards.entrySet()) {
-
-                    entryValue = entry.getValue();
-                    entryKey = entry.getKey();
-
-                    setMap(entry);
-
-                }
-                content.add(CENTER, encloseX(reward));
-                content.add(EAST, encloseX(points, c));
-            }
-
-        } catch (IOException err) {
-            e(err);
-        }
-
-        res.add(content);
-    }
-
-    /**
-     *
+     * Method mainRewardPoints: Takes string to pass to setMainRewardPoints
+     * 
      * @param s
      * @return
      */
@@ -426,7 +344,9 @@ public final class Dashboard extends BaseForm {
     }
 
     /**
-     *
+     * Method setMainRewardPoints: Takes string to update mainRewardPoints 
+     * variable
+     * 
      * @param s
      */
     public void setMainRewardPoints(String s) {
@@ -434,13 +354,19 @@ public final class Dashboard extends BaseForm {
     }
 
     /**
-     *
+     * Method getMainRewardPoints: Returns mainRewardPoints variable
+     * 
      * @return
      */
     public String getMainRewardPoints() {
         return mainRewardPoints;
     }
 
+    /**
+     * Method createLineSeparator: Returns separator for formatting
+     * 
+     * @return 
+     */
     @Override
     public Component createLineSeparator() {
         Label separator = new Label("", "WhiteSeparator");
@@ -449,23 +375,22 @@ public final class Dashboard extends BaseForm {
     }
 
     /**
-     *
+     * Method Date: Takes system date, formats it and returns it as string
+     * 
      * @return
      */
     public String date() {
         //Date formatter
         Date date = new Date();
         String pattern = "EEEE, MMMMM dd, yyyy";
-
         SimpleDateFormat formatter = new SimpleDateFormat(pattern);
-
         String strDate = formatter.format(date);
-
         return strDate;
     }
 
     /**
-     *
+     * Method setPoints: Updates points int 
+     * 
      * @param points
      */
     public void setPoints(int points) {
@@ -473,7 +398,8 @@ public final class Dashboard extends BaseForm {
     }
 
     /**
-     *
+     * Method getPoints: Returns pointsInt
+     * 
      * @return
      */
     public int getPoints() {
@@ -481,28 +407,44 @@ public final class Dashboard extends BaseForm {
     }
 
     /**
-     *
+     * Method pointsTotalMethod: Takes pointsTotal int and adds it to itself
+     * 
      * @param p
      * @return
      */
-    public int method(int p) {
+    public int pointsTotalMethod(int p) {
         pointsTotal = p + pointsTotal;
-        met(pointsTotal);
+        cumulativeTotal(pointsTotal);
         return pointsTotal;
     }
 
     /**
-     *
+     * Method cumulativeTotal: Takes pointsTotal and adds it to a 
+     * cumulativeTotal
+     * 
      * @param p
      * @return
      */
-    public int met(int p) {
+    public int cumulativeTotal(int p) {
         cPointsTotal = p + cPointsTotal;
         return cPointsTotal;
     }
 
     /**
-     *
+     * Method dailyTotal: Returns string with dailyTotal
+     * 
+     * @return
+     */
+    public String dailyTotal() {
+        setDailyTotal(getDailyTotal() + getPoints());
+        String getDailyTotalString = Integer.toString(getDailyTotal());
+
+        return getDailyTotalString;
+    }
+
+    /**
+     * Method setDailyTotal: Updates dailyPointsTotal int
+     * 
      * @param dailyPointsTotal
      */
     public void setDailyTotal(int dailyPointsTotal) {
@@ -510,7 +452,8 @@ public final class Dashboard extends BaseForm {
     }
 
     /**
-     *
+     * Method getDailyTotal: Returns dailyPointsTotal int
+     * 
      * @return
      */
     public int getDailyTotal() {
@@ -518,37 +461,21 @@ public final class Dashboard extends BaseForm {
     }
 
     /**
-     *
-     * @return
-     */
-    public String dailyTotal() {
-        setDailyTotal(getDailyTotal() + getPoints());
-        String getDailyTotalString = Integer.toString(getDailyTotal());
-//        dT.setText(getDailyTotalString);
-
-        return getDailyTotalString;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getInputStreamString() {
-        return inputStreamString;
-    }
-
-    /**
-     *
+     * Method setInputStreamString: Updates inputStreamString variable
+     * 
      * @param inputStreamString
      */
     public void setInputStreamString(String inputStreamString) {
         this.inputStreamString = inputStreamString;
     }
 
-    private void updateArrowPosition(Button b, Label arrow) {
-        arrow.getUnselectedStyle().setMargin(LEFT, b.getX() + b.getWidth()
-                / 2 - arrow.getWidth() / 2);
-        arrow.getParent().repaint();
+    /**
+     * Method getInputStreamString: Returns inputStreamString variable
+     * 
+     * @return
+     */
+    public String getInputStreamString() {
+        return inputStreamString;
     }
 
 } //End Subclass Dashboard

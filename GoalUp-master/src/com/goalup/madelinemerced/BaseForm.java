@@ -4,8 +4,8 @@ package com.goalup.madelinemerced;
  * @Course: SDEV-435-81 ~ Applied Software Practice
  * @Author Name: Madeline Merced
  * @Assignment Name: Final Project: Goal Up
- * @Subclass AddGoal Description: Creates form that takes user input and stores
- * it to persistent storage.
+ * @Subclass BaseForm Description: BaseForm extends Form class and provides
+ * project wide features for other subclasses
  */
 
 //Imports
@@ -108,16 +108,15 @@ public class BaseForm extends Form {
                         new Label(res.getImage("headshot.jpg"), 
                               "PictureWhiteBackgrond"))
         ));
-        Label allTotal = null;
-        Label dailyTotal = null;
+        Label ptsTotal = null;
         
         //Adds navigation buttons to side menu
         tb.addMaterialCommandToSideMenu("Dashboard", MATERIAL_DASHBOARD, 
                 e ->new Dashboard(res).show());
         tb.addMaterialCommandToSideMenu("Goals", MATERIAL_STARS, e -> 
-                new Goal(res, allTotal, dailyTotal).show());
+                new Goal(res, ptsTotal).show());
         tb.addMaterialCommandToSideMenu("Rewards", MATERIAL_CAKE, e 
-                -> new Reward(res, allTotal, dailyTotal).show());
+                -> new Reward(res).show());
         tb.addMaterialCommandToSideMenu("Logout", MATERIAL_EXIT_TO_APP, 
                 e -> new SignIn(res).show());
     }

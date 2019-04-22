@@ -7,7 +7,6 @@ package com.goalup.madelinemerced;
  * @Subclass MyObject Description: Uses codenameone externalizable class to save
  * objects to persistent storage when called in subclasses
  */
-
 //Imports
 import java.util.HashMap;
 import java.io.IOException;
@@ -231,7 +230,7 @@ public class MyObject implements Externalizable {
     }
 
     /**
-     *
+     * Method saveGoals: Saves goals to goals list
      */
     public void saveGoals() {
         if (!goals.contains(this)) {
@@ -240,7 +239,7 @@ public class MyObject implements Externalizable {
     }
 
     /**
-     *
+     * Method saveRewards: Saves rewards to rewards list
      */
     public void saveRewards() {
         if (!rewards.contains(this)) {
@@ -249,7 +248,7 @@ public class MyObject implements Externalizable {
     }
 
     /**
-     *
+     * Method saveProfile: Saves profile to profile list
      */
     public void saveProfile() {
         if (!profile.contains(this)) {
@@ -258,7 +257,7 @@ public class MyObject implements Externalizable {
     }
 
     /**
-     *
+     * Method clearStorage: Clears storage
      */
     public void clearStorage() {
         getInstance().clearStorage();

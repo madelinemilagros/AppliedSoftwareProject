@@ -1,38 +1,38 @@
 package com.goalup.madelinemerced;
 
-import com.codename1.ui.Command;
-import com.codename1.ui.Dialog;
-
-/** 
- * @Course: SDEV 250 ~ Java Programming I
+/**
+ * @Course: SDEV-435-81 ~ Applied Software Practice
  * @Author Name: Madeline Merced
- * @Assignment Name: com.goalup.madelinemerced
- * @Date: Apr 19, 2019
- * @Subclass VerifyValidate Description: 
+ * @Assignment Name: Final Project: Goal Up
+ * @Subclass VerifyValidate Description: Returns alertBox when called
+ * 
  */
-//Imports
 
-//Begin Subclass VerifyValidate
+//Imports
+import com.codename1.ui.Command;
+import static com.codename1.ui.Dialog.show;
+
+//Begin Subclass VerifyValidate 
 public class VerifyValidate  {
 
+    /**
+     * VerifyValidate Constructor
+     */
     VerifyValidate(){
         
     };
-    
-    
-      /**
+   
+     /**
      * Method alertBox: Returns alertBox with information for user.
      *
-     * @param s2
+     * @param s
      */
-    public void alertBox(String s2) {
+    public void alertBox(String s) {
         String title = "Warning";
-        String alertDescription = s2;
+        String alertDescription = s;
 
         Command ok = new Command("OK");
-        Dialog.show(title, alertDescription, ok);
+        show(title, alertDescription, ok);
     }
-
-    
     
 } //End Subclass VerifyValidate

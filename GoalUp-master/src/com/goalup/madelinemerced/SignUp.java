@@ -1,82 +1,83 @@
 package com.goalup.madelinemerced;
 
-import com.codename1.io.Log;
-import com.codename1.io.Storage;
-import com.codename1.ui.Button;
-import com.codename1.ui.Component;
-import com.codename1.ui.Container;
-import com.codename1.ui.Form;
-import com.codename1.ui.Image;
-import com.codename1.ui.Label;
-import com.codename1.ui.TextField;
-import com.codename1.ui.Toolbar;
-import com.codename1.ui.layouts.BorderLayout;
-import com.codename1.ui.layouts.BoxLayout;
-import com.codename1.ui.layouts.FlowLayout;
-import com.codename1.ui.util.Resources;
-import com.codename1.ui.validation.Constraint;
-import com.codename1.ui.validation.Validator;
+/**
+ * @Course: SDEV-435-81 ~ Applied Software Practice
+ * @Author Name: Madeline Merced
+ * @Assignment Name: Final Project: Goal Up
+ * @Subclass SignUp Description: Creates form with textfields for new users to
+ * sign up
+ */
+
+//Imports
+import java.util.ArrayList;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.codename1.ui.Image;
+import com.codename1.ui.Label;
+import com.codename1.ui.Button;
+import com.codename1.ui.Toolbar;
+import com.codename1.ui.Container;
+import com.codename1.ui.TextField;
+import com.codename1.ui.util.Resources;
+import com.codename1.ui.layouts.FlowLayout;
+import com.codename1.ui.validation.Validator;
+import com.codename1.ui.layouts.BorderLayout;
+import com.codename1.ui.validation.Constraint;
+import com.codename1.ui.validation.RegexConstraint;
+import static com.codename1.io.Log.e;
+import static com.codename1.ui.TextArea.ANY;
+import static com.codename1.ui.TextArea.PASSWORD;
+import static com.codename1.io.Storage.getInstance;
+import static com.codename1.ui.layouts.BoxLayout.encloseY;
+import static com.goalup.madelinemerced.MyObject.getProfile;
+import static com.codename1.ui.layouts.FlowLayout.encloseCenter;
+import static com.codename1.ui.layouts.FlowLayout.encloseCenterMiddle;
 
-/**
- * @Course: SDEV 250 ~ Java Programming I
- * @Author Name: Madeline Merced
- * @Assignment Name: com.goalup.madelinemerced
- * @Date: Apr 17, 2019
- * @Subclass SignUp Description:
- */
-//Imports
 //Begin Subclass SignUp
 public class SignUp extends BaseForm {
 
-    public SignUp(Resources hi) {
+    /**
+     * Method SignUp: Inherits BaseForm properties to create form with
+     * textfields for new users to sign up
+     *
+     * @param res
+     */
+    public SignUp(Resources res) {
+
+        //Inherits from BaseForm
         super("", new BorderLayout());
+
+        //Initialize project toolbar properties
         Toolbar tb = super.getToolbar();
+
+        //Saves toolbar to form
         setToolbar(tb);
 
-        //Logo Image
-        Image logo = hi.getImage("LogoHeader.png");
+        //Saves logo image to label
+        Image logo = res.getImage("LogoHeader.png");
         Label l = new Label(logo);
-        Container flowLabel = new Container(new FlowLayout(Component.CENTER));
 
+        //New container with flowlayout for centered display
+        Container flowLabel = new Container(new FlowLayout(CENTER));
+
+        //Adds logo to flowlayout
         flowLabel.addComponent(l);
-        TextField username = new TextField("", "Username", 20, TextField.ANY);
-        TextField email = new TextField("", "Email", 20, TextField.ANY);
-        TextField password = new TextField("", "Password", 20, TextField.PASSWORD);
 
+        //Textfields for signup form 
+        TextField username = new TextField("", "Username", 20, ANY);
+        TextField email = new TextField("", "Email", 20, ANY);
+        TextField password = new TextField("", "Password", 20, PASSWORD);
         username.setSingleLineTextArea(false);
         email.setSingleLineTextArea(false);
         password.setSingleLineTextArea(false);
+
+        //VerifyValidate object
         VerifyValidate vv = new VerifyValidate();
 
-        Button signIn = new Button("Sign In");
-        Button signUp = new Button("Sign Up");
-        signIn.addActionListener(e -> new SignIn(hi).show());
-        signIn.setUIID("Link");
-        Label alreadyHaveAnAccount = new Label("Already have an account?");
-        Label topPad = new Label();
-        topPad.setUIID("TopPad");
-
-        Container content = BoxLayout.encloseY(
-                topPad,
-                FlowLayout.encloseCenterMiddle(flowLabel),
-                createLineSeparator(),
-                (username),
-             
-                (email),
-              
-                (password),
-                createLineSeparator(),
-                signUp,
-                
-                FlowLayout.encloseCenter(alreadyHaveAnAccount, signIn)
-        );
-
-        Validator val = new Validator();
-        val.addConstraint(password, new Constraint() {
+        //Validator object to check password
+        Validator passwordVal = new Validator();
+        passwordVal.addConstraint(password, new Constraint() {
+            @Override
             public boolean isValid(Object value) {
 
                 String v = (String) value;
@@ -93,60 +94,93 @@ public class SignUp extends BaseForm {
                 return true;
             }
 
+            @Override
             public String getDefaultFailMessage() {
                 return "Must be valid phone number";
             }
         });
-        
-      
-                
-        content.setScrollableY(true);
-        add(BorderLayout.CENTER, content);
+
+        //Email Validator Object
+        Validator emailVal = new Validator();
+        emailVal.addConstraint(email, RegexConstraint.validEmail());
+
+        //SignIn button
+        Button signIn = new Button("Sign In");
+        signIn.addActionListener(e -> new SignIn(res).show());
+        signIn.setUIID("Link");
+        Label alreadyHaveAnAccount = new Label("Already have an account?");
+        Label topPad = new Label();
+        topPad.setUIID("TopPad");
+
+        //SignUp button        
+        Button signUp = new Button("Sign Up");
         signUp.requestFocus();
         signUp.addActionListener(e -> {
-            enter(username, email, password,
-                    super.getComponentForm(), hi, vv);
-//            Validator validator = new Validator();
-//
-//            validator.addConstraint(email, RegexConstraint.validEmail());
-//            if (!val.isValid()) {
-//                vv.alertBox("Password must include one number and be at least 8 letters");
-//            } else if (!validator.isValid()) {
-//                vv.alertBox("Invalid Email Please try again.");
-//            } else if (username.getText().isEmpty() && email.getText().isEmpty()
-//                    && password.getText().isEmpty()) {
-//                vv.alertBox("Please enter a username, email and password.");
-//            } else if (username.getText().isEmpty() && email.getText().isEmpty()) {
-//                vv.alertBox("Please enter a username and email.");
-//            } else if (username.getText().isEmpty() && password.getText().isEmpty()) {
-//                vv.alertBox("Please enter a username and password.");
-//            } else if (email.getText().isEmpty() && password.getText().isEmpty()) {
-//                vv.alertBox("Please enter a valid email and password.");
-//            } else if (username.getText().isEmpty()) {
-//                vv.alertBox("Please enter a username.");
-//            } else if (email.getText().isEmpty()) {
-//                vv.alertBox("Please enter a email.");
-//            } else if (password.getText().isEmpty()) {
-//                vv.alertBox("Please enter a password");
-//            } else {
+
+            if (!passwordVal.isValid()) {
+                vv.alertBox("Password must include one number and be at least 8 letters");
+            } else if (!emailVal.isValid()) {
+                vv.alertBox("Invalid Email Please try again.");
+            } else if (username.getText().isEmpty() && email.getText().isEmpty()
+                    && password.getText().isEmpty()) {
+                vv.alertBox("Please enter a username, email and password.");
+            } else if (username.getText().isEmpty() && email.getText().isEmpty()) {
+                vv.alertBox("Please enter a username and email.");
+            } else if (username.getText().isEmpty() && password.getText().isEmpty()) {
+                vv.alertBox("Please enter a username and password.");
+            } else if (email.getText().isEmpty() && password.getText().isEmpty()) {
+                vv.alertBox("Please enter a valid email and password.");
+            } else if (username.getText().isEmpty()) {
+                vv.alertBox("Please enter a username.");
+            } else if (email.getText().isEmpty()) {
+                vv.alertBox("Please enter a email.");
+            } else if (password.getText().isEmpty()) {
+                vv.alertBox("Please enter a password");
+            } else {
+                Enter(res, username, email, password, vv);
+            }
 
         });
+
+        //Container for main formatting
+        Container content = encloseY(topPad,
+                encloseCenterMiddle(flowLabel),
+                createLineSeparator(),
+                (username),
+                (email),
+                (password),
+                createLineSeparator(),
+                signUp,
+                encloseCenter(alreadyHaveAnAccount, signIn)
+        );
+
+        content.setScrollableY(true);
+        add(CENTER, content);
+
     }
 
-    public void enter(TextField usernameTF, TextField emailTF, TextField passwordTF,
-            Form newForm, Resources hi, VerifyValidate vv) {
-
-        HashMap<String, String> pairHere = new HashMap<String, String>();
+    /**
+     * Method Enter: Writes username, email and password to persistent storage
+     *
+     * @param usernameTF
+     * @param emailTF
+     * @param passwordTF
+     * @param vv
+     */
+    public void Enter(Resources res, TextField usernameTF, TextField emailTF, 
+            TextField passwordTF, VerifyValidate vv) {
 
         //Storage Management
-        ArrayList<MyObject> profile = MyObject.getProfile();
+        ArrayList<MyObject> profile = getProfile();
         MyObject p = new MyObject();
 
+        //Profile variables for three files that hold corresponding information
         String username = "ProfileUsername";
         String email = "ProfileEmail";
         String password = "ProfilePassword";
-        
-        try (OutputStream os = Storage.getInstance().createOutputStream(username);) {
+
+        //Try-Catch to write username to persistent storage
+        try (OutputStream os = getInstance().createOutputStream(username);) {
             try {
                 String usernameText = usernameTF.getText();
                 profile.add(p);
@@ -158,25 +192,27 @@ public class SignUp extends BaseForm {
 
             }
         } catch (IOException err) {
-            Log.e(err);
+            e(err);
         }
-        try (OutputStream os = Storage.getInstance().createOutputStream(email);) {
+
+        //Try-Catch to write email to persistent storage
+        try (OutputStream os = getInstance().createOutputStream(email);) {
             try {
                 String emailText = emailTF.getText();
                 profile.add(p);
                 p.saveProfile();
                 os.write(emailText.getBytes("UTF-8"));
-                ;
 
             } catch (NumberFormatException nfe) {
                 vv.alertBox("Please enter only numbers in the points field.");
 
             }
         } catch (IOException err) {
-            Log.e(err);
+            e(err);
         }
 
-        try (OutputStream os = Storage.getInstance().createOutputStream(password);) {
+        //Try-Catch to write password to persistent storage
+        try (OutputStream os = getInstance().createOutputStream(password);) {
             try {
                 String passwordText = passwordTF.getText();
                 profile.add(p);
@@ -188,19 +224,11 @@ public class SignUp extends BaseForm {
 
             }
         } catch (IOException err) {
-            Log.e(err);
+            e(err);
         }
-        
-       
-        
 
-        new Dashboard(hi).show();
+        //Displays dashboard
+        new Dashboard(res).show();
     }
 
-  
-
-};
-
-//End Subclass SignUp
-//Holds points with comma deliminator
-
+}//End Subclass SignUp

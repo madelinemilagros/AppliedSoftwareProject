@@ -65,7 +65,7 @@ public class AddReward extends BaseForm {
         tb.addMaterialCommandToRightBar("", MATERIAL_HELP_OUTLINE,
                 e -> new Profile(res).show());
 
-        //Adds arrow icon t toolbar that displays previous page
+        //Adds arrow icon to toolbar that displays previous page
         tb.setBackCommand("", e -> previous.showBack());
 
         //Saves logo image to label
@@ -144,6 +144,9 @@ public class AddReward extends BaseForm {
         //Dashboard object
         Dashboard db = new Dashboard();
 
+        //CreateFileReward Object
+        CreateFileReward cfReward = new CreateFileReward();
+
         //Creates hashmap for reward and points
         HashMap<String, String> pairHere = new HashMap<>();
 
@@ -173,7 +176,6 @@ public class AddReward extends BaseForm {
                 //adds reward and points to hashmap
                 pairHere.put(rewardString, pointString);
 
-//                r.saveRewards();
                 //Saves points with leading zeros for formating and structure
                 if (pointsInt < 10) {
                     String pointsZero = "00" + pointString;
@@ -196,8 +198,8 @@ public class AddReward extends BaseForm {
                 os.write(space.getBytes("UTF-8"));
                 os.write(r.getType().getBytes("UTF-8"));
 
-                //Calls dashboard createFileEntryReward method for reward display
-                db.createFileEntryReward(super.getComponentForm(),
+                //Calls dashboard CreateFileReward pointsTotalMethod for reward display
+                cfReward.CreateFileReward(super.getComponentForm(),
                         rewardString, r.getType());
 
                 //Displays dashboard after reward added
