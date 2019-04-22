@@ -6,7 +6,12 @@ package com.goalup.madelinemerced;
  * @Assignment Name: Final Project: Goal Up
  * @Subclass Dashboard Description: Takes data from project classes and displays 
  * them to the dashboard 
- * //Image credit https://www.pexels.com/photo/brown-wooden-dock-over-body-of-water-1227520/
+ * 
+ * Codename One. (2019, April 21). Retrieved April 21, 2019, 
+ * from https://www.codenameone.com/
+ * 
+ * Background Profile Picture. (n.d.). Retrieved April 21, 2019, from  
+ * https://www.pexels.com/photo/brown-wooden-dock-over-body-of-water-1227520/
  * 
  */
 
