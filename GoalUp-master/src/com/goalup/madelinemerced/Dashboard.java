@@ -4,8 +4,8 @@ package com.goalup.madelinemerced;
  * @Course: SDEV-435-81 ~ Applied Software Practice
  * @Author Name: Madeline Merced
  * @Assignment Name: Final Project: Goal Up
- * @Subclass AddGoal Description: Creates form that takes user input and stores
- * it to persistent storage.
+ * @Subclass Dashboard Description: Takes data from project classes and displays 
+ * them to the dashboard 
  * //Image credit https://www.pexels.com/photo/brown-wooden-dock-over-body-of-water-1227520/
  * 
  */

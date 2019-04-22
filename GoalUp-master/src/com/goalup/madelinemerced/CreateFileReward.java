@@ -8,6 +8,7 @@ package com.goalup.madelinemerced;
  * formatted files
  *
  */
+
 //Imports
 import java.util.Map;
 import java.util.HashMap;
@@ -39,6 +40,7 @@ public class CreateFileReward {
      * @param file
      * @param type
      */
+    
     public void CreateFileReward(Form res, String file, String type) {
 
         //Dashboard object
