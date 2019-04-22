@@ -22,7 +22,6 @@ import com.codename1.ui.util.Resources;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.validation.Validator;
 import com.codename1.ui.layouts.BorderLayout;
-import com.codename1.ui.validation.Constraint;
 import com.codename1.ui.validation.RegexConstraint;
 import static com.codename1.io.Log.e;
 import static com.codename1.ui.TextArea.ANY;
@@ -73,33 +72,7 @@ public class SignUp extends BaseForm {
 
         //VerifyValidate object
         VerifyValidate vv = new VerifyValidate();
-
-        //Validator object to check password
-        Validator passwordVal = new Validator();
-        passwordVal.addConstraint(password, new Constraint() {
-            @Override
-            public boolean isValid(Object value) {
-
-                String v = (String) value;
-                if (v.length() < 8) {
-                    return false;
-                }
-                for (int i = 0; i < v.length(); i++) {
-                    char c = v.charAt(i);
-                    if (c >= '0' && c <= '9' || c >= 'a' && c <= 'z') {
-                        continue;
-                    }
-                    return false;
-                }
-                return true;
-            }
-
-            @Override
-            public String getDefaultFailMessage() {
-                return "Must be valid phone number";
-            }
-        });
-
+    
         //Email Validator Object
         Validator emailVal = new Validator();
         emailVal.addConstraint(email, RegexConstraint.validEmail());
@@ -116,17 +89,13 @@ public class SignUp extends BaseForm {
         Button signUp = new Button("Sign Up");
         signUp.requestFocus();
         signUp.addActionListener(e -> {
-
-            if (!passwordVal.isValid()) {
-                vv.alertBox("Password must include one number and be at least 8 letters");
-            } else if (!emailVal.isValid()) {
-                vv.alertBox("Invalid Email Please try again.");
-            } else if (username.getText().isEmpty() && email.getText().isEmpty()
+ 
+            if (username.getText().isEmpty() && email.getText().isEmpty()
                     && password.getText().isEmpty()) {
                 vv.alertBox("Please enter a username, email and password.");
             } else if (username.getText().isEmpty() && email.getText().isEmpty()) {
                 vv.alertBox("Please enter a username and email.");
-            } else if (username.getText().isEmpty() && password.getText().isEmpty()) {
+            } else if (username.getText().isEmpty() && password.getText().isEmpty()) {        
                 vv.alertBox("Please enter a username and password.");
             } else if (email.getText().isEmpty() && password.getText().isEmpty()) {
                 vv.alertBox("Please enter a valid email and password.");
@@ -136,7 +105,11 @@ public class SignUp extends BaseForm {
                 vv.alertBox("Please enter a email.");
             } else if (password.getText().isEmpty()) {
                 vv.alertBox("Please enter a password");
-            } else {
+            } else if (!emailVal.isValid()) {
+                vv.alertBox("Invalid Email Please try again.");
+            } else if(password.getText().length() < 8){
+                vv.alertBox("Password must be 8 or more letters long.");
+            } else{
                 Enter(res, username, email, password, vv);
             }
 

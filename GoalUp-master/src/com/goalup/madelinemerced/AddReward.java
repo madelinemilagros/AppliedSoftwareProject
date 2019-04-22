@@ -97,7 +97,7 @@ public class AddReward extends BaseForm {
 
             //If-else-if statement for error handling
             if (rewardTF.getText().isEmpty() && pointsTF.getText().isEmpty()) {
-                vv.alertBox("Please enter your username and password.");
+                vv.alertBox("Please enter a reward and points.");
             } else if (rewardTF.getText().isEmpty()) {
                 vv.alertBox("Please enter a reward in the required field.");
             } else if (pointsTF.getText().isEmpty()) {

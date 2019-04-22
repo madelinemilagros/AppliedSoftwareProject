@@ -185,7 +185,6 @@ public final class Dashboard extends BaseForm {
             Command result = Dialog.show("Add New Reward or Goal? ", " ",
                     goal, reward, cancel);
             if (goal == result) {
-
                 new AddGoal(res, allTotal).show();
             } else if (reward == result) {
                 new AddReward(res, dTotal).show();
@@ -207,7 +206,7 @@ public final class Dashboard extends BaseForm {
 
             try (InputStream is = Storage.getInstance().createInputStream(file);) {
                 String s = readToString(is, "UTF-8");
-//
+
             } catch (IOException err) {
                 e(err);
             }

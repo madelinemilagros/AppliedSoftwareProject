@@ -97,7 +97,7 @@ public class AddGoal extends BaseForm {
 
             //If-else-if statement for error handling
             if (goalTF.getText().isEmpty() && pointsTF.getText().isEmpty()) {
-                vv.alertBox("Please enter your username and password.");
+                vv.alertBox("Please enter a goal and points.");
             } else if (goalTF.getText().isEmpty()) {
                 vv.alertBox("Please enter a goal in the required field.");
             } else if (pointsTF.getText().isEmpty()) {
@@ -165,7 +165,6 @@ public class AddGoal extends BaseForm {
         (goalString)) {
 
             try {
-
                 //Converts pointsString into int
                 int pointsInt = parseInt(pointString);
 
